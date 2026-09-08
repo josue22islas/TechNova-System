@@ -1,0 +1,135 @@
+/* Modulo: Carrusel KPI responsive. Orden preservado desde dashboard.css original. */
+/* GUÍA: transforma KPI en carrusel móvil; conservar medidas consistentes para que ninguna tarjeta se recorte al centrarse. */
+
+/* =========================================================
+   CARRUSEL KPI MÓVIL - FIX
+   DEBE IR AL FINAL ABSOLUTO DEL CSS
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+    .dashboard .frame-2 {
+
+        display: flex !important;
+
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+
+        align-items: stretch;
+
+        width: 100%;
+        max-width: 100%;
+
+        gap: 14px;
+
+        overflow-x: auto !important;
+        overflow-y: visible;
+
+        padding: 12px 14px 20px;
+
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+
+        -webkit-overflow-scrolling: touch;
+
+        /*
+         Muy importante:
+         permite el gesto horizontal táctil
+        */
+        touch-action: pan-x;
+
+        /*
+         Evita que el navegador intente
+         seleccionar el contenido al arrastrar
+        */
+        user-select: none;
+        -webkit-user-select: none;
+
+    }
+
+
+    .dashboard .frame-2 .card,
+    .dashboard .frame-2 .card-2 {
+
+        /*
+         IMPORTANTE:
+         la tarjeta NO puede encogerse.
+        */
+
+        flex: 0 0 82% !important;
+
+        width: 82% !important;
+        min-width: 82% !important;
+        max-width: 82% !important;
+
+        scroll-snap-align: start;
+
+    }
+
+
+    /* Ocultar scrollbar */
+
+    .dashboard .frame-2 {
+
+        scrollbar-width: none;
+
+    }
+
+    .dashboard .frame-2::-webkit-scrollbar {
+
+        display: none;
+
+    }
+
+}
+@media (max-width: 640px) {
+
+    .dashboard .frame-2 {
+
+        scrollbar-width: none;
+
+    }
+
+
+    .dashboard .frame-2::-webkit-scrollbar {
+
+        display: none;
+
+    }
+
+}
+
+@media (max-width: 640px) {
+
+    .dashboard .frame-2::before,
+    .dashboard .frame-2::after {
+
+        content: "";
+
+        flex:
+            0
+            0
+            1px;
+
+    }
+
+}
+
+@media (max-width: 390px) {
+
+    .dashboard .frame-2 .card,
+    .dashboard .frame-2 .card-2 {
+
+        flex-basis: 88%;
+
+        width: 88%;
+
+        min-width: 88%;
+
+        max-width: 88%;
+
+    }
+
+}
+
+

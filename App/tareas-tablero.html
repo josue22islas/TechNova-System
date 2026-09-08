@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tablero de tareas | TechNova Solutions</title>
+    <link href="assets/vendor/meyer-reset-2.0.min.css" rel="stylesheet" />
+    <link href="css/globals.css" rel="stylesheet" />
+    <link href="css/layout/base.css" rel="stylesheet" />
+    <link href="css/navbar/structure.css" rel="stylesheet" />
+    <link href="css/navbar/toggle.css" rel="stylesheet" />
+    <link href="css/responsive.css" rel="stylesheet" />
+    <link href="css/effects.css" rel="stylesheet" />
+    <link href="css/navbar/base.css" rel="stylesheet" />
+    <link href="css/header/base.css" rel="stylesheet" />
+    <link href="css/notifications/button.css" rel="stylesheet" />
+    <link href="css/header/controls.css" rel="stylesheet" />
+    <link href="css/notifications/panel.css" rel="stylesheet" />
+    <link href="css/navbar/items.css" rel="stylesheet" />
+    <link href="css/pages/tareas.css" rel="stylesheet" />
+    <link href="css/pages/tareas-tablero.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="dashboard tasks-board-page" data-tasks-board-api="" data-tasks-action-api="" data-tasks-csrf="">
+        <technova-navbar active="tasks">
+            <noscript>
+                <nav aria-label="Navegación principal">
+                    <a href="index.html">Dashboard</a>
+                    <a href="proyectos.html">Proyectos</a>
+                    <a href="tareas.html">Tareas</a>
+                </nav>
+            </noscript>
+        </technova-navbar>
+
+        <main class="tasks-board-shell">
+            <header class="tasks-board-header glass-reactive">
+                <div><span>Gestión visual</span><h1>Tablero de tareas</h1><p>Organiza el flujo de trabajo por estado y detecta bloqueos rápidamente.</p></div>
+                <div class="tasks-board-header-actions" aria-label="Acciones del tablero de tareas">
+                    <a href="tareas.html">☷ Lista</a>
+                    <button class="row-6 tasks-new-button" type="button" data-board-create><img src="assets/img/image-2@2x.png" alt="" aria-hidden="true" /><span class="text-wrapper-7">Nueva tarea</span></button>
+                    <div class="notification-wrapper">
+                        <div class="row-7 notification-button" id="notificationButton" role="button" tabindex="0" aria-expanded="false" aria-label="Abrir notificaciones">
+                            <img class="image-2" src="assets/img/image-14@2x.png" alt="" aria-hidden="true" />
+                            <div class="div-wrapper" id="notificationBadge"><span class="text-wrapper-8" id="notificationCount">3</span></div>
+                        </div>
+                        <div class="notification-panel" id="notificationPanel" aria-label="Panel de notificaciones">
+                            <div class="notification-panel-header">
+                                <div class="notification-panel-title">Notificaciones <span id="notificationTotal">(3)</span></div>
+                                <div class="notification-panel-actions">
+                                    <button type="button" class="notification-mark-all" id="notificationMarkAll">Marcar leídas</button>
+                                    <button type="button" class="notification-delete-all" id="notificationDeleteAll">Eliminar todas</button>
+                                </div>
+                            </div>
+                            <div class="notification-list" id="notificationList">
+                                <div class="notification-item unread" data-notification-id="1" data-created-at="2026-08-27T09:00:00"><div class="notification-icon project">T</div><div class="notification-content"><div class="notification-title">Nueva tarea asignada</div><div class="notification-description">Se asignó una nueva tarea en TechNova.</div><div class="notification-meta"><div class="notification-time">Recientemente</div><button type="button" class="notification-delete" aria-label="Eliminar notificación">Eliminar</button></div></div><span class="notification-status"></span></div>
+                                <div class="notification-item unread" data-notification-id="2" data-created-at="2026-08-27T08:30:00"><div class="notification-icon alert">!</div><div class="notification-content"><div class="notification-title">Fecha límite próxima</div><div class="notification-description">Una tarea requiere seguimiento del equipo.</div><div class="notification-meta"><div class="notification-time">Hace 30 minutos</div><button type="button" class="notification-delete" aria-label="Eliminar notificación">Eliminar</button></div></div><span class="notification-status"></span></div>
+                                <div class="notification-item unread" data-notification-id="3" data-created-at="2026-08-27T08:00:00"><div class="notification-icon system">S</div><div class="notification-content"><div class="notification-title">Recordatorio del sistema</div><div class="notification-description">Revisa las tareas pendientes del día.</div><div class="notification-meta"><div class="notification-time">Hace 1 hora</div><button type="button" class="notification-delete" aria-label="Eliminar notificación">Eliminar</button></div></div><span class="notification-status"></span></div>
+                            </div>
+                            <div class="notification-panel-footer"><button type="button" class="notification-view-all">Ver todas las notificaciones</button></div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <section class="tasks-board-toolbar glass-reactive" aria-label="Controles del tablero">
+                <label><span class="sr-only">Buscar tareas</span><input type="search" placeholder="Buscar por tarea, proyecto o responsable" data-board-search /></label>
+                <select data-board-priority aria-label="Filtrar por prioridad"><option value="all">Todas las prioridades</option><option value="high">Alta</option><option value="medium">Media</option><option value="low">Baja</option></select>
+                <p data-board-summary aria-live="polite">6 tareas en el tablero</p>
+            </section>
+            <section class="tasks-kanban" data-tasks-board aria-label="Tablero Kanban">
+                <section class="kanban-column" data-board-status="pending"><header><div><span class="kanban-status-dot"></span><h2>Pendientes</h2></div><strong data-board-count>1</strong></header><div class="kanban-cards" data-board-dropzone></div><button type="button" data-board-add="pending">＋ Agregar tarea</button></section>
+                <section class="kanban-column" data-board-status="in-progress"><header><div><span class="kanban-status-dot"></span><h2>En progreso</h2></div><strong data-board-count>3</strong></header><div class="kanban-cards" data-board-dropzone></div><button type="button" data-board-add="in-progress">＋ Agregar tarea</button></section>
+                <section class="kanban-column" data-board-status="review"><header><div><span class="kanban-status-dot"></span><h2>En revisión</h2></div><strong data-board-count>1</strong></header><div class="kanban-cards" data-board-dropzone></div><button type="button" data-board-add="review">＋ Agregar tarea</button></section>
+                <section class="kanban-column" data-board-status="completed"><header><div><span class="kanban-status-dot"></span><h2>Completadas</h2></div><strong data-board-count>1</strong></header><div class="kanban-cards" data-board-dropzone></div><button type="button" data-board-add="completed">＋ Agregar tarea</button></section>
+            </section>
+        </main>
+
+        <button class="task-editor-backdrop" type="button" data-board-editor-close aria-label="Cerrar formulario de tarea" hidden></button>
+        <section class="task-editor" data-board-editor role="dialog" aria-modal="true" aria-labelledby="board-task-editor-title" hidden>
+            <header class="task-editor-header"><div><span>Gestión de tarea</span><h2 id="board-task-editor-title">Nueva tarea</h2></div><button type="button" data-board-editor-close aria-label="Cerrar formulario">×</button></header>
+            <form data-board-editor-form>
+                <input type="hidden" name="taskId" />
+                <label><span>Título</span><input name="title" required maxlength="120" autocomplete="off" /></label>
+                <label><span>Descripción</span><textarea name="description" rows="3" maxlength="500"></textarea></label>
+                <div class="task-editor-grid">
+                    <label><span>Estado</span><select name="status"><option value="pending">Pendiente</option><option value="in-progress">En progreso</option><option value="review">En revisión</option><option value="blocked">Bloqueada</option><option value="completed">Completada</option></select></label>
+                    <label><span>Prioridad</span><select name="priority"><option value="high">Alta</option><option value="medium" selected>Media</option><option value="low">Baja</option></select></label>
+                    <label><span>Responsable</span><select name="assignee"><option value="josue-islas">Josué Islas</option><option value="daira-alvarez">Daira Álvarez</option><option value="paola-rivera">Paola Rivera</option><option value="angela-guerrero">Ángela Guerrero</option></select></label>
+                    <label><span>Fecha límite</span><input name="dueDate" type="date" /></label>
+                </div>
+                <p class="task-editor-message" data-board-editor-message aria-live="polite"></p>
+                <footer><button type="button" data-board-editor-close>Cancelar</button><button type="submit" data-board-editor-submit>Crear tarea</button></footer>
+            </form>
+        </section>
+
+        <button class="task-detail-backdrop" type="button" data-board-detail-close aria-label="Cerrar detalle" hidden></button>
+        <aside class="task-detail-drawer" data-board-detail role="dialog" aria-modal="true" aria-labelledby="board-detail-title" hidden>
+            <header class="task-detail-header"><div><span data-board-detail-project>Proyecto</span><h2 id="board-detail-title" data-board-detail-title>Tarea</h2></div><button type="button" data-board-detail-close aria-label="Cerrar detalle">×</button></header>
+            <div class="task-detail-actions"><button type="button" data-board-complete>✓ Marcar completada</button><a href="tareas.html" data-board-open-list>☷ Abrir en lista</a></div>
+            <div class="task-detail-scroll">
+                <section class="task-detail-section task-detail-summary"><div><span>Responsable</span><strong data-board-detail-assignee></strong></div><div><span>Prioridad</span><strong class="task-priority" data-board-detail-priority></strong></div><div><span>Estado</span><strong data-board-detail-status data-task-detail-status></strong></div><div><span>Vencimiento</span><strong data-board-detail-due></strong></div></section>
+                <section class="task-detail-section"><header><h3>Descripción</h3></header><p data-board-detail-description></p></section>
+                <section class="task-detail-section"><header><h3>Progreso</h3><strong data-board-detail-progress-value></strong></header><div class="task-detail-progress"><span data-board-detail-progress></span></div></section>
+                <section class="task-detail-section"><header><h3>Subtareas</h3><span>Fallback local</span></header><div class="task-detail-subtasks" data-board-subtasks></div></section>
+                <section class="task-detail-section"><header><h3>Actividad reciente</h3></header><ol class="task-detail-activity"><li><span></span><p><strong>Disponible en tablero</strong><small>Los movimientos se sincronizarán con el backend.</small></p></li></ol></section>
+            </div>
+        </aside>
+    </div>
+    <script src="assets/vendor/gsap-3.12.5.min.js"></script>
+    <script src="js/components/technova-navbar.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/pages/tasks-api.js?v=1"></script>
+    <script src="js/pages/tasks-board.js"></script>
+    <script src="js/pages/tasks-entry.js"></script>
+</body>
+</html>

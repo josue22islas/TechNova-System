@@ -1,0 +1,210 @@
+/* Modulo: Estructura del encabezado. Orden preservado desde el CSS original. */
+/* GUÍA: layout y tipografía base del encabezado Dashboard; controles interactivos viven en controls.css y notifications/. */
+
+.dashboard .header {
+  flex-direction: column;
+  width: 86.88%;
+  justify-content: center;
+  gap: 25px;
+  padding: 0px 20px;
+  position: absolute;
+  top: -2px;
+  left: 16.11%;
+  display: flex;
+  align-items: center;
+}
+
+.dashboard .row-3 {
+  display: flex;
+  height: 100px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 30px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  border-radius: 12px;
+  backdrop-filter: blur(2px) brightness(100%) saturate(100%);
+  -webkit-backdrop-filter: blur(2px) brightness(100%) saturate(100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 1px 0 0 rgba(255, 255, 255, 0.32),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.13),
+    inset -1px 0 1px rgba(0, 0, 0, 0.11);
+  background: linear-gradient(
+    180deg,
+    rgba(13, 4, 255, 0.2) 0%,
+    rgba(10, 23, 147, 0.09) 36%,
+    rgba(7, 37, 65, 0) 100%
+  );
+}
+
+.dashboard .column-4 {
+  width: 259px;
+  align-items: flex-start;
+  gap: 8px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dashboard .text-wrapper-5 {
+  position: relative;
+  align-self: stretch;
+  margin-top: -1px;
+  font-family: "Arial-Bold", Helvetica;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 32px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.dashboard .p {
+  position: relative;
+  align-self: stretch;
+  font-family: "Arial-Regular", Helvetica;
+  font-weight: 400;
+  color: #ffffff;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.dashboard .row-4 {
+  display: flex;
+  max-width: 494px;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  flex: 1;
+  flex-grow: 1;
+}
+
+.dashboard .row-5 {
+  display: flex;
+  max-width: 255px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 10px 18px;
+  position: relative;
+  flex: 1;
+  flex-grow: 1;
+  border-radius: 7px;
+  border: 1px solid;
+  border-color: #404040;
+}
+
+.dashboard .text-wrapper-6 {
+  position: relative;
+  flex: 1;
+  font-family: "Arial-Regular", Helvetica;
+  font-weight: 400;
+  color: #ffffff;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.dashboard .img-2 {
+  position: relative;
+  width: 21px;
+  height: 21px;
+  aspect-ratio: 1;
+}
+
+.dashboard .row-6 {
+  display: flex;
+  max-width: 150px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 10px 16px;
+  position: relative;
+  flex: 1;
+  flex-grow: 1;
+  background-color: #2b59e1;
+  border-radius: 7px;
+}
+
+.dashboard a.row-6 {
+  color: inherit;
+  text-decoration: none;
+}
+
+.dashboard .text-wrapper-7 {
+  position: relative;
+  flex: 1;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: #ffffff;
+  font-size: 12px;
+  letter-spacing: 0;
+  line-height: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.dashboard .row-7 {
+  display: flex;
+  max-width: 47px;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 10px;
+  position: relative;
+  flex: 1;
+  flex-grow: 1;
+  border-radius: 7px;
+  border: 1px solid;
+  border-color: #404040;
+}
+
+.dashboard .image-2 {
+  position: relative;
+  width: 25px;
+  height: 25px;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.dashboard .div-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 3.5px 6px;
+  position: absolute;
+  top: 1px;
+  right: 0;
+  background-color: #ee4c45;
+  border-radius: 360px;
+}
+
+.dashboard .text-wrapper-8 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  margin-top: -1px;
+  font-family: "Inter", Helvetica;
+  color: #00000033;
+  font-size: 10px;
+  text-align: center;
+  white-space: nowrap;
+  position: relative;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+}
+

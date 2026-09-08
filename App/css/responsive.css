@@ -1,0 +1,954 @@
+/* Modulo: Responsive estructural y solapamiento. Orden preservado desde el CSS original. */
+/* GUÍA: overrides globales; conservar la cascada y probar 1280, 1024, 640 y 390 px después de cambios estructurales. */
+
+/* Responsive layout overrides */
+.dashboard {
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.dashboard .navbar {
+  width: 232px;
+  min-width: 232px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.dashboard .header {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: calc(100% - 232px);
+  margin-left: 232px;
+  min-height: 100vh;
+  padding: 16px 20px 24px;
+}
+
+.dashboard .div-3 {
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.dashboard .frame {
+  flex: 1 1 640px;
+  min-width: 0;
+}
+
+.dashboard .frame-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  gap: 19px;
+  width: 100%;
+}
+
+.dashboard .group-cards {
+  flex: 1 1 360px;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.dashboard .card-3,
+.dashboard .card-4 {
+  left: 0;
+  width: 100%;
+}
+
+.dashboard .card-3 {
+  z-index: 1;
+}
+
+.dashboard .card-4 {
+  z-index: 2;
+}
+
+.dashboard .tooltip {
+  width: min(100%, 336px);
+}
+
+.dashboard .grafica {
+  height: auto;
+  min-height: 495px;
+}
+
+.dashboard .column-5 {
+  height: auto;
+  min-height: 454px;
+}
+
+@media (min-width: 1025px) {
+  .dashboard .header {
+    width: calc(100% - 232px);
+    margin-left: 232px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .dashboard .navbar {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    z-index: 20;
+    padding: 0;
+  }
+
+  .dashboard .menu-toggle {
+    display: inline-flex;
+  }
+
+  .dashboard .navbar .column,
+  .dashboard .navbar .column-2 {
+    display: none;
+  }
+
+  .dashboard .navbar.menu-open .column {
+    display: flex;
+  }
+
+  .dashboard .navbar.menu-open .column-2 {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+  }
+
+  .dashboard .header {
+    width: 100%;
+    margin-left: 0;
+    min-height: 0;
+    padding: 14px 14px 20px;
+  }
+
+  .dashboard .div {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .dashboard .row-3 {
+    height: auto;
+    min-height: 100px;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .dashboard .row-4 {
+    max-width: 100%;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .dashboard .row-14 {
+    padding: 0 20px;
+  }
+
+  .dashboard .switch-container-4 {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard .navbar {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    min-width: 0;
+    height: auto;
+    z-index: 20;
+    padding: 0;
+  }
+
+  .dashboard .menu-toggle {
+    display: inline-flex;
+  }
+
+  .dashboard .navbar .column,
+  .dashboard .navbar .column-2 {
+    display: none;
+  }
+
+  .dashboard .navbar.menu-open .column,
+  .dashboard .navbar.menu-open .column-2 {
+    display: flex;
+  }
+
+  .dashboard .header {
+    width: 100%;
+    margin-left: 0;
+    min-height: 0;
+    padding: 12px;
+    gap: 16px;
+  }
+
+  .dashboard .column {
+    padding: 8px;
+  }
+
+  .dashboard .div {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+
+  .dashboard .column-2 {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  .dashboard .row {
+    justify-content: flex-start;
+  }
+
+  .dashboard .row-2 {
+    padding: 10px;
+  }
+
+  .dashboard .row-3 {
+    height: auto;
+    min-height: 100px;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .dashboard .column-4 {
+    width: 100%;
+  }
+
+  .dashboard .text-wrapper-5 {
+    font-size: 26px;
+  }
+
+  .dashboard .p {
+    font-size: 14px;
+  }
+
+  .dashboard .row-4 {
+    width: 100%;
+    max-width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .dashboard .row-5,
+  .dashboard .row-6,
+  .dashboard .row-7 {
+    max-width: none;
+    width: 100%;
+    flex: 1 1 100%;
+  }
+
+  .dashboard .frame-2 {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .dashboard .card,
+  .dashboard .card-2 {
+    height: 190px;
+  }
+
+  .dashboard .grafica {
+    padding: 0 10px 20px;
+    min-height: 420px;
+  }
+
+  .dashboard .row-8 {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .dashboard .row-9 {
+    padding: 0;
+  }
+
+  .dashboard .row-14 {
+    padding: 0;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .dashboard .text-wrapper-13,
+  .dashboard .text-wrapper-14,
+  .dashboard .text-wrapper-16 {
+    font-size: 13px;
+  }
+
+  .dashboard .card-3,
+  .dashboard .card-4 {
+    padding: 12px;
+  }
+
+  .dashboard .switch-container-4 {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+}
+/* ==========================================================
+   AJUSTES RESPONSIVE TECNOVA
+   Mantiene el aspecto original y corrige altura, flujo y scroll.
+   Estas reglas deben permanecer al final del archivo.
+   ========================================================== */
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  background: #020120;
+}
+
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.dashboard {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+  height: auto;
+  overflow: visible;
+  position: relative;
+  background-color: #020120;
+}
+
+/* Barra lateral fija en escritorio, con scroll propio si no cabe. */
+.dashboard .navbar {
+  width: 232px;
+  min-width: 232px;
+  height: 100dvh;
+  min-height: 100vh;
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 1000;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* Contenido principal dentro del flujo normal del documento. */
+.dashboard .header {
+  display: flex;
+  position: relative;
+  top: auto;
+  left: auto;
+  width: calc(100% - 232px);
+  min-width: 0;
+  min-height: 100vh;
+  height: auto;
+  margin-left: 232px;
+  justify-content: flex-start;
+  padding: 20px 20px 32px;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+/* Encabezado superior: permite crecer cuando los controles saltan de línea. */
+.dashboard .row-3 {
+  height: auto;
+  min-height: 100px;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.dashboard .column-4,
+.dashboard .row-4,
+.dashboard .row-5,
+.dashboard .row-6,
+.dashboard .row-7 {
+  min-width: 0;
+  
+}
+
+.dashboard .row-4 {
+  width: 100%;
+  max-width: 494px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* Área principal: las columnas bajan de forma natural sin quedar recortadas. */
+.dashboard .div-3 {
+  align-items: stretch;
+  flex-wrap: wrap;
+  overflow: visible;
+}
+
+.dashboard .frame {
+  flex: 1 1 640px;
+  min-width: 0;
+}
+
+.dashboard .frame-2 {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(130px, 1fr));
+  width: 100%;
+  min-width: 0;
+  gap: 19px;
+}
+
+.dashboard .card,
+.dashboard .card-2 {
+  width: 100%;
+  min-width: 0;
+  height: 206px;
+}
+
+/* La gráfica conserva su altura visual, pero puede crecer si lo necesita. */
+.dashboard .grafica {
+  height: auto;
+  min-height: 523px;
+  overflow: hidden;
+}
+
+.dashboard .column-wrapper {
+  min-height: 454px;
+}
+
+.dashboard .column-5 {
+  height: auto;
+  min-height: 454px;
+}
+
+/* Panel derecho: elimina posicionamiento absoluto para que cuente en la altura. */
+.dashboard .group-cards {
+  display: flex;
+  flex: 1 1 360px;
+  flex-direction: column;
+  align-self: flex-start;
+  width: min(100%, 444px);
+  max-width: 444px;
+  height: auto;
+  min-height: 0;
+  gap: 24px;
+  position: relative;
+}
+
+.dashboard .card-3,
+.dashboard .card-4 {
+  position: relative;
+  top: auto;
+  left: auto;
+  width: 100%;
+  max-width: 444px;
+  height: auto;
+  box-sizing: border-box;
+}
+
+.dashboard .card-3 {
+  min-height: 399px;
+}
+
+.dashboard .card-4 {
+  min-height: 449px;
+}
+
+/* Evita que imágenes o SVG generen desbordamiento horizontal. */
+.dashboard img,
+.dashboard svg {
+  max-width: 100%;
+}
+
+/* Laptops y pantallas medianas. */
+@media (max-width: 1280px) {
+  .dashboard .frame-2 {
+    grid-template-columns: repeat(3, minmax(150px, 1fr));
+  }
+
+  .dashboard .group-cards {
+    width: 100%;
+    max-width: none;
+  }
+
+  .dashboard .card-3,
+  .dashboard .card-4 {
+    max-width: none;
+  }
+}
+
+/* Tablet: menú lateral plegable y contenido a ancho completo. */
+@media (max-width: 1024px) {
+  .dashboard .navbar {
+    width: 250px;
+    min-width: 250px;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: 12px 0 30px rgba(0, 0, 0, 0.35);
+  }
+
+  .dashboard .navbar.menu-open {
+    transform: translateX(0);
+  }
+
+  .dashboard .menu-toggle {
+    display: flex;
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    z-index: 1100;
+  }
+
+  .dashboard .header {
+    width: 100%;
+    margin-left: 0;
+    padding: 76px 20px 28px;
+  }
+
+  .dashboard .row-3 {
+    align-items: flex-start;
+    
+  }
+
+  .dashboard .column-4 {
+    width: 100%;
+  }
+
+  .dashboard .row-4 {
+    max-width: none;
+    justify-content: flex-start;
+  }
+
+  .dashboard .frame {
+    flex-basis: 100%;
+  }
+
+  .dashboard .frame-2 {
+    grid-template-columns: repeat(2, minmax(150px, 1fr));
+  }
+
+  .dashboard .group-cards {
+    flex-basis: 100%;
+  }
+}
+
+/* Móvil. */
+@media (max-width: 640px) {
+  .dashboard .header {
+    gap: 18px;
+    padding: 68px 12px 24px;
+  }
+
+  .dashboard .row-3 {
+    padding: 16px;
+  }
+
+  .dashboard .text-wrapper-5 {
+    font-size: 27px;
+  }
+
+  .dashboard .row-4 {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    width: 100%;
+  }
+
+  .dashboard .row-5 {
+    grid-column: 1 / -1;
+    width: 100%;
+    max-width: none;
+  }
+
+  .dashboard .row-6 {
+    width: 100%;
+    max-width: none;
+  }
+
+  .dashboard .row-7 {
+    width: 47px;
+  }
+
+  .dashboard .frame-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard .card,
+  .dashboard .card-2 {
+    min-height: 190px;
+    height: auto;
+  }
+
+  .dashboard .grafica {
+    min-height: 440px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .dashboard .row-9 {
+    padding-left: 12px;
+  }
+
+  .dashboard .row-14 {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .dashboard .card-3,
+  .dashboard .card-4 {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .dashboard .tooltip {
+    max-width: 100%;
+    transform-origin: top center;
+  }
+}
+
+/* Teléfonos muy estrechos: reduce la tarjeta bancaria sin alterar su diseño. */
+@media (max-width: 390px) {
+  .dashboard .tooltip {
+    transform: scale(0.88);
+    margin-bottom: -28px;
+  }
+
+  .dashboard .switch-container-4 {
+    gap: 16px;
+  }
+}
+
+/* =========================================================
+   FIX NAVBAR RESPONSIVE
+   El botón hamburguesa está dentro de .navbar. Por eso no se
+   debe desplazar todo el navbar fuera de la pantalla.
+   ========================================================= */
+@media (max-width: 1024px) {
+  .dashboard .navbar {
+    /* Estado cerrado: conserva visible únicamente el botón. */
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: auto;
+    bottom: auto;
+    width: 64px;
+    min-width: 64px;
+    height: 64px;
+    min-height: 64px;
+    padding: 0;
+    overflow: visible;
+    transform: none;
+    transition:
+      width 0.25s ease,
+      height 0.25s ease,
+      background-color 0.25s ease;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    z-index: 1000;
+  }
+
+  .dashboard .menu-toggle {
+    display: inline-flex;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    z-index: 1200;
+  }
+
+  .dashboard .navbar .column,
+  .dashboard .navbar .column-2 {
+    display: none;
+  }
+
+  .dashboard .navbar.menu-open {
+    width: min(280px, 86vw);
+    min-width: 0;
+    height: 100dvh;
+    min-height: 100vh;
+    padding-top: 64px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: linear-gradient(
+      98deg,
+      rgba(4, 4, 33, 0.98) 0%,
+      rgba(9, 12, 56, 0.96) 23%,
+      rgba(10, 22, 149, 0.96) 100%
+    );
+    box-shadow: 12px 0 30px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(15.5px);
+    -webkit-backdrop-filter: blur(15.5px);
+  }
+
+  .dashboard .navbar.menu-open .column,
+  .dashboard .navbar.menu-open .column-2 {
+    display: flex;
+    width: 100%;
+  }
+
+  .dashboard .navbar.menu-open .column-2 {
+    margin-top: auto;
+    flex-direction: column;
+  }
+
+  .dashboard .header {
+    width: 100%;
+    margin-left: 0;
+    padding-top: 76px;
+  }
+
+  .dashboard .row-3 {
+    padding-top: 22px;
+    padding-right: 30px;
+    padding-bottom: 22px;
+    padding-left: 30px;
+  }
+
+  .dashboard .text-wrapper-5 {
+    max-width: 100%;
+    font-size: clamp(24px, 3.2vw, 26px);
+    line-height: 1.15;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard .header {
+    padding-top: 68px;
+  }
+
+  .dashboard .navbar.menu-open {
+    width: min(300px, 92vw);
+  }
+
+  .dashboard .row-3 {
+    padding-top: 20px;
+    padding-right: 16px;
+    padding-bottom: 20px;
+    padding-left: 16px;
+  }
+
+  .dashboard .text-wrapper-5 {
+    font-size: clamp(22px, 6.2vw, 24px);
+  }
+}
+
+/* =========================================================
+   FIX TARJETAS DEL PANEL DERECHO
+   Evita que "Fondos de inversión" se monte sobre
+   "Herramientas de desarrollo" al apilarse verticalmente.
+   ========================================================= */
+.dashboard .group-cards {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 28px;
+  height: auto;
+  overflow: visible;
+}
+
+.dashboard .card-3,
+.dashboard .card-4 {
+  position: relative;
+  inset: auto;
+  flex: 0 0 auto;
+  width: 100%;
+  height: auto;
+  margin: 0;
+}
+
+/* La tarjeta bancaria usa elementos internos absolutos;
+   esta altura reserva el espacio real que necesitan. */
+.dashboard .card-3 {
+  min-height: 500px;
+  justify-content: flex-start;
+  padding-top: 34px;
+  padding-bottom: 34px;
+}
+
+.dashboard .card-3 .tooltip {
+  flex: 0 0 auto;
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+.dashboard .card-4 {
+  min-height: 449px;
+}
+
+/* Cuando ambas tarjetas ocupan toda la fila, se reserva un
+   poco más de altura para la tarjeta bancaria. */
+@media (max-width: 1280px) {
+  .dashboard .card-3 {
+    min-height: 540px;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard .group-cards {
+    gap: 22px;
+  }
+
+  .dashboard .card-3 {
+    min-height: 500px;
+    padding-top: 28px;
+    padding-bottom: 28px;
+  }
+
+  .dashboard .card-3 .tooltip {
+    margin-top: 14px;
+  }
+}
+
+@media (max-width: 390px) {
+  .dashboard .card-3 {
+    min-height: 450px;
+  }
+
+  /* Compensa visualmente la reducción aplicada a .tooltip. */
+  .dashboard .card-3 .tooltip {
+    margin-bottom: -20px;
+  }
+}
+
+/* =========================================================
+   SUPERPOSICIÓN VISUAL INTENCIONAL DEL PANEL DERECHO
+   Herramientas de desarrollo se monta sobre la parte baja
+   de Fondos de inversión, manteniendo el flujo responsive.
+   ========================================================= */
+.dashboard .group-cards {
+  --cards-overlap: clamp(105px, 9vw, 145px);
+  gap: 0;
+  isolation: isolate;
+  overflow: visible;
+}
+
+.dashboard .card-3 {
+  position: relative;
+  z-index: 1;
+  min-height: 565px;
+  padding-bottom: calc(34px + var(--cards-overlap));
+  overflow: visible;
+}
+
+.dashboard .card-4 {
+  position: relative;
+  z-index: 3;
+  margin-top: calc(-1 * var(--cards-overlap));
+  min-height: 449px;
+  background-color: rgba(3, 4, 50, 0.92);
+  backdrop-filter: blur(9px) brightness(100%) saturate(108%);
+  -webkit-backdrop-filter: blur(9px) brightness(100%) saturate(108%);
+}
+
+/* El contenido de la tarjeta superior siempre queda visible. */
+.dashboard .card-4 > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 1280px) {
+  .dashboard .group-cards {
+    --cards-overlap: clamp(95px, 12vw, 130px);
+  }
+
+  .dashboard .card-3 {
+    min-height: 550px;
+    padding-bottom: calc(30px + var(--cards-overlap));
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard .group-cards {
+    --cards-overlap: 86px;
+  }
+
+  .dashboard .card-3 {
+    min-height: 500px;
+    padding-bottom: calc(24px + var(--cards-overlap));
+  }
+
+  .dashboard .card-4 {
+    border-radius: 20px 20px 12px 12px;
+  }
+}
+
+@media (max-width: 390px) {
+  .dashboard .group-cards {
+    --cards-overlap: 70px;
+  }
+
+  .dashboard .card-3 {
+    min-height: 465px;
+  }
+}
+
+/* =========================================================
+   AJUSTE FINAL: SUPERPOSICIÓN HASTA LA TARJETA BANCARIA
+   El desplazamiento ya no aumenta la altura de card-3.
+   ========================================================= */
+.dashboard .group-cards {
+  --cards-overlap: clamp(190px, 18vw, 220px);
+  gap: 0;
+  overflow: visible;
+  isolation: isolate;
+}
+
+.dashboard .card-3 {
+  min-height: 500px;
+  padding-top: 34px;
+  padding-bottom: 34px;
+  overflow: visible;
+  z-index: 1;
+}
+
+.dashboard .card-4 {
+  position: relative;
+  z-index: 5;
+  margin-top: calc(-1 * var(--cards-overlap));
+  transform: translateY(0);
+}
+
+@media (max-width: 1280px) {
+  .dashboard .group-cards {
+    --cards-overlap: clamp(185px, 22vw, 245px);
+  }
+
+  .dashboard .card-3 {
+    min-height: 500px;
+    padding-bottom: 30px;
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard .group-cards {
+    --cards-overlap: 175px;
+  }
+
+  .dashboard .card-3 {
+    min-height: 470px;
+    padding-bottom: 24px;
+  }
+}
+
+@media (max-width: 390px) {
+  .dashboard .group-cards {
+    --cards-overlap: 145px;
+  }
+
+  .dashboard .card-3 {
+    min-height: 440px;
+  }
+}
+
+
+
+

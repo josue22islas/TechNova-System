@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <meta charset="utf-8" />
+    <link href="css/globals.css" rel="stylesheet" />
+    <!-- El orden conserva exactamente la cascada del CSS original. -->
+    <link href="css/layout/base.css" rel="stylesheet" />
+    <link href="css/navbar/structure.css" rel="stylesheet" />
+    <link href="css/header/base.css" rel="stylesheet" />
+    <link href="css/layout/content.css" rel="stylesheet" />
+    <link href="css/cards/base.css" rel="stylesheet" />
+    <link href="css/charts/base.css" rel="stylesheet" />
+    <link href="css/investments/base.css" rel="stylesheet" />
+    <link href="css/expenses/base.css" rel="stylesheet" />
+    <link href="css/charts/cost-base.css" rel="stylesheet" />
+    <link href="css/navbar/toggle.css" rel="stylesheet" />
+    <link href="css/responsive.css" rel="stylesheet" />
+    <link href="css/effects.css" rel="stylesheet" />
+    <link href="css/charts/cost-chart.css" rel="stylesheet" />
+    <link href="css/navbar/base.css" rel="stylesheet" />
+    <link href="css/notifications/button.css" rel="stylesheet" />
+    <link href="css/header/controls.css" rel="stylesheet" />
+    <link href="css/cards/kpi.css" rel="stylesheet" />
+    <link href="css/navbar/items.css" rel="stylesheet" />
+    <link href="css/cards/responsive.css" rel="stylesheet" />
+    <link href="css/charts/financial-chart.css" rel="stylesheet" />
+    <link href="css/expenses/recurring.css" rel="stylesheet" />
+    <link href="css/notifications/panel.css" rel="stylesheet" />
+    <link href="css/investments/manager.css" rel="stylesheet" />
+    <link href="css/intro.css" rel="stylesheet" />
+    <title>Admin-Technova - Dashboard</title>
+    <meta content="Admin-Technova - Dashboard" property="og:title" />
+    <meta content="website" property="og:type" />
+    <meta content="assets/img/technova-og.png" property="og:image" />
+    <meta content="Admin-Technova - Dashboard" property="og:image:alt" />
+    <meta content="summary_large_image" name="twitter:card" />
+   
+    
+</head>
+
+<body>
+    <!--
+        GUÍA DE LA VISTA DASHBOARD
+        1. .navbar: componente compartido; Dashboard usa aria-current="page".
+        2. .header: título, periodos, nuevo proyecto y notificaciones.
+        3. Contenido: KPI, resumen financiero, inversiones, gastos y costos.
+        4. Los atributos data-kpi-* conectan el HTML con dashboard-ui.js.
+        5. data-dashboard-api vacío conserva los datos estáticos y evita Fetch.
+        6. Mantener el orden de scripts al final: Chart.js/GSAP antes de módulos.
+        Los comentarios describen contratos; la lógica permanece en JavaScript.
+    -->
+    <!--
+        Cuando exista el backend, coloca su ruta en data-dashboard-api.
+        Ejemplo: data-dashboard-api="../api/dashboard/summary.php"
+    -->
+    <div class="dashboard" data-dashboard-api="">
+        <technova-navbar active="dashboard">
+            <noscript>
+                <nav aria-label="Navegación principal">
+                    <a href="index.html">Dashboard</a>
+                    <a href="proyectos.html">Proyectos</a>
+                    <a href="tareas.html">Tareas</a>
+                </nav>
+            </noscript>
+        </technova-navbar>
+        <div class="header">
+            <div class="row-3">
+                <div class="column-4">
+                    <div class="text-wrapper-5">Mi dashboard</div>
+                    <p class="p">Resumen general de tu empresa</p>
+                </div>
+                <div class="row-4">
+                   <div class="report-period-wrapper">
+
+    <div
+        class="row-5 report-period-button"
+        id="reportPeriodButton"
+        role="button"
+        tabindex="0"
+        aria-expanded="false"
+    >
+
+        <img
+            class="image"
+            src="assets/img/image-12@2x.png"
+        />
+
+        <p
+            class="text-wrapper-6"
+            id="reportPeriodText"
+        >
+                Cargando periodo...
+        </p>
+
+        <img
+            class="img-2 report-period-arrow"
+            src="assets/img/text-input-1.svg"
+        />
+
+    </div>
+
+
+    <div
+        class="report-period-menu"
+        id="reportPeriodMenu"
+    >
+
+        <div class="report-period-header">
+
+            <button
+                class="period-nav-button"
+                id="previousMonth"
+                type="button"
+                aria-label="Mes anterior"
+            >
+                ‹
+            </button>
+
+
+            <div
+                class="report-current-month"
+                id="reportCurrentMonth"
+            >
+                Julio 2026
+            </div>
+
+
+            <button
+                class="period-nav-button"
+                id="nextMonth"
+                type="button"
+                aria-label="Mes siguiente"
+            >
+                ›
+            </button>
+
+        </div>
+
+
+        <div
+            class="report-month-list"
+            id="reportMonthList"
+        ></div>
+
+    </div>
+
+</div>
+                    <a class="row-6" href="#">
+                        <img class="image" src="assets/img/image-13@2x.png" />
+                        <div class="text-wrapper-7">Nuevo proyecto</div>
+                    </a>
+                    <div class="notification-wrapper">
+
+    <!-- BOTÓN -->
+    <div
+        class="row-7 notification-button"
+        id="notificationButton"
+        role="button"
+        tabindex="0"
+        aria-expanded="false"
+    >
+
+        <img
+            class="image-2"
+            src="assets/img/image-14@2x.png"
+        />
+
+        <div
+            class="div-wrapper"
+            id="notificationBadge"
+        >
+            <div
+                class="text-wrapper-8"
+                id="notificationCount"
+            >
+                3
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- VENTANA DE NOTIFICACIONES -->
+    <div
+        class="notification-panel"
+        id="notificationPanel"
+    >
+
+        <!-- HEADER -->
+
+       <div class="notification-panel-header">
+
+    <div class="notification-panel-title">
+
+        Notificaciones
+
+        <span id="notificationTotal">
+            (0)
+        </span>
+
+    </div>
+
+
+    <div class="notification-panel-actions">
+
+        <button
+            type="button"
+            class="notification-mark-all"
+            id="notificationMarkAll"
+        >
+            Marcar leídas
+        </button>
+
+
+        <button
+            type="button"
+            class="notification-delete-all"
+            id="notificationDeleteAll"
+        >
+            Eliminar todas
+        </button>
+
+    </div>
+
+</div>
+
+
+        <!-- LISTA -->
+
+       <div
+    class="notification-list"
+    id="notificationList"
+>
+
+    <!-- =========================================
+         NOTIFICACIÓN 1
+         HOY
+         ========================================= -->
+
+    <div
+        class="notification-item unread"
+        data-notification-id="1"
+        data-created-at="2026-08-10T18:45:00"
+    >
+
+        <div class="notification-icon project">
+            P
+        </div>
+
+
+        <div class="notification-content">
+
+            <div class="notification-title">
+                Nuevo proyecto creado
+            </div>
+
+            <div class="notification-description">
+                Se registró el proyecto TechNova Energy.
+            </div>
+
+            <div class="notification-meta">
+
+                <div class="notification-time">
+                    Hace 5 minutos
+                </div>
+
+                <button
+                    type="button"
+                    class="notification-delete"
+                    aria-label="Eliminar notificación"
+                >
+                    Eliminar
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <span class="notification-status"></span>
+
+    </div>
+
+
+    <!-- =========================================
+         NOTIFICACIÓN 2
+         HOY
+         ========================================= -->
+
+    <div
+        class="notification-item unread"
+        data-notification-id="2"
+        data-created-at="2026-08-10T18:18:00"
+    >
+
+        <div class="notification-icon payment">
+            $
+        </div>
+
+
+        <div class="notification-content">
+
+            <div class="notification-title">
+                Nuevo ingreso registrado
+            </div>
+
+            <div class="notification-description">
+                Se agregó un ingreso de $25,000.00.
+            </div>
+
+            <div class="notification-meta">
+
+                <div class="notification-time">
+                    Hace 32 minutos
+                </div>
+
+                <button
+                    type="button"
+                    class="notification-delete"
+                    aria-label="Eliminar notificación"
+                >
+                    Eliminar
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <span class="notification-status"></span>
+
+    </div>
+
+
+    <!-- =========================================
+         NOTIFICACIÓN 3
+         AYER
+         ========================================= -->
+
+    <div
+        class="notification-item unread"
+        data-notification-id="3"
+        data-created-at="2026-08-09T17:30:00"
+    >
+
+        <div class="notification-icon alert">
+            !
+        </div>
+
+
+        <div class="notification-content">
+
+            <div class="notification-title">
+                Gasto recurrente próximo
+            </div>
+
+            <div class="notification-description">
+                La suscripción de Figma se renovará próximamente.
+            </div>
+
+            <div class="notification-meta">
+
+                <div class="notification-time">
+                    Ayer
+                </div>
+
+                <button
+                    type="button"
+                    class="notification-delete"
+                    aria-label="Eliminar notificación"
+                >
+                    Eliminar
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <span class="notification-status"></span>
+
+    </div>
+
+
+    <!-- =========================================
+         NOTIFICACIÓN 4
+         AYER
+         ========================================= -->
+
+    <div
+        class="notification-item"
+        data-notification-id="4"
+        data-created-at="2026-08-09T10:15:00"
+    >
+
+        <div class="notification-icon system">
+            ✓
+        </div>
+
+
+        <div class="notification-content">
+
+            <div class="notification-title">
+                Reporte actualizado
+            </div>
+
+            <div class="notification-description">
+                El resumen financiero se actualizó correctamente.
+            </div>
+
+            <div class="notification-meta">
+
+                <div class="notification-time">
+                    Ayer
+                </div>
+
+                <button
+                    type="button"
+                    class="notification-delete"
+                    aria-label="Eliminar notificación"
+                >
+                    Eliminar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         NOTIFICACIÓN 5
+         ESTA SEMANA
+         ========================================= -->
+
+    <div
+        class="notification-item"
+        data-notification-id="5"
+        data-created-at="2026-08-06T12:00:00"
+    >
+
+        <div class="notification-icon system">
+            ✓
+        </div>
+
+
+        <div class="notification-content">
+
+            <div class="notification-title">
+                Reporte anual actualizado
+            </div>
+
+            <div class="notification-description">
+                El resumen financiero anual se actualizó correctamente.
+            </div>
+
+            <div class="notification-meta">
+
+                <div class="notification-time">
+                    Hace 4 días
+                </div>
+
+                <button
+                    type="button"
+                    class="notification-delete"
+                    aria-label="Eliminar notificación"
+                >
+                    Eliminar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+        <!-- FOOTER -->
+
+        <div class="notification-panel-footer">
+
+            <button
+                type="button"
+                class="notification-view-all"
+            >
+                Ver todas las notificaciones
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+                </div>
+            </div>
+            <div class="div-3">
+                <div class="frame">
+                    <div class="div-3">
+                        <div class="frame-2">
+                            <div class="card" data-kpi-card="projectsActive">
+                                <div class="image-wrapper">
+                                    <img class="image-3" src="assets/img/image-15@2x.png" />
+                                </div>
+                                <div class="text-input">
+                                    <p class="element-este-mes">
+                                        <span class="span" data-kpi-change="projectsActive" data-kpi-change-format="number">+2</span>
+                                        <span class="text-wrapper-9" data-kpi-period> este mes</span>
+                                    </p>
+                                </div>
+                                <div class="paragraph-container">
+                                    <div class="text-wrapper-10">Proyectos activos</div>
+                                    <div class="text-wrapper-10" data-kpi-value="projectsActive" data-kpi-prefix="" data-kpi-suffix="">6</div>
+                                </div>
+                            </div>
+                            <div class="card-2" data-kpi-card="totalRevenue">
+                                <div class="image-wrapper">
+                                    <img class="image-4" src="assets/img/image-16@2x.png" />
+                                </div>
+                                <div class="text-input">
+                                    <p class="element-este-mes">
+                                        <span class="span" data-kpi-change="totalRevenue" data-kpi-change-format="percentage">+18.2%</span>
+                                        <span class="text-wrapper-9" data-kpi-period> este mes</span>
+                                    </p>
+                                </div>
+                                <div class="paragraph-container">
+                                    <div class="text-wrapper-10">Ingresos totales</div>
+                                    <div class="text-wrapper-10" data-kpi-value="totalRevenue" data-kpi-prefix="$" data-kpi-suffix="">$899,000</div>
+                                </div>
+                            </div>
+                            <div class="card" data-kpi-card="profits">
+                                <div class="image-wrapper">
+                                    <img class="image-4" src="assets/img/image-17@2x.png" />
+                                </div>
+                                <div class="text-input">
+                                    <p class="element-este-mes">
+                                        <span class="span" data-kpi-change="profits" data-kpi-change-format="percentage">+56.2%</span>
+                                        <span class="text-wrapper-9" data-kpi-period> este mes</span>
+                                    </p>
+                                </div>
+                                <div class="paragraph-container">
+                                    <div class="text-wrapper-10">Ganancias</div>
+                                    <div class="text-wrapper-10" data-kpi-value="profits" data-kpi-prefix="$" data-kpi-suffix="">$156,456</div>
+                                </div>
+                            </div>
+                            <div class="card" data-kpi-card="hoursWorked">
+                                <div class="image-wrapper">
+                                    <img class="image-4" src="assets/img/image-18@2x.png" />
+                                </div>
+                                <div class="text-input">
+                                    <p class="element-este-mes">
+                                        <span class="span" data-kpi-change="hoursWorked" data-kpi-change-format="percentage">+8.7%</span>
+                                        <span class="text-wrapper-9" data-kpi-period> este mes</span>
+                                    </p>
+                                </div>
+                                <div class="paragraph-container">
+                                    <div class="text-wrapper-10">Horas trabajadas</div>
+                                    <div class="text-wrapper-10" data-kpi-value="hoursWorked" data-kpi-prefix="" data-kpi-suffix="h">1,345h</div>
+                                </div>
+                            </div>
+                            <div class="card" data-kpi-card="activeClients">
+                                <div class="image-wrapper">
+                                    <img class="image-4" src="assets/img/image-19@2x.png" />
+                                </div>
+                                <div class="text-input">
+                                    <p class="element-este-mes">
+                                        <span class="span" data-kpi-change="activeClients" data-kpi-change-format="number">+5</span>
+                                        <span class="text-wrapper-9" data-kpi-period> este mes</span>
+                                    </p>
+                                </div>
+                                <div class="paragraph-container">
+                                    <div class="text-wrapper-10">Clientes activos</div>
+                                    <div class="text-wrapper-10" data-kpi-value="activeClients" data-kpi-prefix="" data-kpi-suffix="">2</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grafica">
+                        <div class="column-wrapper">
+                            <div class="column-5">
+                                <div class="row-8">
+                                    <div class="row-9">
+                                        <div class="text-wrapper-11">Resumen financiero</div>
+                                    </div>
+                                   <div class="financial-period-wrapper">
+
+    <div
+        class="row-10 financial-period-button"
+        id="financialPeriodButton"
+        role="button"
+        tabindex="0"
+        aria-expanded="false"
+    >
+
+        <div
+            class="text-wrapper-12"
+            id="financialPeriodText"
+        >
+            Este año
+        </div>
+
+        <img
+            class="row-11 financial-period-arrow"
+            src="assets/img/text-input-1.svg"
+        />
+
+    </div>
+
+
+    <div
+        class="financial-period-menu"
+        id="financialPeriodMenu"
+    >
+
+        <button
+            type="button"
+            class="financial-period-option active"
+            data-period="year"
+        >
+            Este año
+        </button>
+
+        <button
+            type="button"
+            class="financial-period-option"
+            data-period="month"
+        >
+            Este mes
+        </button>
+
+        <button
+            type="button"
+            class="financial-period-option"
+            data-period="3months"
+        >
+            Últimos 3 meses
+        </button>
+
+        <button
+            type="button"
+            class="financial-period-option"
+            data-period="6months"
+        >
+            Últimos 6 meses
+        </button>
+
+        <div class="financial-period-divider"></div>
+
+        <button
+            type="button"
+            class="financial-period-option"
+            data-period="2026"
+        >
+            2026
+        </button>
+
+        <button
+            type="button"
+            class="financial-period-option"
+            data-period="2025"
+        >
+            2025
+        </button>
+
+        <button
+            type="button"
+            class="financial-period-option"
+            data-period="2024"
+        >
+            2024
+        </button>
+
+    </div>
+
+</div>
+                                </div>
+                                <div class="rating-container-wrapper">
+                                  <div class="rating-container-wrapper">
+
+    <div class="financial-chart-container">
+
+        <canvas id="financialChart"></canvas>
+
+        <!-- Línea vertical del hover -->
+        <div
+            class="financial-hover-line"
+            id="financialHoverLine"
+        ></div>
+
+        <!-- Tooltip Liquid Glass -->
+        <div
+            class="financial-tooltip"
+            id="financialTooltip"
+        >
+            <div
+                class="financial-tooltip-month"
+                id="financialTooltipMonth"
+            >
+                Enero
+            </div>
+
+            <div class="financial-tooltip-row">
+                <span class="financial-dot income"></span>
+                <span>Ingresos</span>
+                <strong id="tooltipIncome">$0 MXN</strong>
+            </div>
+
+            <div class="financial-tooltip-row">
+                <span class="financial-dot costs"></span>
+                <span>Costos</span>
+                <strong id="tooltipCosts">$0 MXN</strong>
+            </div>
+
+            <div class="financial-tooltip-row">
+                <span class="financial-dot profits"></span>
+                <span>Ganancias</span>
+                <strong id="tooltipProfits">$0 MXN</strong>
+            </div>
+        </div>
+
+        <!-- Reflejo que pasa una vez -->
+        <div
+            class="financial-chart-shine"
+            id="financialChartShine"
+        ></div>
+
+    </div>
+
+</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="group-cards">
+              <!-- ======================================================
+     FONDOS DE INVERSIÓN
+     ====================================================== -->
+
+<div class="card-3 investment-section">
+
+    <!-- ==================================================
+         HEADER
+         ================================================== -->
+
+    <div class="text-input-container investment-header">
+
+        <div class="investment-title-wrap">
+
+            <div class="text-wrapper-17">
+                Fondos de inversion
+            </div>
+
+            <span
+                class="investment-count"
+                id="investmentCount"
+            >
+                (1)
+            </span>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="investment-view-all"
+            id="investmentViewAll"
+            aria-expanded="false"
+        >
+
+            <span id="investmentViewAllText">
+                Ver todo
+            </span>
+
+            <img
+                class="img-2 investment-view-arrow"
+                src="assets/img/text-input-1.svg"
+                alt=""
+            />
+
+        </button>
+
+    </div>
+
+
+    <!-- ==================================================
+         ÁREA DE TARJETA
+         ================================================== -->
+
+    <div class="tooltip investment-wallet">
+
+        <!-- TARJETA TRASERA ORIGINAL -->
+
+        <div class="container investment-back-card">
+
+            <div class="text-input-container-2">
+
+                <div
+                    class="text-wrapper-19"
+                    id="investmentBackAmount"
+                >
+                    $11,500.00
+                </div>
+
+            </div>
+
+            <img
+                class="switch-container"
+                src="assets/img/switch-container.svg"
+                alt=""
+            />
+
+        </div>
+
+
+        <!-- ==================================================
+             TARJETA PRINCIPAL ORIGINAL
+             ================================================== -->
+
+        <div
+            class="cardbank investment-main-card"
+            id="investmentMainCard"
+            data-investment-id="1"
+        >
+
+            <img
+                class="switch-container-2"
+                src="assets/img/switch-container-1@2x.png"
+                alt=""
+            />
+
+
+            <div class="text-input-container-3">
+
+                <!-- MONTO -->
+
+                <div
+                    class="text-wrapper-20"
+                    id="investmentCardAmount"
+                >
+                    $25,000.00
+                </div>
+
+
+                <!-- NÚMERO -->
+
+                <div class="paragraph-container-2">
+
+                    <div class="text-wrapper-21">
+                        ****
+                    </div>
+
+                    <div class="text-wrapper-21">
+                        ****
+                    </div>
+
+                    <div class="text-wrapper-21">
+                        ****
+                    </div>
+
+                    <div
+                        class="element"
+                        id="investmentCardLastFour"
+                    >
+                        7223
+                    </div>
+
+                </div>
+
+
+                <!-- TIPO / VENCIMIENTO -->
+
+                <div class="paragraph-container-3">
+
+                    <div
+                        class="text-wrapper-22"
+                        id="investmentCardTypeLabel"
+                    >
+                        VISA
+                    </div>
+
+                    <div
+                        class="text-wrapper-23"
+                        id="investmentCardExpiry"
+                    >
+                        03/28
+                    </div>
+
+                </div>
+
+
+                <!-- TITULAR -->
+
+                <div class="paragraph-container-4">
+
+                    <div class="text-wrapper-24">
+                        Card Holder
+                    </div>
+
+                    <div
+                        class="text-wrapper-25"
+                        id="investmentCardHolder"
+                    >
+                        Josue Islas Alvarez
+                    </div>
+
+                </div>
+
+
+                <!-- LOGO VISA ORIGINAL -->
+
+                <img
+                    class="text-input-container-4"
+                    src="assets/img/text-input-container@2x.png"
+                    alt=""
+                />
+
+            </div>
+
+        </div>
+
+
+        <!-- ======================================================
+     TARJETAS ALTERNATIVAS
+     MASTERCARD / CUENTA / FONDO
+     ====================================================== -->
+
+
+<!-- ======================================================
+     MASTERCARD
+     DISEÑO COMPLETAMENTE NUEVO
+     ====================================================== -->
+
+<div
+    class="investment-alt-card investment-mastercard-card"
+    data-investment-card="MASTERCARD"
+>
+
+    <!-- círculos Mastercard decorativos -->
+
+    <div class="mastercard-orb mastercard-orb-red"></div>
+    <div class="mastercard-orb mastercard-orb-orange"></div>
+
+
+    <!-- cabecera -->
+
+    <div class="mastercard-header">
+
+        <div class="mastercard-brand">
+            MASTERCARD
+        </div>
+
+        <div class="mastercard-chip">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+
+
+    <!-- saldo -->
+
+    <div class="mastercard-balance-label">
+        Saldo disponible
+    </div>
+
+    <div
+        class="mastercard-balance"
+        data-investment-bind="amount"
+    >
+        $0.00
+    </div>
+
+
+    <!-- número -->
+
+    <div class="mastercard-number">
+
+        <span>••••</span>
+        <span>••••</span>
+        <span>••••</span>
+
+        <strong
+            data-investment-bind="lastFour"
+        >
+            0000
+        </strong>
+
+    </div>
+
+
+    <!-- footer -->
+
+    <div class="mastercard-footer">
+
+        <div>
+
+            <small>
+                TITULAR
+            </small>
+
+            <strong
+                data-investment-bind="holder"
+            >
+                Usuario
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <small>
+                VÁLIDA
+            </small>
+
+            <strong
+                data-investment-bind="expiry"
+            >
+                --/--
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ======================================================
+     CUENTA
+     DISEÑO TECNOLÓGICO / EMPRESARIAL
+     ====================================================== -->
+
+<div
+    class="investment-alt-card investment-account-card"
+    data-investment-card="CUENTA"
+>
+
+    <!-- decoración -->
+
+    <div class="account-grid-decoration"></div>
+
+    <div class="account-glow"></div>
+
+
+    <!-- encabezado -->
+
+    <div class="account-header">
+
+        <div class="account-icon">
+            TN
+        </div>
+
+        <div>
+
+            <small>
+                CUENTA EMPRESARIAL
+            </small>
+
+            <strong
+                data-investment-bind="name"
+            >
+                Cuenta
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <!-- saldo -->
+
+    <div class="account-balance-wrapper">
+
+        <span>
+            Fondos disponibles
+        </span>
+
+        <strong
+            data-investment-bind="amount"
+        >
+            $0.00
+        </strong>
+
+    </div>
+
+
+    <!-- línea -->
+
+    <div class="account-divider"></div>
+
+
+    <!-- footer -->
+
+    <div class="account-footer">
+
+        <div>
+
+            <span>
+                Cuenta
+            </span>
+
+            <strong>
+                ••••
+                <span
+                    data-investment-bind="lastFour"
+                >
+                    0000
+                </span>
+            </strong>
+
+        </div>
+
+
+        <div class="account-status">
+
+            <span class="account-status-dot"></span>
+
+            Activa
+
+        </div>
+
+    </div>
+
+
+    <div class="account-holder">
+
+        Responsable:
+
+        <strong
+            data-investment-bind="holder"
+        >
+            Usuario
+        </strong>
+
+    </div>
+
+</div>
+
+
+
+<!-- ======================================================
+     FONDO DE INVERSIÓN
+     DISEÑO PREMIUM / PATRIMONIAL
+     ====================================================== -->
+
+<div
+    class="investment-alt-card investment-fund-card"
+    data-investment-card="FONDO"
+>
+
+    <!-- adornos -->
+
+    <div class="fund-ring fund-ring-one"></div>
+    <div class="fund-ring fund-ring-two"></div>
+
+
+    <!-- encabezado -->
+
+    <div class="fund-header">
+
+        <div>
+
+            <small>
+                PORTAFOLIO
+            </small>
+
+            <strong
+                data-investment-bind="name"
+            >
+                Fondo de inversión
+            </strong>
+
+        </div>
+
+
+        <div class="fund-symbol">
+            ◆
+        </div>
+
+    </div>
+
+
+    <!-- cantidad -->
+
+    <div class="fund-main-value">
+
+        <span>
+            Valor actual
+        </span>
+
+        <strong
+            data-investment-bind="amount"
+        >
+            $0.00
+        </strong>
+
+    </div>
+
+
+    <!-- gráfica decorativa -->
+
+    <div class="fund-mini-chart">
+
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </div>
+
+
+    <!-- footer -->
+
+    <div class="fund-footer">
+
+        <div>
+
+            <small>
+                REFERENCIA
+            </small>
+
+            <strong>
+                FN-
+                <span
+                    data-investment-bind="lastFour"
+                >
+                    0000
+                </span>
+            </strong>
+
+        </div>
+
+
+        <div>
+
+            <small>
+                RESPONSABLE
+            </small>
+
+            <strong
+                data-investment-bind="holder"
+            >
+                Usuario
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+        <!-- ==================================================
+             BOTÓN + ORIGINAL
+             ================================================== -->
+
+        <button
+            type="button"
+            class="img-wrapper investment-add-button"
+            id="investmentAddButton"
+            aria-label="Agregar fondo de inversión"
+        >
+
+            <img
+                class="image-5"
+                src="assets/img/image-20@2x.png"
+                alt=""
+            />
+
+        </button>
+
+    </div>
+
+
+    <!-- ==================================================
+         VER TODOS
+         PANEL FLOTANTE
+         ================================================== -->
+
+    <div
+        class="investment-list-panel"
+        id="investmentListPanel"
+        aria-hidden="true"
+    >
+
+        <div class="investment-list-header">
+
+            <div>
+                Fondos registrados
+            </div>
+
+            <span id="investmentListTotal">
+                1 fondo
+            </span>
+
+        </div>
+
+
+        <div
+            class="investment-list"
+            id="investmentList"
+        >
+            <!-- JavaScript genera los registros -->
+        </div>
+
+    </div>
+
+</div>
+                    <div class="card-4">
+                        <div class="text-input-container-5">
+                            <div class="div-2">
+                                <div class="text-wrapper-17">Herramientas de desarrollo</div>
+                            </div>
+                            <img class="line" src="assets/img/line-1.svg" />
+                        </div>
+                        <div class="container-2">
+                            <div class="text-input-container-6">
+
+    <div class="text-wrapper-26">
+        Gastos recurrente mensual
+    </div>
+
+    <div
+        class="text-input-container-7 recurring-expenses-toggle"
+        id="recurringExpensesToggle"
+        role="button"
+        tabindex="0"
+        aria-expanded="false"
+    >
+
+        <div
+            class="text-wrapper-18"
+            id="recurringExpensesToggleText"
+        >
+            Ver todo
+        </div>
+
+        <img
+            class="img-2 recurring-expenses-arrow"
+            src="assets/img/text-input-1.svg"
+        />
+
+    </div>
+
+</div>
+                           <div
+    class="recurring-expenses-list"
+    id="recurringExpensesList"
+>
+
+    <!-- NOWA -->
+    <div
+        class="container-3 recurring-expense-item"
+        data-order="1"
+    >
+
+        <div class="container-4">
+
+            <img
+                class="image-6"
+                src="assets/img/image-21@2x.png"
+            />
+
+            <div class="text-wrapper-18">
+                Nowa
+            </div>
+
+        </div>
+
+        <div class="text-wrapper-27">
+            -$523.10
+        </div>
+
+    </div>
+
+
+    <!-- API CLAUDE -->
+    <div
+        class="container-3 recurring-expense-item"
+        data-order="2"
+    >
+
+        <div class="container-4">
+
+            <img
+                class="image-6"
+                src="assets/img/image-22@2x.png"
+            />
+
+            <div class="text-wrapper-18">
+                Api Claude
+            </div>
+
+        </div>
+
+        <div class="text-wrapper-27">
+            -$398.99
+        </div>
+
+    </div>
+
+
+    <!-- FIGMA -->
+    <div
+        class="container-3 recurring-expense-item"
+        data-order="3"
+    >
+
+        <div class="container-4">
+
+            <img
+                class="image-6"
+                src="assets/img/image-23@2x.png"
+            />
+
+            <div class="text-wrapper-18">
+                Figma
+            </div>
+
+        </div>
+
+        <div class="text-wrapper-27">
+            -$346.95
+        </div>
+
+    </div>
+
+
+    <!-- EJEMPLOS FUTUROS -->
+
+    <div
+        class="container-3 recurring-expense-item"
+        data-order="4"
+    >
+
+        <div class="container-4">
+
+            <img
+                class="image-6"
+                src="assets/img/image-21@2x.png"
+            />
+
+            <div class="text-wrapper-18">
+                Hosting
+            </div>
+
+        </div>
+
+        <div class="text-wrapper-27">
+            -$280.00
+        </div>
+
+    </div>
+
+
+    <div
+        class="container-3 recurring-expense-item"
+        data-order="5"
+    >
+
+        <div class="container-4">
+
+            <img
+                class="image-6"
+                src="assets/img/image-21@2x.png"
+            />
+
+            <div class="text-wrapper-18">
+                Dominio
+            </div>
+
+        </div>
+
+        <div class="text-wrapper-27">
+            -$199.00
+        </div>
+
+    </div>
+
+</div>
+                        </div>
+                        <div class="switch-container-3">
+                            <div class="text-wrapper-28">Distribución de costos</div>
+                            <div class="switch-container-4">
+                               <div class="switch-container-5">
+    <canvas id="costChart"></canvas>
+
+    <div class="chart-total">
+        <div class="chart-total-value">$1,269.04</div>
+        <div class="chart-total-label">Total</div>
+    </div>
+
+    <div class="cost-chart-tooltip" id="costChartTooltip" aria-hidden="true">
+        <span class="cost-chart-tooltip-dot"></span>
+        <div>
+            <span id="costChartTooltipLabel">Nowa</span>
+            <strong id="costChartTooltipValue">$0.00</strong>
+        </div>
+    </div>
+</div>
+                                <div class="container-5">
+                                    <div class="vertical-container-2 chart-legend-item" data-index="0">
+                                        <div class="div-4">
+                                            <div class="vertical-container-3"></div>
+                                            <div class="text-wrapper-31">Nowa</div>
+                                        </div>
+                                        <div class="text-wrapper-32">-$523.10</div>
+                                    </div>
+                                    <div class="vertical-container-4 chart-legend-item" data-index="1">
+                                        <div class="div-4">
+                                            <div class="div-4">
+                                                <div class="vertical-container-5"></div>
+                                            </div>
+                                            <div class="text-wrapper-31">Api Claude</div>
+                                        </div>
+                                        <div class="text-wrapper-33">-$398.99</div>
+                                    </div>
+                                    <div class="container-6 chart-legend-item" data-index="2">
+                                        <div class="div-4">
+                                            <div class="div-4">
+                                                <div class="vertical-container-6"></div>
+                                            </div>
+                                            <div class="text-wrapper-31">Figma</div>
+                                        </div>
+                                        <div class="text-wrapper-33">-$346.95</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ========================================================
+     MODAL - NUEVO FONDO DE INVERSIÓN
+     ======================================================== -->
+
+<div
+    class="investment-modal"
+    id="investmentModal"
+    aria-hidden="true"
+>
+
+    <div
+        class="investment-modal-backdrop"
+        data-investment-close
+    ></div>
+
+
+    <div
+        class="investment-modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="investmentModalTitle"
+    >
+
+        <!-- HEADER -->
+
+        <div class="investment-modal-header">
+
+            <div>
+
+                <div
+                    class="investment-modal-title"
+                    id="investmentModalTitle"
+                >
+                    Agregar fondo
+                </div>
+
+                <div class="investment-modal-subtitle">
+                    Registra un fondo o cuenta de inversión
+                </div>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="investment-modal-close"
+                data-investment-close
+                aria-label="Cerrar"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- FORMULARIO -->
+
+        <form
+            class="investment-form"
+            id="investmentForm"
+        >
+
+            <!-- NOMBRE -->
+
+            <label class="investment-field">
+
+                <span>
+                    Nombre del fondo
+                </span>
+
+                <input
+                    type="text"
+                    id="investmentName"
+                    maxlength="40"
+                    placeholder="Ej. Fondo principal"
+                    required
+                />
+
+            </label>
+
+
+            <!-- MONTO -->
+
+            <label class="investment-field">
+
+                <span>
+                    Fondos disponibles
+                </span>
+
+                <div class="investment-money-input">
+
+                    <span>
+                        $
+                    </span>
+
+                    <input
+                        type="number"
+                        id="investmentAmount"
+                        min="0"
+                        step="0.01"
+                        placeholder="25000.00"
+                        required
+                    />
+
+                </div>
+
+            </label>
+
+
+            <div class="investment-form-grid">
+
+                <!-- TIPO -->
+
+                <label class="investment-field">
+
+                    <span>
+                        Tipo
+                    </span>
+
+                    <select
+                        id="investmentType"
+                        required
+                    >
+
+                        <option value="VISA">
+                            VISA
+                        </option>
+
+                        <option value="MASTERCARD">
+                            Mastercard
+                        </option>
+
+                        <option value="CUENTA">
+                            Cuenta
+                        </option>
+
+                        <option value="FONDO">
+                            Fondo
+                        </option>
+
+                    </select>
+
+                </label>
+
+
+                <!-- ÚLTIMOS 4 -->
+
+                <label class="investment-field">
+
+                    <span>
+                        Últimos 4 dígitos
+                    </span>
+
+                    <input
+                        type="text"
+                        id="investmentLastFour"
+                        maxlength="4"
+                        inputmode="numeric"
+                        pattern="[0-9]{4}"
+                        placeholder="7223"
+                        required
+                    />
+
+                </label>
+
+            </div>
+
+
+            <div class="investment-form-grid">
+
+                <!-- TITULAR -->
+
+                <label class="investment-field">
+
+                    <span>
+                        Titular / responsable
+                    </span>
+
+                    <input
+                        type="text"
+                        id="investmentHolder"
+                        maxlength="50"
+                        placeholder="Nombre"
+                        required
+                    />
+
+                </label>
+
+
+                <!-- VENCIMIENTO -->
+
+                <label class="investment-field">
+
+                    <span>
+                        Referencia
+                    </span>
+
+                    <input
+                        type="text"
+                        id="investmentExpiry"
+                        maxlength="8"
+                        placeholder="03/28"
+                    />
+
+                </label>
+
+            </div>
+
+
+            <!-- ACCIONES -->
+
+            <div class="investment-form-actions">
+
+                <button
+                    type="button"
+                    class="investment-cancel-button"
+                    data-investment-close
+                >
+                    Cancelar
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="investment-save-button"
+                >
+                    Guardar fondo
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+    <script src="js/components/technova-navbar.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="assets/vendor/chart.umd.js"></script>
+    <script src="assets/vendor/gsap-3.12.5.min.js"></script>
+
+    <script src="js/intro.js"></script>
+    <script src="js/dashboard-ui.js"></script>
+    <script src="js/dashboard-data.js"></script>
+    <script src="js/periods.js"></script>
+    <script src="js/expenses.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="js/investments.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/app.js"></script>
+   
+</body>
+
+ 
+</html>

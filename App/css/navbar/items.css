@@ -1,0 +1,283 @@
+/* Modulo: Brillo de items y cierre de sesion del navbar. Orden preservado desde dashboard.css original. */
+/* GUÍA: enlaces, reflejo y [aria-current="page"]. Se reutiliza sin duplicar el navbar entre vistas. */
+
+/*==================================================
+    NAVBAR ITEMS - LIQUID GLASS SHINE
+==================================================*/
+
+.dashboard .navbar .div-2{
+
+    position:relative;
+
+    overflow:hidden;
+
+    isolation:isolate;
+
+}
+
+.dashboard .navbar .nav-indicator{
+    display:block;
+    position:absolute;
+    pointer-events:none;
+}
+
+.dashboard .navbar .div-2[aria-current="page"]{
+    background:linear-gradient(90deg,rgba(13,110,253,.2),rgba(13,4,255,.08));
+    border-color:rgba(95,170,255,.28);
+    box-shadow:inset 0 0 18px rgba(13,110,253,.12);
+}
+
+
+/* Reflejo */
+
+.dashboard .navbar .div-2::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:-90%;
+
+    left:-55%;
+
+    width:40%;
+
+    height:280%;
+
+    pointer-events:none;
+
+    opacity:0;
+
+    z-index:0;
+
+    border-radius:14px;
+
+    transform:
+        rotate(22deg)
+        translateX(-70%);
+
+    background:
+
+        linear-gradient(
+
+            90deg,
+
+            transparent 0%,
+
+            rgba(255,255,255,.05) 20%,
+
+            rgba(255,255,255,.18) 35%,
+
+            rgba(170,210,255,.45) 50%,
+
+            rgba(255,255,255,.18) 65%,
+
+            rgba(255,255,255,.05) 80%,
+
+            transparent 100%
+
+        );
+
+    filter:blur(2px);
+
+}
+
+.dashboard .navbar .div-2:hover::before{
+
+    opacity:1;
+
+    animation:
+
+        navbarItemShine
+
+        1.4s
+
+        cubic-bezier(.22,.61,.36,1)
+
+        forwards;
+
+}
+
+@keyframes navbarItemShine{
+
+    from{
+
+        transform:
+            rotate(22deg)
+            translateX(-80%);
+
+    }
+
+    to{
+
+        transform:
+            rotate(22deg)
+            translateX(420%);
+
+    }
+
+}
+
+.dashboard .navbar .div-2>*{
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+/* =========================================
+   CERRAR SESIÓN - LIQUID GLASS + ELEVACIÓN
+   ========================================= */
+
+.dashboard .row-2 {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    cursor: pointer;
+
+    border-radius: 10px;
+
+    transition:
+        transform .28s cubic-bezier(.22,.61,.36,1),
+        box-shadow .28s ease,
+        border-color .28s ease,
+        background .28s ease;
+}
+
+
+/* Reflejo diagonal */
+
+.dashboard .row-2::after {
+    content: "";
+
+    position: absolute;
+
+    top: -90%;
+    left: -55%;
+
+    width: 38%;
+    height: 280%;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    z-index: 1;
+
+    transform:
+        rotate(22deg)
+        translateX(-70%);
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(255,255,255,.06) 20%,
+            rgba(255,255,255,.20) 38%,
+            rgba(170,210,255,.46) 50%,
+            rgba(255,255,255,.18) 64%,
+            rgba(255,255,255,.05) 80%,
+            transparent 100%
+        );
+
+    filter: blur(2px);
+}
+
+
+/* El contenido queda encima del reflejo */
+
+.dashboard .row-2 > * {
+    position: relative;
+    z-index: 2;
+}
+
+
+/* Hover */
+
+.dashboard .row-2:hover {
+    transform:
+        translateY(-4px)
+        scale(1.01);
+
+    border-color:
+        rgba(130,170,255,.20);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.075),
+            rgba(255,255,255,.02)
+        ),
+        rgba(4,4,24,.58);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.16),
+        0 10px 24px rgba(0,0,0,.26),
+        0 0 18px rgba(60,120,255,.08);
+}
+
+
+/* Reflejo al pasar cursor */
+
+.dashboard .row-2:hover::after {
+    opacity: 1;
+
+    animation:
+        logoutGlassShine
+        1.6s
+        cubic-bezier(.22,.61,.36,1)
+        forwards;
+}
+
+
+@keyframes logoutGlassShine {
+    from {
+        transform:
+            rotate(22deg)
+            translateX(-70%);
+    }
+
+    to {
+        transform:
+            rotate(22deg)
+            translateX(430%);
+    }
+}
+
+.dashboard .row-2 .text-wrapper-4,
+.dashboard .row-2 .image {
+    transition:
+        transform .24s ease,
+        color .24s ease,
+        filter .24s ease;
+}
+
+.dashboard .row-2:hover .text-wrapper-4 {
+    color: #ffffff;
+}
+
+.dashboard .row-2:hover .image {
+    transform: scale(1.06);
+    filter:
+        brightness(1.15)
+        saturate(1.10);
+}
+
+/* En responsive, el navbar cerrado no aporta una segunda superficie detrás del botón. */
+@media (max-width: 1024px) {
+    .dashboard .navbar:not(.menu-open) {
+        background: transparent;
+        border-color: transparent;
+        box-shadow: none;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .dashboard .navbar:not(.menu-open)::before,
+    .dashboard .navbar:not(.menu-open)::after {
+        display: none;
+    }
+}
+
+

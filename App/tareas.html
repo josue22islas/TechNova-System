@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tareas | TechNova Solutions</title>
+    <link href="assets/vendor/meyer-reset-2.0.min.css" rel="stylesheet" />
+    <link href="css/globals.css" rel="stylesheet" />
+    <link href="css/layout/base.css" rel="stylesheet" />
+    <link href="css/navbar/structure.css" rel="stylesheet" />
+    <link href="css/navbar/toggle.css" rel="stylesheet" />
+    <link href="css/responsive.css" rel="stylesheet" />
+    <link href="css/effects.css" rel="stylesheet" />
+    <link href="css/navbar/base.css" rel="stylesheet" />
+    <link href="css/header/base.css" rel="stylesheet" />
+    <link href="css/notifications/button.css" rel="stylesheet" />
+    <link href="css/header/controls.css" rel="stylesheet" />
+    <link href="css/notifications/panel.css" rel="stylesheet" />
+    <link href="css/navbar/items.css" rel="stylesheet" />
+    <link href="css/pages/tareas.css" rel="stylesheet" />
+</head>
+<body>
+    <!--
+        GUÍA DE LA VISTA TAREAS — ETAPA 7
+        1. Navbar compartido: solo Tareas lleva aria-current="page".
+        2. Encabezado: título, búsqueda, filtros, nueva tarea y notificaciones.
+        3. Resumen: seis métricas estáticas replican el orden y profundidad del frame de Figma.
+        4. Filtros: vistas rápidas y controles preparados para el listado posterior.
+        5. Listado: encabezado y seis filas estáticas preparadas para datos remotos.
+        6. Calendario: panel lateral navegable con agosto de 2026 como fallback.
+        7. Progreso: resumen estático preparado para actualización dinámica.
+        8. Próximas tareas: tres elementos estáticos preparados para datos remotos.
+        9. Los atributos data-tasks-*-api vacíos mantienen la vista sin solicitudes.
+        No insertar PHP aquí; el backend futuro debe responder JSON mediante endpoints.
+    -->
+    <div class="dashboard tasks-page" data-tasks-summary-api="" data-tasks-list-api="" data-tasks-action-api="" data-tasks-csrf="">
+        <technova-navbar active="tasks">
+            <noscript>
+                <nav aria-label="Navegación principal">
+                    <a href="index.html">Dashboard</a>
+                    <a href="proyectos.html">Proyectos</a>
+                    <a href="tareas.html">Tareas</a>
+                </nav>
+            </noscript>
+        </technova-navbar>
+
+        <main class="tasks-shell">
+            <header class="tasks-header glass-reactive">
+                <div class="tasks-heading">
+                    <h1>Tareas</h1>
+                    <p>Organiza, asigna y da seguimiento al trabajo de tu equipo</p>
+                </div>
+
+                <div class="tasks-header-actions" aria-label="Acciones de tareas">
+                    <label class="tasks-search">
+                        <span class="sr-only">Buscar tareas</span>
+                        <img src="assets/img/projects/search-icon.svg" alt="" aria-hidden="true" />
+                        <input type="search" name="task-search" placeholder="Buscar tareas" autocomplete="off" data-task-search aria-label="Buscar tareas" />
+                    </label>
+
+                    <button class="tasks-action tasks-filter-button" type="button" data-tasks-filter-open aria-controls="tasks-advanced-filters" aria-expanded="false" aria-label="Abrir filtros de tareas">
+                        <img src="assets/img/projects/filter-icon.svg" alt="" aria-hidden="true" />
+                        <span>Filtros</span>
+                        <span class="tasks-filter-badge" data-tasks-filter-count hidden>0</span>
+                    </button>
+
+                    <button class="row-6 tasks-new-button" type="button" data-task-create-open>
+                        <img class="image" src="assets/img/image-2@2x.png" alt="" aria-hidden="true" />
+                        <span class="text-wrapper-7">Nueva tarea</span>
+                    </button>
+
+                    <div class="notification-wrapper">
+                        <div class="row-7 notification-button" id="notificationButton" role="button" tabindex="0" aria-expanded="false" aria-label="Abrir notificaciones">
+                            <img class="image-2" src="assets/img/image-14@2x.png" alt="" aria-hidden="true" />
+                            <div class="div-wrapper" id="notificationBadge"><span class="text-wrapper-8" id="notificationCount">3</span></div>
+                        </div>
+                        <div class="notification-panel" id="notificationPanel" aria-label="Panel de notificaciones">
+                            <div class="notification-panel-header">
+                                <div class="notification-panel-title">Notificaciones <span id="notificationTotal">(3)</span></div>
+                                <div class="notification-panel-actions">
+                                    <button type="button" class="notification-mark-all" id="notificationMarkAll">Marcar leídas</button>
+                                    <button type="button" class="notification-delete-all" id="notificationDeleteAll">Eliminar todas</button>
+                                </div>
+                            </div>
+                            <div class="notification-list" id="notificationList">
+                                <div class="notification-item unread" data-notification-id="1" data-created-at="2026-08-27T09:00:00">
+                                    <div class="notification-icon project">T</div>
+                                    <div class="notification-content"><div class="notification-title">Nueva tarea asignada</div><div class="notification-description">Se asignó una nueva tarea en TechNova.</div><div class="notification-meta"><div class="notification-time">Recientemente</div><button type="button" class="notification-delete" aria-label="Eliminar notificación">Eliminar</button></div></div><span class="notification-status"></span>
+                                </div>
+                                <div class="notification-item unread" data-notification-id="2" data-created-at="2026-08-27T08:30:00">
+                                    <div class="notification-icon alert">!</div>
+                                    <div class="notification-content"><div class="notification-title">Fecha límite próxima</div><div class="notification-description">Una tarea requiere seguimiento del equipo.</div><div class="notification-meta"><div class="notification-time">Hace 30 minutos</div><button type="button" class="notification-delete" aria-label="Eliminar notificación">Eliminar</button></div></div><span class="notification-status"></span>
+                                </div>
+                                <div class="notification-item unread" data-notification-id="3" data-created-at="2026-08-27T08:00:00">
+                                    <div class="notification-icon system">S</div>
+                                    <div class="notification-content"><div class="notification-title">Recordatorio del sistema</div><div class="notification-description">Revisa las tareas pendientes del día.</div><div class="notification-meta"><div class="notification-time">Hace 1 hora</div><button type="button" class="notification-delete" aria-label="Eliminar notificación">Eliminar</button></div></div><span class="notification-status"></span>
+                                </div>
+                            </div>
+                            <div class="notification-panel-footer"><button type="button" class="notification-view-all">Ver todas las notificaciones</button></div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <button class="tasks-filter-backdrop" type="button" data-tasks-advanced-filter-close tabindex="-1" aria-label="Cerrar filtros" hidden></button>
+            <section class="tasks-advanced-filter-panel" id="tasks-advanced-filters" data-tasks-advanced-filter-panel role="dialog" aria-modal="true" aria-labelledby="tasks-advanced-filter-title" hidden>
+                <header class="tasks-advanced-filter-header">
+                    <div><span>Vista avanzada</span><h2 id="tasks-advanced-filter-title">Filtrar tareas</h2></div>
+                    <button type="button" data-tasks-advanced-filter-close aria-label="Cerrar filtros">×</button>
+                </header>
+                <form class="tasks-advanced-filter-form" data-tasks-advanced-filter-form>
+                    <div class="tasks-filter-field">
+                        <label for="tasks-advanced-filter-scope">Alcance</label>
+                        <select id="tasks-advanced-filter-scope" name="scope">
+                            <option value="all">Todas las tareas</option>
+                            <option value="mine">Mis tareas</option>
+                            <option value="assigned-by-me">Asignadas por mí</option>
+                        </select>
+                    </div>
+                    <div class="tasks-filter-field">
+                        <label for="tasks-advanced-filter-project">Proyecto</label>
+                        <select id="tasks-advanced-filter-project" name="project">
+                            <option value="all">Todos los proyectos</option>
+                            <option value="app-movil-viomp3">App Móvil VioMp3</option>
+                            <option value="web-store">Web store</option>
+                            <option value="sistema-hotelero">Sistema hotelero</option>
+                        </select>
+                    </div>
+                    <div class="tasks-filter-field">
+                        <label for="tasks-advanced-filter-status">Estado</label>
+                        <select id="tasks-advanced-filter-status" name="status">
+                            <option value="all">Todos los estados</option>
+                            <option value="in-progress">En progreso</option>
+                            <option value="pending">Pendientes</option>
+                            <option value="completed">Completadas</option>
+                            <option value="blocked">Bloqueadas</option>
+                        </select>
+                    </div>
+                    <div class="tasks-filter-field">
+                        <label for="tasks-advanced-filter-assignee">Responsable</label>
+                        <select id="tasks-advanced-filter-assignee" name="assignee">
+                            <option value="all">Todos los responsables</option>
+                            <option value="josue-islas">Josué Islas</option>
+                            <option value="daira-alvarez">Daira Álvarez</option>
+                            <option value="paola-rivera">Paola Rivera</option>
+                            <option value="angela-guerrero">Ángela Guerrero</option>
+                        </select>
+                    </div>
+                    <fieldset class="tasks-filter-field tasks-filter-priority-options">
+                        <legend>Prioridad</legend>
+                        <label><input type="radio" name="priority" value="all" checked /><span>Todas</span></label>
+                        <label><input type="radio" name="priority" value="high" /><span>Alta</span></label>
+                        <label><input type="radio" name="priority" value="medium" /><span>Media</span></label>
+                        <label><input type="radio" name="priority" value="low" /><span>Baja</span></label>
+                    </fieldset>
+                    <div class="tasks-filter-field">
+                        <label for="tasks-advanced-filter-query">Buscar tarea</label>
+                        <input id="tasks-advanced-filter-query" name="query" type="search" placeholder="Título, descripción o etiqueta" autocomplete="off" />
+                    </div>
+                    <div class="tasks-filter-date-range">
+                        <div class="tasks-filter-field"><label for="tasks-filter-due-from">Vence desde</label><input id="tasks-filter-due-from" name="dueFrom" type="date" /></div>
+                        <div class="tasks-filter-field"><label for="tasks-filter-due-to">Vence hasta</label><input id="tasks-filter-due-to" name="dueTo" type="date" /></div>
+                    </div>
+                    <footer class="tasks-advanced-filter-actions"><button type="reset">Limpiar</button><button type="submit">Aplicar filtros</button></footer>
+                </form>
+            </section>
+
+            <button class="task-editor-backdrop" type="button" data-task-editor-close aria-label="Cerrar formulario de tarea" hidden></button>
+            <section class="task-editor" data-task-editor role="dialog" aria-modal="true" aria-labelledby="task-editor-title" hidden>
+                <header class="task-editor-header"><div><span data-task-editor-kicker>Gestión de tarea</span><h2 id="task-editor-title" data-task-editor-title>Editar tarea</h2></div><button type="button" data-task-editor-close aria-label="Cerrar formulario">×</button></header>
+                <form data-task-editor-form>
+                    <input type="hidden" name="taskId" />
+                    <label><span>Título</span><input name="title" required maxlength="120" autocomplete="off" /></label>
+                    <label><span>Descripción</span><textarea name="description" rows="3" maxlength="500"></textarea></label>
+                    <div class="task-editor-grid">
+                        <label><span>Estado</span><select name="status"><option value="pending">Pendiente</option><option value="in-progress">En progreso</option><option value="review">En revisión</option><option value="blocked">Bloqueada</option><option value="completed">Completada</option></select></label>
+                        <label><span>Prioridad</span><select name="priority"><option value="high">Alta</option><option value="medium">Media</option><option value="low">Baja</option></select></label>
+                        <label><span>Responsable</span><select name="assignee"><option value="josue-islas">Josué Islas</option><option value="daira-alvarez">Daira Álvarez</option><option value="paola-rivera">Paola Rivera</option><option value="angela-guerrero">Ángela Guerrero</option></select></label>
+                        <label><span>Fecha límite</span><input name="dueDate" type="date" /></label>
+                    </div>
+                    <p class="task-editor-message" data-task-editor-message aria-live="polite"></p>
+                    <footer><button type="button" data-task-editor-close>Cancelar</button><button type="submit" data-task-editor-submit>Guardar cambios</button></footer>
+                </form>
+            </section>
+
+            <button class="task-detail-backdrop" type="button" data-task-detail-close aria-label="Cerrar detalle de tarea" hidden></button>
+            <aside class="task-detail-drawer" data-task-detail role="dialog" aria-modal="true" aria-labelledby="task-detail-title" hidden>
+                <header class="task-detail-header">
+                    <div><span data-task-detail-project>Proyecto</span><h2 id="task-detail-title" data-task-detail-title>Tarea</h2></div>
+                    <button type="button" data-task-detail-close aria-label="Cerrar detalle">×</button>
+                </header>
+                <div class="task-detail-actions">
+                    <button type="button" data-task-detail-complete><span aria-hidden="true">✓</span> Marcar completada</button>
+                    <button type="button" data-task-detail-edit><span aria-hidden="true">✎</span> Editar</button>
+                </div>
+                <div class="task-detail-scroll">
+                    <section class="task-detail-section task-detail-summary" aria-label="Información de tarea">
+                        <div><span>Responsable</span><strong data-task-detail-assignee>Sin asignar</strong></div>
+                        <div><span>Prioridad</span><strong class="task-priority task-priority--medium" data-task-detail-priority>Media</strong></div>
+                        <div><span>Estado</span><strong data-task-detail-status>En progreso</strong></div>
+                        <div><span>Vencimiento</span><strong data-task-detail-due>Sin fecha</strong></div>
+                    </section>
+                    <section class="task-detail-section">
+                        <header><h3>Descripción</h3></header>
+                        <p data-task-detail-description>Sin descripción.</p>
+                    </section>
+                    <section class="task-detail-section">
+                        <header><h3>Progreso</h3><strong data-task-detail-progress-value>0%</strong></header>
+                        <div class="task-detail-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" data-task-detail-progress><span></span></div>
+                    </section>
+                    <section class="task-detail-section">
+                        <header><h3>Subtareas</h3><span data-task-detail-subtask-count>0 de 3</span></header>
+                        <div class="task-detail-subtasks" data-task-detail-subtasks></div>
+                        <button class="task-detail-add" type="button" data-task-detail-add-subtask>+ Agregar subtarea</button>
+                    </section>
+                    <section class="task-detail-section">
+                        <header><h3>Dependencias</h3></header>
+                        <div class="task-detail-dependency" data-task-detail-dependency><span aria-hidden="true">↳</span><p><strong>Sin bloqueos activos</strong><small>Lista para continuar</small></p></div>
+                    </section>
+                    <section class="task-detail-section">
+                        <header><h3>Comentarios</h3><span data-task-detail-comment-count>0</span></header>
+                        <div class="task-detail-comments" data-task-detail-comments><p>Aún no hay comentarios.</p></div>
+                        <form class="task-detail-comment-form" data-task-detail-comment-form><label class="sr-only" for="task-detail-comment">Agregar comentario</label><textarea id="task-detail-comment" name="comment" rows="2" maxlength="500" placeholder="Escribe un comentario…"></textarea><button type="submit">Enviar</button></form>
+                    </section>
+                    <section class="task-detail-section">
+                        <header><h3>Actividad reciente</h3></header>
+                        <ol class="task-detail-activity" data-task-detail-activity><li><span></span><p><strong>Tarea disponible</strong><small>Datos estáticos preparados para historial del backend</small></p></li></ol>
+                    </section>
+                </div>
+            </aside>
+
+            <section class="tasks-stage" data-tasks-stage aria-label="Contenido de Tareas">
+                <div class="tasks-primary-column">
+                <section class="task-metrics" data-task-metrics aria-labelledby="task-metrics-title">
+                    <h2 class="sr-only" id="task-metrics-title">Resumen de tareas</h2>
+
+                    <div class="task-metrics-viewport" data-task-metrics-viewport tabindex="0" aria-label="Métricas de tareas; desliza horizontalmente en pantallas pequeñas">
+                        <div class="task-metrics-track">
+                            <article class="task-metric-card task-metric-card--outer" data-task-metric="total">
+                                <div class="task-metric-icon-shell">
+                                    <img class="task-metric-icon" src="assets/img/tasks/metrics/total.png" alt="" aria-hidden="true" />
+                                </div>
+                                <div class="task-metric-content">
+                                    <h3>Total de tareas</h3>
+                                    <p class="task-metric-value" data-task-metric-value>124</p>
+                                    <p class="task-metric-change"><strong data-task-metric-change>+12</strong> <span data-task-metric-context>este mes</span></p>
+                                </div>
+                            </article>
+
+                            <article class="task-metric-card task-metric-card--near" data-task-metric="completed">
+                                <div class="task-metric-icon-shell">
+                                    <img class="task-metric-icon task-metric-icon--completed" src="assets/img/tasks/metrics/completed.png" alt="" aria-hidden="true" />
+                                </div>
+                                <div class="task-metric-content">
+                                    <h3>Completadas</h3>
+                                    <p class="task-metric-value" data-task-metric-value>67</p>
+                                    <p class="task-metric-change"><strong data-task-metric-change>54.0%</strong> <span data-task-metric-context>del total</span></p>
+                                </div>
+                            </article>
+
+                            <article class="task-metric-card task-metric-card--center" data-task-metric="inProgress">
+                                <div class="task-metric-icon-shell">
+                                    <img class="task-metric-icon" src="assets/img/tasks/metrics/in-progress.png" alt="" aria-hidden="true" />
+                                </div>
+                                <div class="task-metric-content">
+                                    <h3>En progreso</h3>
+                                    <p class="task-metric-value" data-task-metric-value>38</p>
+                                    <p class="task-metric-change"><strong data-task-metric-change>30.6%</strong> <span data-task-metric-context>del total</span></p>
+                                </div>
+                            </article>
+
+                            <article class="task-metric-card task-metric-card--center" data-task-metric="pending">
+                                <div class="task-metric-icon-shell">
+                                    <img class="task-metric-icon" src="assets/img/tasks/metrics/pending.png" alt="" aria-hidden="true" />
+                                </div>
+                                <div class="task-metric-content">
+                                    <h3>Pendientes</h3>
+                                    <p class="task-metric-value" data-task-metric-value>18</p>
+                                    <p class="task-metric-change"><strong data-task-metric-change>12.6%</strong> <span data-task-metric-context>del total</span></p>
+                                </div>
+                            </article>
+
+                            <article class="task-metric-card task-metric-card--near" data-task-metric="blocked">
+                                <div class="task-metric-icon-shell">
+                                    <img class="task-metric-icon task-metric-icon--blocked" src="assets/img/tasks/metrics/blocked.png" alt="" aria-hidden="true" />
+                                </div>
+                                <div class="task-metric-content">
+                                    <h3>Bloqueadas</h3>
+                                    <p class="task-metric-value" data-task-metric-value>2</p>
+                                    <p class="task-metric-change"><strong data-task-metric-change>1.6%</strong> <span data-task-metric-context>del total</span></p>
+                                </div>
+                            </article>
+
+                            <article class="task-metric-card task-metric-card--outer" data-task-metric="overdue">
+                                <div class="task-metric-icon-shell">
+                                    <img class="task-metric-icon" src="assets/img/tasks/metrics/overdue.png" alt="" aria-hidden="true" />
+                                </div>
+                                <div class="task-metric-content">
+                                    <h3>Retrasadas</h3>
+                                    <p class="task-metric-value" data-task-metric-value>5</p>
+                                    <p class="task-metric-change"><strong data-task-metric-change>6.5%</strong> <span data-task-metric-context>del total</span></p>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                    <div class="task-metrics-controls" aria-label="Navegación de métricas">
+                        <button type="button" data-task-metrics-direction="previous" aria-label="Ver métricas anteriores"><img src="assets/img/tasks/metrics/carousel-arrow.svg" alt="" aria-hidden="true" /></button>
+                        <div class="task-metrics-pagination" data-task-metrics-pagination aria-label="Seleccionar métrica"></div>
+                        <button type="button" data-task-metrics-direction="next" aria-label="Ver métricas siguientes"><img src="assets/img/tasks/metrics/carousel-arrow.svg" alt="" aria-hidden="true" /></button>
+                        <p class="sr-only" data-task-metrics-status aria-live="polite"></p>
+                    </div>
+                </section>
+
+                <section class="task-filters" data-task-filters aria-labelledby="task-filters-title">
+                    <h2 class="sr-only" id="task-filters-title">Filtros de tareas</h2>
+
+                    <div class="task-scope-carousel" data-task-scope-carousel>
+                        <button class="task-scope-arrow task-scope-arrow--previous" type="button" data-task-scope-direction="previous" aria-label="Ver filtros anteriores" hidden>‹</button>
+                        <div class="task-scope-tabs" role="tablist" aria-label="Vista de tareas" data-task-scope-tabs>
+                            <span class="task-scope-indicator" data-task-scope-indicator aria-hidden="true"></span>
+                            <button class="task-scope-tab is-active" type="button" role="tab" aria-selected="true" data-task-scope="all"><span>Todas</span><strong data-task-scope-count>0</strong></button>
+                            <button class="task-scope-tab" type="button" role="tab" aria-selected="false" data-task-scope="mine"><span>Mis tareas</span><strong data-task-scope-count>0</strong></button>
+                            <button class="task-scope-tab" type="button" role="tab" aria-selected="false" data-task-scope="assigned-by-me"><span>Asignadas por mí</span><strong data-task-scope-count>0</strong></button>
+                            <button class="task-scope-tab" type="button" role="tab" aria-selected="false" data-task-scope="project"><span>Por proyecto</span><strong data-task-scope-count>0</strong></button>
+                            <button class="task-scope-tab" type="button" role="tab" aria-selected="false" data-task-scope="priority"><span>Por prioridad</span><strong data-task-scope-count>0</strong></button>
+                        </div>
+                        <button class="task-scope-arrow task-scope-arrow--next" type="button" data-task-scope-direction="next" aria-label="Ver más filtros">›</button>
+                    </div>
+
+                    <div class="task-filter-controls" aria-label="Controles de filtrado">
+                        <label class="task-list-search">
+                            <span class="sr-only">Buscar por título, descripción o etiqueta</span>
+                            <img src="assets/img/tasks/filters/search.svg" alt="" aria-hidden="true" />
+                            <input type="search" placeholder="Buscar por título, descripción o etiqueta..." autocomplete="off" data-task-list-search />
+                        </label>
+
+                        <label class="task-filter-select">
+                            <span class="sr-only">Filtrar por proyecto</span>
+                            <select data-task-filter-project>
+                                <option value="all">Proyecto: Todos</option>
+                                <option value="app-movil-viomp3">App Móvil VioMp3</option>
+                                <option value="web-store">Web store</option>
+                                <option value="sistema-hotelero">Sistema hotelero</option>
+                            </select>
+                            <img src="assets/img/tasks/filters/arrow-down.svg" alt="" aria-hidden="true" />
+                        </label>
+
+                        <label class="task-filter-select">
+                            <span class="sr-only">Filtrar por estado</span>
+                            <select data-task-filter-status>
+                                <option value="all">Estado: Todos</option>
+                                <option value="in-progress">En progreso</option>
+                                <option value="pending">Pendientes</option>
+                                <option value="completed">Completadas</option>
+                                <option value="blocked">Bloqueadas</option>
+                                <option value="overdue">Retrasadas</option>
+                            </select>
+                            <img src="assets/img/tasks/filters/arrow-down.svg" alt="" aria-hidden="true" />
+                        </label>
+
+                        <label class="task-filter-select">
+                            <span class="sr-only">Filtrar por prioridad</span>
+                            <select data-task-filter-priority>
+                                <option value="all">Prioridad: todas</option>
+                                <option value="high">Prioridad: alta</option>
+                                <option value="medium">Prioridad: media</option>
+                                <option value="low">Prioridad: baja</option>
+                            </select>
+                            <img src="assets/img/tasks/filters/arrow-down.svg" alt="" aria-hidden="true" />
+                        </label>
+
+                        <button class="task-more-filters" type="button" data-task-more-filters aria-haspopup="dialog">
+                            <img src="assets/img/tasks/filters/filter.svg" alt="" aria-hidden="true" />
+                            <span>Más filtros</span>
+                        </button>
+                    </div>
+
+                    <div class="task-filter-toolbar">
+                        <div class="task-filter-feedback">
+                            <p data-task-results-summary aria-live="polite">Mostrando todas las tareas</p>
+                            <div class="task-active-filters" data-task-active-filters aria-label="Filtros activos"></div>
+                            <button class="task-clear-filters" type="button" data-task-clear-filters hidden>Limpiar filtros</button>
+                        </div>
+                        <div class="task-display-controls">
+                            <label class="task-sort-select"><span class="sr-only">Ordenar tareas</span><select data-task-sort><option value="due-date">Fecha límite</option><option value="priority">Prioridad</option><option value="title">Nombre</option><option value="progress">Progreso</option></select><img src="assets/img/tasks/filters/arrow-down.svg" alt="" aria-hidden="true" /></label>
+                            <div class="task-view-switch" role="group" aria-label="Presentación de tareas">
+                                <button class="is-active" type="button" data-task-view="table" aria-pressed="true" aria-label="Vista de tabla"><span aria-hidden="true">☷</span></button>
+                                <button type="button" data-task-view="cards" aria-pressed="false" aria-label="Vista de tarjetas"><span aria-hidden="true">▦</span></button>
+                                <a href="tareas-tablero.html" aria-label="Abrir tablero Kanban" title="Tablero Kanban"><span aria-hidden="true">▥</span></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="task-table-scroll" data-task-table-scroll tabindex="0" aria-label="Listado de tareas">
+                        <div class="task-table" role="table" aria-rowcount="7" aria-colcount="6" data-task-table>
+                            <div class="task-table-header" role="row">
+                                <img class="task-table-header-bg" src="assets/img/tasks/table/header-bg.png" alt="" aria-hidden="true" />
+                                <div class="task-table-heading task-table-heading--task" role="columnheader">
+                                    <input class="task-select task-select--all" type="checkbox" data-task-select-all aria-label="Seleccionar todas las tareas visibles" />
+                                    <span>Tarea</span>
+                                </div>
+                                <div class="task-table-heading" role="columnheader">Proyecto</div>
+                                <div class="task-table-heading" role="columnheader">Asignado a</div>
+                                <div class="task-table-heading" role="columnheader">Prioridad</div>
+                                <div class="task-table-heading" role="columnheader">Estado</div>
+                                <div class="task-table-heading" role="columnheader">Fecha límite</div>
+                            </div>
+
+                            <div class="task-table-body" role="rowgroup" data-task-table-body>
+                                <article class="task-table-row" role="row" data-task-row data-task-id="task-login-viomp3" data-task-project="app-movil-viomp3" data-task-status="in-progress" data-task-priority="high" data-task-owner="josue-islas" data-task-creator="josue-islas">
+                                    <div class="task-table-cell task-table-cell--task" role="cell">
+                                        <input class="task-select task-select--row" type="checkbox" data-task-select aria-label="Seleccionar Integrar reproductor multimedia de App Móvil VioMp3" />
+                                        <div class="task-copy"><h3>Integrar reproductor multimedia</h3><p>Implementar controles, cola y biblioteca de audio</p></div>
+                                    </div>
+                                    <div class="task-table-cell task-table-cell--project" role="cell"><img src="assets/img/tasks/table/app-movil-viomp3.png" alt="" aria-hidden="true" /><span>App Móvil VioMp3</span></div>
+                                    <div class="task-table-cell task-table-cell--assignee" role="cell"><img src="assets/img/tasks/table/assignee-default.png" alt="" aria-hidden="true" /><span>Josue Islas</span></div>
+                                    <div class="task-table-cell task-table-cell--priority" role="cell"><span class="task-priority task-priority--high">Alta</span></div>
+                                    <div class="task-table-cell task-table-cell--status" role="cell"><span>En progreso</span><div class="task-progress"><div class="task-progress-track" role="progressbar" aria-label="Progreso de Integrar reproductor multimedia" aria-valuemin="0" aria-valuemax="100" aria-valuenow="72"><span style="--task-progress: 72%"></span></div><strong>72%</strong></div></div>
+                                    <div class="task-table-cell task-table-cell--due" role="cell"><img src="assets/img/tasks/table/calendar.svg" alt="" aria-hidden="true" /><div><time datetime="2026-08-30">Agosto 30</time><span>2 días restantes</span></div><button type="button" data-task-row-menu aria-label="Abrir opciones de Integrar reproductor multimedia, App Móvil VioMp3"><img src="assets/img/tasks/table/more.svg" alt="" aria-hidden="true" /></button></div>
+                                </article>
+
+                                <article class="task-table-row" role="row" data-task-row data-task-id="task-login-web-store" data-task-project="web-store" data-task-status="in-progress" data-task-priority="medium" data-task-owner="daira-alvarez" data-task-creator="josue-islas">
+                                    <div class="task-table-cell task-table-cell--task" role="cell"><input class="task-select task-select--row" type="checkbox" data-task-select aria-label="Seleccionar Optimizar proceso de checkout de Web store" /><div class="task-copy"><h3>Optimizar proceso de checkout</h3><p>Validar carrito, pagos y confirmación de compra</p></div></div>
+                                    <div class="task-table-cell task-table-cell--project" role="cell"><img src="assets/img/tasks/table/web-store.png" alt="" aria-hidden="true" /><span>Web store</span></div>
+                                    <div class="task-table-cell task-table-cell--assignee" role="cell"><img src="assets/img/tasks/table/assignee-default.png" alt="" aria-hidden="true" /><span>Daira Alvarez</span></div>
+                                    <div class="task-table-cell task-table-cell--priority" role="cell"><span class="task-priority task-priority--medium">Media</span></div>
+                                    <div class="task-table-cell task-table-cell--status" role="cell"><span>En progreso</span><div class="task-progress"><div class="task-progress-track" role="progressbar" aria-label="Progreso de Optimizar proceso de checkout" aria-valuemin="0" aria-valuemax="100" aria-valuenow="45"><span style="--task-progress: 45%"></span></div><strong>45%</strong></div></div>
+                                    <div class="task-table-cell task-table-cell--due" role="cell"><img src="assets/img/tasks/table/calendar.svg" alt="" aria-hidden="true" /><div><time datetime="2026-09-02">Septiembre 2</time><span>5 días restantes</span></div><button type="button" data-task-row-menu aria-label="Abrir opciones de Optimizar proceso de checkout, Web store"><img src="assets/img/tasks/table/more.svg" alt="" aria-hidden="true" /></button></div>
+                                </article>
+
+                                <article class="task-table-row" role="row" data-task-row data-task-id="task-login-hotel" data-task-project="sistema-hotelero" data-task-status="in-progress" data-task-priority="low" data-task-owner="paola-rivera" data-task-creator="josue-islas">
+                                    <div class="task-table-cell task-table-cell--task" role="cell"><input class="task-select task-select--row" type="checkbox" data-task-select aria-label="Seleccionar Configurar gestión de habitaciones de Sistema hotelero" /><div class="task-copy"><h3>Configurar gestión de habitaciones</h3><p>Definir disponibilidad, tarifas y estados de limpieza</p></div></div>
+                                    <div class="task-table-cell task-table-cell--project" role="cell"><img src="assets/img/tasks/table/sistema-hotelero.png" alt="" aria-hidden="true" /><span>Sistema hotelero</span></div>
+                                    <div class="task-table-cell task-table-cell--assignee" role="cell"><img src="assets/img/tasks/table/assignee-default.png" alt="" aria-hidden="true" /><span>Paola Rivera</span></div>
+                                    <div class="task-table-cell task-table-cell--priority" role="cell"><span class="task-priority task-priority--low">Baja</span></div>
+                                    <div class="task-table-cell task-table-cell--status" role="cell"><span>En progreso</span><div class="task-progress"><div class="task-progress-track" role="progressbar" aria-label="Progreso de Configurar gestión de habitaciones" aria-valuemin="0" aria-valuemax="100" aria-valuenow="30"><span style="--task-progress: 30%"></span></div><strong>30%</strong></div></div>
+                                    <div class="task-table-cell task-table-cell--due" role="cell"><img src="assets/img/tasks/table/calendar.svg" alt="" aria-hidden="true" /><div><time datetime="2026-09-05">Septiembre 5</time><span>8 días restantes</span></div><button type="button" data-task-row-menu aria-label="Abrir opciones de Configurar gestión de habitaciones, Sistema hotelero"><img src="assets/img/tasks/table/more.svg" alt="" aria-hidden="true" /></button></div>
+                                </article>
+
+                                <article class="task-table-row" role="row" data-task-row data-task-id="task-login-worklist" data-task-project="app-worklist" data-task-status="in-progress" data-task-priority="high" data-task-owner="angela-guerrero" data-task-creator="josue-islas">
+                                    <div class="task-table-cell task-table-cell--task" role="cell"><input class="task-select task-select--row" type="checkbox" data-task-select aria-label="Seleccionar Implementar tablero colaborativo de App worklist" /><div class="task-copy"><h3>Implementar tablero colaborativo</h3><p>Organizar listas, responsables y actualización en tiempo real</p></div></div>
+                                    <div class="task-table-cell task-table-cell--project" role="cell"><img src="assets/img/tasks/table/app-worklist.png" alt="" aria-hidden="true" /><span>App worklist</span></div>
+                                    <div class="task-table-cell task-table-cell--assignee" role="cell"><img src="assets/img/tasks/table/assignee-default.png" alt="" aria-hidden="true" /><span>Angela Guerrero</span></div>
+                                    <div class="task-table-cell task-table-cell--priority" role="cell"><span class="task-priority task-priority--high">Alta</span></div>
+                                    <div class="task-table-cell task-table-cell--status" role="cell"><span>En progreso</span><div class="task-progress"><div class="task-progress-track" role="progressbar" aria-label="Progreso de Implementar tablero colaborativo" aria-valuemin="0" aria-valuemax="100" aria-valuenow="86"><span style="--task-progress: 86%"></span></div><strong>86%</strong></div></div>
+                                    <div class="task-table-cell task-table-cell--due" role="cell"><img src="assets/img/tasks/table/calendar.svg" alt="" aria-hidden="true" /><div><time datetime="2026-09-10">Septiembre 10</time><span>13 días restantes</span></div><button type="button" data-task-row-menu aria-label="Abrir opciones de Implementar tablero colaborativo, App worklist"><img src="assets/img/tasks/table/more.svg" alt="" aria-hidden="true" /></button></div>
+                                </article>
+
+                                <article class="task-table-row" role="row" data-task-row data-task-id="task-login-reservas" data-task-project="sistema-hotelero" data-task-status="in-progress" data-task-priority="low" data-task-owner="josue-islas" data-task-creator="paola-rivera">
+                                    <div class="task-table-cell task-table-cell--task" role="cell"><input class="task-select task-select--row" type="checkbox" data-task-select aria-label="Seleccionar Diseñar disponibilidad de reservas de Portal de Reservas Nova" /><div class="task-copy"><h3>Diseñar disponibilidad de reservas</h3><p>Conectar fechas, ocupación y confirmación del huésped</p></div></div>
+                                    <div class="task-table-cell task-table-cell--project" role="cell"><img src="assets/img/tasks/table/sistema-hotelero.png" alt="" aria-hidden="true" /><span>Portal de Reservas Nova</span></div>
+                                    <div class="task-table-cell task-table-cell--assignee" role="cell"><img src="assets/img/tasks/table/assignee-default.png" alt="" aria-hidden="true" /><span>Josue Islas</span></div>
+                                    <div class="task-table-cell task-table-cell--priority" role="cell"><span class="task-priority task-priority--low">Baja</span></div>
+                                    <div class="task-table-cell task-table-cell--status" role="cell"><span>En progreso</span><div class="task-progress"><div class="task-progress-track" role="progressbar" aria-label="Progreso de Diseñar disponibilidad de reservas" aria-valuemin="0" aria-valuemax="100" aria-valuenow="55"><span style="--task-progress: 55%"></span></div><strong>55%</strong></div></div>
+                                    <div class="task-table-cell task-table-cell--due" role="cell"><img src="assets/img/tasks/table/calendar.svg" alt="" aria-hidden="true" /><div><time datetime="2026-09-14">Septiembre 14</time><span>17 días restantes</span></div><button type="button" data-task-row-menu aria-label="Abrir opciones de Diseñar disponibilidad de reservas, Portal de Reservas Nova"><img src="assets/img/tasks/table/more.svg" alt="" aria-hidden="true" /></button></div>
+                                </article>
+
+                                <article class="task-table-row" role="row" data-task-row data-task-id="task-login-taskflow" data-task-project="app-taskflow" data-task-status="in-progress" data-task-priority="medium" data-task-owner="josue-islas" data-task-creator="paola-rivera">
+                                    <div class="task-table-cell task-table-cell--task" role="cell"><input class="task-select task-select--row" type="checkbox" data-task-select aria-label="Seleccionar Automatizar flujo de tareas de App TaskFlow" /><div class="task-copy"><h3>Automatizar flujo de tareas</h3><p>Definir reglas, dependencias y alertas de vencimiento</p></div></div>
+                                    <div class="task-table-cell task-table-cell--project" role="cell"><img src="assets/img/tasks/table/app-taskflow.png" alt="" aria-hidden="true" /><span>App TaskFlow</span></div>
+                                    <div class="task-table-cell task-table-cell--assignee" role="cell"><img src="assets/img/tasks/table/assignee-default.png" alt="" aria-hidden="true" /><span>Josue Islas</span></div>
+                                    <div class="task-table-cell task-table-cell--priority" role="cell"><span class="task-priority task-priority--medium">Media</span></div>
+                                    <div class="task-table-cell task-table-cell--status" role="cell"><span>En progreso</span><div class="task-progress"><div class="task-progress-track" role="progressbar" aria-label="Progreso de Automatizar flujo de tareas" aria-valuemin="0" aria-valuemax="100" aria-valuenow="64"><span style="--task-progress: 64%"></span></div><strong>64%</strong></div></div>
+                                    <div class="task-table-cell task-table-cell--due" role="cell"><img src="assets/img/tasks/table/calendar.svg" alt="" aria-hidden="true" /><div><time datetime="2026-09-20">Septiembre 20</time><span>23 días restantes</span></div><button type="button" data-task-row-menu aria-label="Abrir opciones de Automatizar flujo de tareas, App TaskFlow"><img src="assets/img/tasks/table/more.svg" alt="" aria-hidden="true" /></button></div>
+                                </article>
+                            </div>
+
+                            <div class="task-empty-state" data-task-empty hidden>
+                                <strong>No hay tareas que coincidan</strong>
+                                <span>Ajusta la búsqueda o los filtros para ver resultados.</span>
+                            </div>
+                            <div class="task-list-state task-list-loading" data-task-list-loading hidden><span></span><span></span><span></span><strong>Cargando tareas…</strong></div>
+                            <div class="task-list-state task-list-error" data-task-list-error hidden><strong>No pudimos cargar las tareas</strong><p data-task-list-error-message>Conservamos los datos disponibles.</p><button type="button" data-task-list-retry>Reintentar</button></div>
+                        </div>
+                    </div>
+
+                    <button class="task-row-menu-backdrop" type="button" data-task-row-menu-close aria-label="Cerrar opciones de tarea" hidden></button>
+                    <aside class="task-row-menu" data-task-context-menu role="menu" aria-labelledby="task-context-title" hidden>
+                        <header class="task-row-menu-header">
+                            <div><span data-task-context-project>Proyecto</span><strong id="task-context-title" data-task-context-title>Tarea</strong></div>
+                            <button type="button" data-task-row-menu-close aria-label="Cerrar opciones">×</button>
+                        </header>
+                        <div class="task-row-menu-group">
+                            <button type="button" role="menuitem" data-task-action="view"><span aria-hidden="true">⌕</span><span>Ver detalles</span></button>
+                            <button type="button" role="menuitem" data-task-action="edit"><span aria-hidden="true">✎</span><span>Editar tarea</span></button>
+                            <button class="task-row-menu-complete" type="button" role="menuitem" data-task-action="change-status" data-task-action-value="completed"><span aria-hidden="true">✓</span><span>Marcar como completada</span></button>
+                        </div>
+                        <div class="task-row-menu-group">
+                            <button type="button" role="menuitem" data-task-menu-expand="status" aria-expanded="false"><span aria-hidden="true">◉</span><span>Cambiar estado</span><b aria-hidden="true">›</b></button>
+                            <div class="task-row-submenu" data-task-submenu="status" hidden>
+                                <button type="button" role="menuitem" data-task-action="change-status" data-task-action-value="pending">Pendiente</button>
+                                <button type="button" role="menuitem" data-task-action="change-status" data-task-action-value="in-progress">En progreso</button>
+                                <button type="button" role="menuitem" data-task-action="change-status" data-task-action-value="review">En revisión</button>
+                                <button type="button" role="menuitem" data-task-action="change-status" data-task-action-value="blocked">Bloqueada</button>
+                            </div>
+                            <button type="button" role="menuitem" data-task-menu-expand="priority" aria-expanded="false"><span aria-hidden="true">◆</span><span>Cambiar prioridad</span><b aria-hidden="true">›</b></button>
+                            <div class="task-row-submenu" data-task-submenu="priority" hidden>
+                                <button type="button" role="menuitem" data-task-action="change-priority" data-task-action-value="high">Alta</button>
+                                <button type="button" role="menuitem" data-task-action="change-priority" data-task-action-value="medium">Media</button>
+                                <button type="button" role="menuitem" data-task-action="change-priority" data-task-action-value="low">Baja</button>
+                            </div>
+                            <button type="button" role="menuitem" data-task-action="reassign"><span aria-hidden="true">♙</span><span>Reasignar responsable</span></button>
+                            <button type="button" role="menuitem" data-task-action="change-due-date"><span aria-hidden="true">□</span><span>Modificar fecha límite</span></button>
+                        </div>
+                        <div class="task-row-menu-group">
+                            <button type="button" role="menuitem" data-task-action="comment"><span aria-hidden="true">◌</span><span>Agregar comentario</span></button>
+                            <button type="button" role="menuitem" data-task-action="create-subtask"><span aria-hidden="true">＋</span><span>Crear subtarea</span></button>
+                            <button type="button" role="menuitem" data-task-action="duplicate"><span aria-hidden="true">▣</span><span>Duplicar tarea</span></button>
+                        </div>
+                        <div class="task-row-menu-group task-row-menu-danger-zone">
+                            <button type="button" role="menuitem" data-task-action="archive"><span aria-hidden="true">▱</span><span>Archivar</span></button>
+                            <button type="button" role="menuitem" data-task-action="delete"><span aria-hidden="true">⌫</span><span>Eliminar tarea</span></button>
+                        </div>
+                        <p class="sr-only" data-task-menu-feedback aria-live="polite"></p>
+                    </aside>
+
+                    <footer class="task-table-footer" data-task-pagination>
+                        <p data-task-pagination-summary>Mostrando 1 a 8 de 124 tareas</p>
+                        <div class="task-pagination-controls">
+                            <label class="task-page-size"><span>Mostrar</span><select data-task-page-size aria-label="Tareas por página"><option value="8">8</option><option value="10">10</option><option value="20">20</option><option value="50">50</option></select></label>
+                            <nav class="task-pagination" aria-label="Paginación de tareas">
+                                <button class="task-pagination-arrow" type="button" data-task-page="previous" aria-label="Página anterior"><img src="assets/img/tasks/pagination/previous.svg" alt="" aria-hidden="true" /></button>
+                                <div class="task-pagination-pages" data-task-pagination-pages></div>
+                                <span class="task-pagination-mobile-status" data-task-pagination-mobile-status aria-live="polite">Página 1 de 16</span>
+                                <button class="task-pagination-arrow" type="button" data-task-page="next" aria-label="Página siguiente"><img src="assets/img/tasks/pagination/next.svg" alt="" aria-hidden="true" /></button>
+                            </nav>
+                        </div>
+                    </footer>
+                </section>
+                </div>
+
+                <aside class="tasks-side-panel" aria-label="Panel lateral de tareas">
+                    <header class="tasks-side-overview"><div><h2>Resumen de trabajo</h2></div><time data-task-panel-updated datetime="2026-08-28T00:00:00">Actualizado ahora</time></header>
+                    <section class="task-calendar" data-task-calendar data-calendar-year="2026" data-calendar-month="7" data-calendar-selected="2026-08-27" aria-labelledby="task-calendar-title">
+                        <header class="task-side-heading"><h2 id="task-calendar-title">Calendario</h2><button type="button" data-task-panel-toggle="calendar" aria-expanded="true" aria-controls="task-calendar-content" aria-label="Contraer calendario">⌃</button></header>
+                        <div class="task-side-content" id="task-calendar-content" data-task-panel-content="calendar">
+                        <div class="task-calendar-surface glass-reactive">
+                            <div class="task-calendar-navigation">
+                                <button type="button" data-calendar-direction="previous" aria-label="Mostrar mes anterior"><img src="assets/img/tasks/calendar/previous.svg" alt="" aria-hidden="true" /></button>
+                                <p data-calendar-label aria-live="polite">Agosto 2026</p>
+                                <button class="task-calendar-today" type="button" data-calendar-today>Hoy</button>
+                                <button type="button" data-calendar-direction="next" aria-label="Mostrar mes siguiente"><img src="assets/img/tasks/calendar/next.svg" alt="" aria-hidden="true" /></button>
+                            </div>
+                            <div class="task-calendar-weekdays" aria-hidden="true">
+                                <span>D</span><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span>
+                            </div>
+                            <div class="task-calendar-grid" role="grid" aria-labelledby="task-calendar-title" data-calendar-grid></div>
+                        </div>
+                        </div>
+                    </section>
+
+                    <section class="task-progress-panel glass-reactive" data-task-progress-panel data-progress-value="60" data-progress-completed="16" data-progress-total="24" aria-labelledby="task-progress-title">
+                        <header class="task-side-heading"><h2 id="task-progress-title">Progreso</h2><button type="button" data-task-panel-toggle="progress" aria-expanded="true" aria-controls="task-progress-content" aria-label="Contraer progreso">⌃</button></header>
+                        <div class="task-side-content" id="task-progress-content" data-task-panel-content="progress">
+                        <div class="task-progress-summary">
+                            <p data-task-progress-label>Progreso general</p>
+                            <div class="task-progress-line">
+                                <div class="task-progress-ring" data-task-progress-ring style="--task-ring-progress: 60%"><strong data-task-progress-ring-value>60%</strong></div>
+                                <div class="task-progress-bar" role="progressbar" aria-label="Progreso general de tareas" aria-valuemin="0" aria-valuemax="100" aria-valuenow="60">
+                                    <span data-task-progress-fill style="--tasks-general-progress: 60%"></span>
+                                </div>
+                                <strong data-task-progress-value>60%</strong>
+                            </div>
+                        </div>
+                        <p class="task-progress-caption" data-task-progress-caption><span data-task-progress-completed>16</span> de <span data-task-progress-total>24</span> tareas completadas</p>
+                        <p class="task-progress-caption" data-task-progress-selection hidden></p>
+                        <div class="task-progress-health"><span data-task-progress-health>En tiempo</span><p>Objetivo esperado: <strong data-task-progress-expected>68%</strong></p></div>
+                        <button class="task-progress-update" type="button" data-task-progress-update>Actualizar progreso</button>
+                        </div>
+                    </section>
+
+                    <section class="task-upcoming-panel glass-reactive" data-task-upcoming-panel aria-labelledby="task-upcoming-title">
+                        <header class="task-side-heading"><h2 id="task-upcoming-title">Próximas tareas</h2><button type="button" data-task-panel-toggle="upcoming" aria-expanded="true" aria-controls="task-upcoming-content" aria-label="Contraer próximas tareas">⌃</button></header>
+                        <div class="task-side-content" id="task-upcoming-content" data-task-panel-content="upcoming">
+                        <div class="task-upcoming-list" data-task-upcoming-list>
+                            <article class="task-upcoming-item" data-upcoming-task data-task-id="task-login-viomp3">
+                                <div class="task-upcoming-project">
+                                    <img src="assets/img/tasks/upcoming/app-movil.png" alt="" aria-hidden="true" />
+                                    <span>App Móvil VioMp3</span>
+                                </div>
+                                <span class="task-upcoming-priority task-upcoming-priority--high"><span>Alta</span><img src="assets/img/tasks/upcoming/priority-high.svg" alt="" aria-hidden="true" /></span>
+                            </article>
+                            <article class="task-upcoming-item" data-upcoming-task data-task-id="task-login-web-store">
+                                <div class="task-upcoming-project">
+                                    <img src="assets/img/tasks/upcoming/web-store.png" alt="" aria-hidden="true" />
+                                    <span>Web store</span>
+                                </div>
+                                <span class="task-upcoming-priority task-upcoming-priority--medium"><span>Media</span><img src="assets/img/tasks/upcoming/priority-medium.svg" alt="" aria-hidden="true" /></span>
+                            </article>
+                            <article class="task-upcoming-item" data-upcoming-task data-task-id="task-login-hotel">
+                                <div class="task-upcoming-project">
+                                    <img src="assets/img/tasks/upcoming/sistema-hotelero.png" alt="" aria-hidden="true" />
+                                    <span>Sistema hotelero</span>
+                                </div>
+                                <span class="task-upcoming-priority task-upcoming-priority--low"><span>Baja</span><img src="assets/img/tasks/upcoming/priority-low.svg" alt="" aria-hidden="true" /></span>
+                            </article>
+                        </div>
+                        <button class="task-upcoming-all" type="button" data-task-upcoming-all>
+                            <span>Ver todas las tareas</span>
+                            <img src="assets/img/tasks/upcoming/arrow-right.svg" alt="" aria-hidden="true" />
+                        </button>
+                        </div>
+                    </section>
+                </aside>
+            </section>
+        </main>
+    </div>
+
+    <script src="assets/vendor/gsap-3.12.5.min.js"></script>
+    <script src="js/components/technova-navbar.js"></script>
+    <script src="js/navbar.js"></script>
+    <script>
+        window.updateRecurringExpensesUI = window.updateRecurringExpensesUI || function () {};
+    </script>
+    <script src="js/notifications.js"></script>
+    <script src="js/pages/tasks-api.js?v=1"></script>
+    <script src="js/pages/tasks.js"></script>
+    <script src="js/pages/tasks-entry.js"></script>
+</body>
+</html>

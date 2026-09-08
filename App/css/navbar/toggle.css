@@ -1,0 +1,26 @@
+/* Modulo: Boton responsive del navbar. Orden preservado desde el CSS original. */
+/* GUÍA: botón hamburguesa consumido por navbar.js; sus tres spans forman el icono y aria-expanded comunica el estado. */
+
+.dashboard .menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  margin: 10px;
+  border: 1px solid #404040;
+  border-radius: 8px;
+  background: rgba(7, 37, 65, 0.35);
+  cursor: pointer;
+}
+
+.dashboard .menu-toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background-color: #ffffff;
+  border-radius: 2px;
+}
+

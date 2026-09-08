@@ -1,0 +1,23 @@
+# Configuración privada y credenciales
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+/api/config/database.php
+/api/config/environment.php
+
+# Dependencias y archivos temporales
+node_modules/
+vendor/
+!App/assets/vendor/
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Bases de datos y datos locales
+*.sqlite
+*.sqlite3
+*.db

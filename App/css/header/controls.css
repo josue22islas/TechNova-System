@@ -1,0 +1,607 @@
+/* Modulo: Selector de periodo y controles del encabezado. Orden preservado desde dashboard.css original. */
+/* GUÍA: estados visuales de selectores y botones. periods.js administra apertura y accesibilidad; este archivo no contiene lógica. */
+
+/* =========================================
+   SELECTOR DE PERIODO
+   ========================================= */
+
+.dashboard .report-period-wrapper {
+
+    position: relative;
+ z-index: 5000;
+    flex: 1;
+
+    max-width: 255px;
+
+}
+
+.dashboard .report-period-menu {
+    z-index: 9999;
+}
+
+
+/* Botón */
+
+.dashboard .report-period-button {
+
+    cursor: pointer;
+
+    position: relative;
+
+    overflow: hidden;
+
+    isolation: isolate;
+
+    transition:
+
+        transform .28s ease,
+
+        border-color .28s ease,
+
+        box-shadow .28s ease,
+
+        background .28s ease;
+
+}
+
+
+/* Hover */
+
+.dashboard .report-period-button:hover {
+
+    transform: translateY(-2px);
+
+    border-color:
+        rgba(120,170,255,.18);
+
+    box-shadow:
+
+        inset 0 1px 0
+        rgba(255,255,255,.16),
+
+        0 12px 26px
+        rgba(0,0,0,.20),
+
+        0 0 18px
+        rgba(60,120,255,.08);
+
+}
+
+
+/* =========================================
+   REFLEJO LIQUID GLASS
+   ========================================= */
+
+.dashboard
+.report-period-button::after {
+
+    content:"";
+
+    position:absolute;
+
+    top:-90%;
+
+    left:-50%;
+
+    width:34%;
+
+    height:280%;
+
+    pointer-events:none;
+
+    opacity:0;
+
+    transform:
+
+        rotate(22deg)
+
+        translateX(-60%);
+
+    background:
+
+        linear-gradient(
+
+            90deg,
+
+            transparent,
+
+            rgba(255,255,255,.15),
+
+            rgba(175,210,255,.38),
+
+            rgba(255,255,255,.12),
+
+            transparent
+
+        );
+
+    filter: blur(2px);
+
+}
+
+
+.dashboard
+.report-period-button:hover::after {
+
+    opacity:1;
+
+    animation:
+
+        reportButtonShine
+
+        1.8s
+
+        cubic-bezier(.22,.61,.36,1)
+
+        forwards;
+
+}
+
+
+@keyframes reportButtonShine {
+
+    from {
+
+        transform:
+
+            rotate(22deg)
+
+            translateX(-60%);
+
+    }
+
+    to {
+
+        transform:
+
+            rotate(22deg)
+
+            translateX(450%);
+
+    }
+
+}
+
+
+/* Flecha */
+
+.dashboard
+.report-period-arrow {
+
+    transition:
+        transform .25s ease;
+
+}
+
+
+.dashboard
+.report-period-wrapper.is-open
+.report-period-arrow {
+
+    transform:
+        rotate(180deg);
+
+}
+
+
+/* =========================================
+   MENÚ
+   ========================================= */
+
+.dashboard
+.report-period-menu {
+
+    position:absolute;
+
+    top: calc(100% + 10px);
+
+    right:0;
+
+    width:280px;
+
+    padding:14px;
+
+    border-radius:16px;
+
+    z-index:2000;
+
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.07),
+            rgba(13,40,180,.08),
+            rgba(3,5,30,.80)
+        );
+
+
+    border:
+        1px solid
+        rgba(180,205,255,.15);
+
+
+    backdrop-filter:
+        blur(24px)
+        saturate(130%);
+
+    -webkit-backdrop-filter:
+        blur(24px)
+        saturate(130%);
+
+
+    box-shadow:
+
+        inset 0 1px 0
+        rgba(255,255,255,.14),
+
+        0 22px 50px
+        rgba(0,0,0,.42);
+
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transform:
+        translateY(-8px)
+        scale(.98);
+
+    transition:
+
+        opacity .22s ease,
+
+        transform .22s ease,
+
+        visibility .22s;
+
+}
+
+
+.dashboard
+.report-period-wrapper.is-open
+.report-period-menu {
+
+    opacity:1;
+
+    visibility:visible;
+
+    transform:
+        translateY(0)
+        scale(1);
+
+}
+
+
+/* =========================================
+   HEADER DEL SELECTOR
+   ========================================= */
+
+.dashboard
+.report-period-header {
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    margin-bottom:14px;
+
+}
+
+
+.dashboard
+.report-current-month {
+
+    color:#ffffff;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    text-align:center;
+
+    flex:1;
+
+}
+
+
+/* Flechas anterior/siguiente */
+
+.dashboard
+.period-nav-button {
+
+    width:34px;
+
+    height:34px;
+
+    border-radius:9px;
+
+    border:
+
+        1px solid
+        rgba(255,255,255,.10);
+
+    color:#ffffff;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+    background:
+
+        rgba(255,255,255,.035);
+
+    transition:
+
+        transform .2s ease,
+
+        background .2s ease,
+
+        border-color .2s ease;
+
+}
+
+
+.dashboard
+.period-nav-button:hover {
+
+    transform:
+        translateY(-1px);
+
+    background:
+
+        rgba(40,90,220,.18);
+
+    border-color:
+
+        rgba(120,170,255,.22);
+
+}
+
+
+/* =========================================
+   LISTA DE MESES
+   ========================================= */
+
+.dashboard
+.report-month-list {
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:7px;
+
+}
+
+
+.dashboard
+.report-month-option {
+
+    padding:8px 5px;
+
+    border-radius:8px;
+
+    border:
+        1px solid transparent;
+
+    color:
+        rgba(255,255,255,.70);
+
+    background:
+        transparent;
+
+    cursor:pointer;
+
+    font-size:11px;
+
+    text-align:center;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        transform .2s ease;
+
+}
+
+
+.dashboard
+.report-month-option:hover {
+
+    color:#ffffff;
+
+    transform:
+        translateY(-1px);
+
+    background:
+
+        rgba(40,80,220,.12);
+
+}
+
+
+.dashboard
+.report-month-option.active {
+
+    color:#ffffff;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            rgba(43,89,225,.32),
+            rgba(13,110,253,.10)
+        );
+
+    border-color:
+
+        rgba(130,170,255,.20);
+
+}
+
+
+/* Responsive */
+
+@media(max-width:640px){
+
+    .dashboard
+    .report-period-wrapper {
+
+        max-width:none;
+
+        width:100%;
+
+    }
+
+
+    .dashboard
+    .report-period-menu {
+
+        left:0;
+
+        right:auto;
+
+        width:min(
+            300px,
+            calc(100vw - 40px)
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   FIX DEFINITIVO - SELECTOR DE PERIODO SOBRE LAS CARDS
+   ========================================================= */
+
+/*
+   El dropdown vive dentro de row-3.
+   Por eso debemos elevar TODO row-3 por encima del contenido.
+*/
+
+.dashboard .row-3 {
+    position: relative;
+
+    z-index: 100;
+
+    overflow: visible !important;
+}
+
+
+/*
+   El contenido inferior queda en un nivel menor.
+*/
+
+.dashboard .div-3 {
+    position: relative;
+
+    z-index: 1;
+}
+
+
+/*
+   Contenedor de controles del header
+*/
+
+.dashboard .row-4 {
+    position: relative;
+
+    z-index: 110;
+
+    overflow: visible !important;
+}
+
+
+/*
+   Wrapper del selector
+*/
+
+.dashboard .report-period-wrapper {
+
+    position: relative;
+
+    z-index: 120;
+
+    overflow: visible !important;
+}
+
+
+/*
+   Dropdown
+*/
+
+.dashboard .report-period-menu {
+
+    position: absolute;
+
+    top: calc(100% + 10px);
+
+    right: 0;
+
+    width: 280px;
+
+    padding: 14px;
+
+    border-radius: 16px;
+
+
+    /*
+       Ya no necesitamos valores absurdos como 9999,
+       porque elevamos el padre correctamente.
+    */
+
+    z-index: 150;
+
+
+    /*
+       Fondo más sólido.
+       Sigue siendo Liquid Glass,
+       pero ya no se confunde con lo que hay detrás.
+    */
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.08),
+            rgba(15,35,140,.16) 38%,
+            rgba(3,5,30,.96) 100%
+        );
+
+
+    border:
+        1px solid rgba(180,205,255,.22);
+
+
+    -webkit-backdrop-filter:
+        blur(32px)
+        saturate(135%);
+
+    backdrop-filter:
+        blur(32px)
+        saturate(135%);
+
+
+    box-shadow:
+
+        inset 0 1px 0
+        rgba(255,255,255,.16),
+
+        0 25px 60px
+        rgba(0,0,0,.62),
+
+        0 0 30px
+        rgba(20,60,180,.09);
+
+
+    isolation: isolate;
+
+}
+

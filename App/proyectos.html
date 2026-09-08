@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Proyectos | TechNova Solutions</title>
+    <link href="assets/vendor/meyer-reset-2.0.min.css" rel="stylesheet" />
+    <link href="css/globals.css" rel="stylesheet" />
+    <link href="css/layout/base.css" rel="stylesheet" />
+    <link href="css/navbar/structure.css" rel="stylesheet" />
+    <link href="css/navbar/toggle.css" rel="stylesheet" />
+    <link href="css/responsive.css" rel="stylesheet" />
+    <link href="css/effects.css" rel="stylesheet" />
+    <link href="css/navbar/base.css" rel="stylesheet" />
+    <link href="css/header/base.css" rel="stylesheet" />
+    <link href="css/notifications/button.css" rel="stylesheet" />
+    <link href="css/header/controls.css" rel="stylesheet" />
+    <link href="css/notifications/panel.css" rel="stylesheet" />
+    <link href="css/navbar/items.css" rel="stylesheet" />
+    <link href="css/pages/proyectos.css" rel="stylesheet" />
+    <link href="css/charts/financial-chart.css" rel="stylesheet" />
+    <link href="css/pages/projects-charts.css" rel="stylesheet" />
+</head>
+<body>
+    <!--
+        GUÍA DE LA VISTA PROYECTOS
+        1. Navbar compartido: solo Proyectos lleva aria-current="page".
+        2. Encabezado: búsqueda, filtros, nuevo proyecto y notificaciones.
+        3. project-metrics: carrusel accesible de métricas.
+        4. projects-controls/results: filtros, modos de vista y tarjetas.
+        5. project-details: deriva sus datos de la tarjeta seleccionada.
+        6. projects-analytics: tres gráficas administradas por projects-charts.js.
+        7. Los atributos data-projects-*-api vacíos activan el fallback estático.
+        No insertar PHP aquí; el backend debe responder JSON mediante endpoints.
+    -->
+    <!-- Cuando exista el backend: summary-api para métricas y list-api para filtros/listado. -->
+    <div class="dashboard projects-page" data-projects-summary-api="" data-projects-list-api="" data-projects-analytics-api="">
+        <technova-navbar active="projects">
+            <noscript>
+                <nav aria-label="Navegación principal">
+                    <a href="index.html">Dashboard</a>
+                    <a href="proyectos.html">Proyectos</a>
+                    <a href="tareas.html">Tareas</a>
+                </nav>
+            </noscript>
+        </technova-navbar>
+
+        <main class="projects-shell">
+            <header class="projects-header glass-reactive">
+                <div class="projects-heading">
+                    <h1>Proyectos</h1>
+                    <p>Administra y da seguimiento a todos tus proyectos</p>
+                </div>
+                <div class="projects-header-actions" aria-label="Acciones de proyectos">
+                    <label class="projects-search">
+                        <span class="sr-only">Buscar proyecto</span>
+                        <img src="assets/img/projects/search-icon.svg" alt="" aria-hidden="true" />
+                        <input type="search" name="project-search" placeholder="Buscar proyecto..." autocomplete="off" data-project-search aria-controls="projects-list" aria-label="Buscar proyectos" />
+                    </label>
+
+                    <button class="projects-action projects-filter-button" type="button" data-advanced-filter-open aria-controls="projects-advanced-filters" aria-expanded="false" aria-label="Abrir filtros de proyectos">
+                        <img src="assets/img/projects/filter-icon.svg" alt="" aria-hidden="true" />
+                        <span>Filtros</span>
+                        <span class="projects-filter-badge" data-advanced-filter-count hidden>0</span>
+                    </button>
+
+                    <a class="row-6 projects-new-button" href="#nuevo-proyecto">
+                        <img class="image" src="assets/img/image-13@2x.png" alt="" aria-hidden="true" />
+                        <span class="text-wrapper-7">Nuevo proyecto</span>
+                    </a>
+
+                    <div class="notification-wrapper">
+                        <div class="row-7 notification-button" id="notificationButton" role="button" tabindex="0" aria-expanded="false" aria-label="Abrir notificaciones">
+                            <img class="image-2" src="assets/img/image-14@2x.png" alt="" aria-hidden="true" />
+                            <div class="div-wrapper" id="notificationBadge"><span class="text-wrapper-8" id="notificationCount">3</span></div>
+                        </div>
+                        <div class="notification-panel" id="notificationPanel" aria-label="Panel de notificaciones">
+                            <div class="notification-panel-header">
+                                <div class="notification-panel-title">Notificaciones <span id="notificationTotal">(3)</span></div>
+                                <div class="notification-panel-actions">
+                                    <button type="button" class="notification-mark-all" id="notificationMarkAll">Marcar leídas</button>
+                                    <button type="button" class="notification-delete-all" id="notificationDeleteAll">Eliminar todas</button>
+                                </div>
+                            </div>
+                            <div class="notification-list" id="notificationList">
+                                <div class="notification-item unread" data-notification-id="1" data-created-at="2026-08-20T09:00:00">
+                                    <div class="notification-icon project">P</div>
+                                    <div class="notification-content"><div class="notification-title">Nuevo proyecto creado</div><div class="notification-description">Se registró un nuevo proyecto en TechNova.</div><div class="notification-meta"><div class="notification-time">Recientemente</div><button type="button" class="notification-delete" aria-label="Eliminar notificación">Eliminar</button></div></div><span class="notification-status"></span>
+                                </div>
+                                <div class="notification-item unread" data-notification-id="2" data-created-at="2026-08-20T08:30:00">
+                                    <div class="notification-icon alert">!</div>
+                                    <div class="notification-content"><div class="notification-title">Proyecto actualizado</div><div class="notification-description">El progreso de un proyecto fue actualizado.</div><div class="notification-meta"><div class="notification-time">Hace 30 minutos</div><button type="button" class="notification-delete" aria-label="Eliminar notificación">Eliminar</button></div></div><span class="notification-status"></span>
+                                </div>
+                                <div class="notification-item unread" data-notification-id="3" data-created-at="2026-08-20T08:00:00">
+                                    <div class="notification-icon system">S</div>
+                                    <div class="notification-content"><div class="notification-title">Recordatorio del sistema</div><div class="notification-description">Revisa las fechas límite de tus proyectos.</div><div class="notification-meta"><div class="notification-time">Hace 1 hora</div><button type="button" class="notification-delete" aria-label="Eliminar notificación">Eliminar</button></div></div><span class="notification-status"></span>
+                                </div>
+                            </div>
+                            <div class="notification-panel-footer"><button type="button" class="notification-view-all">Ver todas las notificaciones</button></div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <button class="projects-filter-backdrop" type="button" data-advanced-filter-close tabindex="-1" aria-label="Cerrar filtros" hidden></button>
+            <section class="projects-advanced-filter-panel" id="projects-advanced-filters" data-advanced-filter-panel role="dialog" aria-modal="true" aria-labelledby="projects-advanced-filter-title" hidden>
+                <header class="projects-advanced-filter-header">
+                    <div><span>Vista avanzada</span><h2 id="projects-advanced-filter-title">Filtrar proyectos</h2></div>
+                    <button type="button" data-advanced-filter-close aria-label="Cerrar filtros">×</button>
+                </header>
+                <form class="projects-advanced-filter-form" data-advanced-filter-form>
+                    <div class="projects-filter-field">
+                        <label for="advanced-filter-status">Estado</label>
+                        <select id="advanced-filter-status" name="status">
+                            <option value="all">Todos</option><option value="pinned">Fijados</option><option value="in-progress">En progreso</option><option value="completed">Completados</option><option value="paused">Pausados</option><option value="cancelled">Cancelados</option>
+                        </select>
+                    </div>
+                    <fieldset class="projects-filter-field projects-filter-priority">
+                        <legend>Prioridad</legend>
+                        <label><input type="radio" name="priority" value="all" checked /><span>Todas</span></label>
+                        <label><input type="radio" name="priority" value="high" /><span>Alta</span></label>
+                        <label><input type="radio" name="priority" value="medium" /><span>Media</span></label>
+                        <label><input type="radio" name="priority" value="low" /><span>Baja</span></label>
+                    </fieldset>
+                    <div class="projects-filter-grid">
+                        <div class="projects-filter-field"><label for="advanced-filter-due">Fecha límite</label><select id="advanced-filter-due" name="due"><option value="all">Cualquier fecha</option><option value="overdue">Vencidos</option><option value="soon">Próximos 7 días</option><option value="upcoming">Más de 7 días</option></select></div>
+                        <div class="projects-filter-field"><label for="advanced-filter-progress">Progreso</label><select id="advanced-filter-progress" name="progress"><option value="all">Cualquier progreso</option><option value="0-25">0–25%</option><option value="26-50">26–50%</option><option value="51-75">51–75%</option><option value="76-100">76–100%</option></select></div>
+                        <div class="projects-filter-field"><label for="advanced-filter-budget">Presupuesto</label><select id="advanced-filter-budget" name="budget"><option value="all">Cualquier presupuesto</option><option value="defined">Definido</option><option value="undefined">Sin definir</option><option value="within">Dentro del límite</option><option value="over">Excedido</option></select></div>
+                        <div class="projects-filter-field"><label for="advanced-filter-tag">Etiqueta</label><select id="advanced-filter-tag" name="tag"><option value="all">Todas las etiquetas</option><option value="front-end">Front-end</option><option value="back-end">Back-end</option></select></div>
+                    </div>
+                    <div class="projects-filter-field"><label for="advanced-filter-person">Responsable o cliente</label><input id="advanced-filter-person" name="person" type="search" placeholder="Nombre, rol o cliente" autocomplete="off" /></div>
+                    <div class="projects-filter-field"><label for="advanced-filter-sort">Ordenar por</label><select id="advanced-filter-sort" name="sort"><option value="default">Orden original</option><option value="due-asc">Fecha límite</option><option value="priority">Prioridad</option><option value="progress-desc">Mayor progreso</option><option value="name-asc">Nombre A–Z</option></select></div>
+                    <footer class="projects-advanced-filter-actions"><button type="reset" data-advanced-filter-clear>Limpiar</button><button type="submit">Aplicar filtros</button></footer>
+                </form>
+            </section>
+
+            <section class="projects-stage" aria-label="Contenido de proyectos">
+                <section class="project-metrics" aria-labelledby="project-metrics-title">
+                    <h2 class="sr-only" id="project-metrics-title">Resumen de proyectos</h2>
+
+                    <div class="project-metrics-viewport" data-metrics-viewport tabindex="0" aria-label="Métricas de proyectos">
+                        <div class="project-metrics-track">
+                            <article class="project-metric-card" data-project-metric="totalValue">
+                                <img class="project-metric-icon" src="assets/img/projects/metrics/total-value.png" alt="" aria-hidden="true" />
+                                <div class="project-metric-content">
+                                    <h3>Valor total de proyectos</h3>
+                                    <p class="project-metric-value" data-metric-value>$237,345</p>
+                                </div>
+                                <p class="project-metric-change"><strong data-metric-change>33.3%</strong> <span data-metric-context>del total</span></p>
+                            </article>
+
+                            <article class="project-metric-card" data-project-metric="pending">
+                                <img class="project-metric-icon" src="assets/img/projects/metrics/pending.png" alt="" aria-hidden="true" />
+                                <div class="project-metric-content">
+                                    <h3>Pendientes</h3>
+                                    <p class="project-metric-value" data-metric-value>4</p>
+                                </div>
+                                <p class="project-metric-change"><strong data-metric-change>33.3%</strong> <span data-metric-context>del total</span></p>
+                            </article>
+
+                            <article class="project-metric-card project-metric-card--featured" data-project-metric="total">
+                                <img class="project-metric-icon" src="assets/img/projects/metrics/total-projects.png" alt="" aria-hidden="true" />
+                                <div class="project-metric-content">
+                                    <h3>Proyectos totales</h3>
+                                    <p class="project-metric-value" data-metric-value>18</p>
+                                </div>
+                                <p class="project-metric-change"><strong data-metric-change>+2</strong> <span data-metric-context>este mes</span></p>
+                            </article>
+
+                            <article class="project-metric-card" data-project-metric="completed">
+                                <img class="project-metric-icon" src="assets/img/projects/metrics/completed.png" alt="" aria-hidden="true" />
+                                <div class="project-metric-content">
+                                    <h3>Completados</h3>
+                                    <p class="project-metric-value" data-metric-value>6</p>
+                                </div>
+                                <p class="project-metric-change"><strong data-metric-change>33.3%</strong> <span data-metric-context>del total</span></p>
+                            </article>
+
+                            <article class="project-metric-card" data-project-metric="inProgress">
+                                <img class="project-metric-icon" src="assets/img/projects/metrics/in-progress.png" alt="" aria-hidden="true" />
+                                <div class="project-metric-content">
+                                    <h3>En progreso</h3>
+                                    <p class="project-metric-value" data-metric-value>6</p>
+                                </div>
+                                <p class="project-metric-change"><strong data-metric-change>33.3%</strong> <span data-metric-context>del total</span></p>
+                            </article>
+                        </div>
+                    </div>
+
+                    <div class="project-metrics-navigation" aria-label="Navegación de métricas">
+                        <button type="button" data-metrics-direction="previous" aria-label="Ver métricas anteriores">‹</button>
+                        <div class="project-metrics-pagination" data-metrics-pagination role="group" aria-label="Seleccionar métrica"></div>
+                        <span class="project-metrics-counter" data-metrics-counter aria-live="polite">3 / 5</span>
+                        <button type="button" data-metrics-direction="next" aria-label="Ver métricas siguientes">›</button>
+                    </div>
+                </section>
+
+                <section class="projects-controls" aria-label="Filtros y visualización de proyectos">
+                    <div class="projects-status-filter-shell">
+                        <button class="projects-filter-scroll projects-filter-scroll--previous" type="button" data-filter-scroll="previous" aria-label="Ver filtros anteriores">‹</button>
+                        <div class="projects-status-filters" data-project-filter-strip role="group" aria-label="Filtrar proyectos por estado">
+                        <button class="project-filter is-active" type="button" data-project-filter="all" aria-pressed="true">
+                            <img src="assets/img/projects/filters/all.svg" alt="" aria-hidden="true" />
+                            <span class="project-filter-label">Todo</span>
+                            <span class="project-filter-count" data-project-filter-count>0</span>
+                        </button>
+                        <button class="project-filter" type="button" data-project-filter="pinned" aria-pressed="false">
+                            <img src="assets/img/projects/filters/pinned.svg" alt="" aria-hidden="true" />
+                            <span class="project-filter-label">Fijado</span>
+                            <span class="project-filter-count" data-project-filter-count>0</span>
+                        </button>
+                        <button class="project-filter" type="button" data-project-filter="in-progress" aria-pressed="false">
+                            <img src="assets/img/projects/filters/in-progress.svg" alt="" aria-hidden="true" />
+                            <span class="project-filter-label">En progreso</span>
+                            <span class="project-filter-count" data-project-filter-count>0</span>
+                        </button>
+                        <button class="project-filter" type="button" data-project-filter="completed" aria-pressed="false">
+                            <img src="assets/img/projects/filters/completed.svg" alt="" aria-hidden="true" />
+                            <span class="project-filter-label">Completado</span>
+                            <span class="project-filter-count" data-project-filter-count>0</span>
+                        </button>
+                        <button class="project-filter" type="button" data-project-filter="paused" aria-pressed="false">
+                            <img src="assets/img/projects/filters/paused.svg" alt="" aria-hidden="true" />
+                            <span class="project-filter-label">Pausado</span>
+                            <span class="project-filter-count" data-project-filter-count>0</span>
+                        </button>
+                        <button class="project-filter" type="button" data-project-filter="cancelled" aria-pressed="false">
+                            <img src="assets/img/projects/filters/cancelled.svg" alt="" aria-hidden="true" />
+                            <span class="project-filter-label">Cancelados</span>
+                            <span class="project-filter-count" data-project-filter-count>0</span>
+                        </button>
+                        </div>
+                        <button class="projects-filter-scroll projects-filter-scroll--next" type="button" data-filter-scroll="next" aria-label="Ver filtros siguientes">›</button>
+                    </div>
+
+                    <div class="projects-view-switcher" role="group" aria-label="Cambiar visualización de proyectos">
+                        <button type="button" data-project-view="list" aria-pressed="false">
+                            <img src="assets/img/projects/filters/list.svg" alt="" aria-hidden="true" />
+                            <span>Lista</span>
+                        </button>
+                        <button class="is-active" type="button" data-project-view="cards" aria-pressed="true">
+                            <img src="assets/img/projects/filters/cards.svg" alt="" aria-hidden="true" />
+                            <span>Tarjeta</span>
+                        </button>
+                    </div>
+                </section>
+
+                <section class="project-results" aria-labelledby="project-results-title" aria-live="polite">
+                    <h2 class="sr-only" id="project-results-title">Proyectos encontrados</h2>
+
+                    <div class="project-cards-grid" id="projects-list" data-project-results>
+                        <article class="project-card is-selected" data-project-id="app-mobile-viomp3" data-status="in-progress" data-pinned="true" data-priority="high" tabindex="0" role="button" aria-selected="true" aria-controls="project-details-panel">
+                            <header class="project-card-header">
+                                <div class="project-card-title">
+                                    <img src="assets/img/projects/cards/app-mobile.png" alt="" aria-hidden="true" />
+                                    <h3>App Movil VioMp3</h3>
+                                </div>
+                                <button class="project-card-menu" type="button" aria-label="Más opciones de App Movil VioMp3">
+                                    <img src="assets/img/projects/cards/more.svg" alt="" aria-hidden="true" />
+                                </button>
+                            </header>
+                            <div class="project-card-progress">
+                                <div class="project-progress-labels">
+                                    <span><img src="assets/img/projects/cards/tasks.svg" alt="" aria-hidden="true" />8/16</span>
+                                    <span>50% completado</span>
+                                </div>
+                                <div class="project-progress-track" role="progressbar" aria-label="Progreso de App Movil VioMp3" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+                                    <span style="--project-progress: 50%"></span>
+                                </div>
+                            </div>
+                            <div class="project-card-meta">
+                                <div class="project-assignees">
+                                    <span class="project-meta-label">Asignado a</span>
+                                    <div class="project-avatar-stack" aria-label="5 integrantes asignados">
+                                        <img src="assets/img/projects/cards/member-1.jpg" alt="Integrante 1" />
+                                        <img src="assets/img/projects/cards/member-2.jpg" alt="Integrante 2" />
+                                        <img src="assets/img/projects/cards/member-3.png" alt="Integrante 3" />
+                                        <span>+2</span>
+                                    </div>
+                                </div>
+                                <div class="project-due-date">
+                                    <span class="project-meta-label">Fecha límite</span>
+                                    <time datetime="2026-08-08"><img src="assets/img/projects/cards/calendar.svg" alt="" aria-hidden="true" />Agosto 08, 2026</time>
+                                </div>
+                            </div>
+                            <footer class="project-card-tags">
+                                <span class="project-tag project-tag--frontend">Front-end</span>
+                                <span class="project-tag project-tag--backend">Back-end</span>
+                                <span class="project-status project-status--progress">En progreso</span>
+                            </footer>
+                        </article>
+
+                        <article class="project-card" data-project-id="web-store" data-status="in-progress" data-pinned="false" data-priority="medium" tabindex="0" role="button" aria-selected="false" aria-controls="project-details-panel">
+                            <header class="project-card-header">
+                                <div class="project-card-title">
+                                    <img src="assets/img/projects/cards/web-store.png" alt="" aria-hidden="true" />
+                                    <h3>Web store</h3>
+                                </div>
+                                <button class="project-card-menu" type="button" aria-label="Más opciones de Web store"><img src="assets/img/projects/cards/more.svg" alt="" aria-hidden="true" /></button>
+                            </header>
+                            <div class="project-card-progress">
+                                <div class="project-progress-labels"><span><img src="assets/img/projects/cards/tasks.svg" alt="" aria-hidden="true" />4/11</span><span>36% completado</span></div>
+                                <div class="project-progress-track" role="progressbar" aria-label="Progreso de Web store" aria-valuemin="0" aria-valuemax="100" aria-valuenow="36"><span style="--project-progress: 36%"></span></div>
+                            </div>
+                            <div class="project-card-meta">
+                                <div class="project-assignees"><span class="project-meta-label">Asignado a</span><div class="project-avatar-stack" aria-label="3 integrantes asignados"><img src="assets/img/projects/cards/member-1.jpg" alt="Integrante 1" /><img src="assets/img/projects/cards/member-2.jpg" alt="Integrante 2" /><span>+1</span></div></div>
+                                <div class="project-due-date"><span class="project-meta-label">Fecha límite</span><time datetime="2026-01-12"><img src="assets/img/projects/cards/calendar.svg" alt="" aria-hidden="true" />Enero 12, 2026</time></div>
+                            </div>
+                            <footer class="project-card-tags"><span class="project-tag project-tag--frontend">Front-end</span><span class="project-tag project-tag--backend">Back-end</span><span class="project-status project-status--progress">En progreso</span></footer>
+                        </article>
+
+                        <article class="project-card" data-project-id="hotel-system" data-status="paused" data-pinned="false" data-priority="medium" tabindex="0" role="button" aria-selected="false" aria-controls="project-details-panel">
+                            <header class="project-card-header">
+                                <div class="project-card-title"><img src="assets/img/projects/cards/hotel.png" alt="" aria-hidden="true" /><h3>Sistema hotelero</h3></div>
+                                <button class="project-card-menu" type="button" aria-label="Más opciones de Sistema hotelero"><img src="assets/img/projects/cards/more.svg" alt="" aria-hidden="true" /></button>
+                            </header>
+                            <div class="project-card-progress">
+                                <div class="project-progress-labels"><span><img src="assets/img/projects/cards/tasks.svg" alt="" aria-hidden="true" />3/14</span><span>21% completado</span></div>
+                                <div class="project-progress-track" role="progressbar" aria-label="Progreso de Sistema hotelero" aria-valuemin="0" aria-valuemax="100" aria-valuenow="21"><span style="--project-progress: 21%"></span></div>
+                            </div>
+                            <div class="project-card-meta">
+                                <div class="project-assignees"><span class="project-meta-label">Asignado a</span><div class="project-avatar-stack" aria-label="5 integrantes asignados"><img src="assets/img/projects/cards/member-4.jpg" alt="Integrante 1" /><img src="assets/img/projects/cards/member-5.jpg" alt="Integrante 2" /><img src="assets/img/projects/cards/member-6.png" alt="Integrante 3" /><span>+2</span></div></div>
+                                <div class="project-due-date"><span class="project-meta-label">Fecha límite</span><time datetime="2026-03-08"><img src="assets/img/projects/cards/calendar.svg" alt="" aria-hidden="true" />Marzo 08, 2026</time></div>
+                            </div>
+                            <footer class="project-card-tags"><span class="project-tag project-tag--frontend">Front-end</span><span class="project-tag project-tag--backend">Back-end</span><span class="project-status project-status--paused">Pausado</span></footer>
+                        </article>
+
+                        <article class="project-card" data-project-id="worklist-app" data-status="in-progress" data-pinned="false" data-priority="low" tabindex="0" role="button" aria-selected="false" aria-controls="project-details-panel">
+                            <header class="project-card-header">
+                                <div class="project-card-title"><img src="assets/img/projects/cards/worklist.png" alt="" aria-hidden="true" /><h3>App worlist</h3></div>
+                                <button class="project-card-menu" type="button" aria-label="Más opciones de App worlist"><img src="assets/img/projects/cards/more.svg" alt="" aria-hidden="true" /></button>
+                            </header>
+                            <div class="project-card-progress">
+                                <div class="project-progress-labels"><span><img src="assets/img/projects/cards/tasks.svg" alt="" aria-hidden="true" />13/19</span><span>68% completado</span></div>
+                                <div class="project-progress-track" role="progressbar" aria-label="Progreso de App worlist" aria-valuemin="0" aria-valuemax="100" aria-valuenow="68"><span style="--project-progress: 68%"></span></div>
+                            </div>
+                            <div class="project-card-meta">
+                                <div class="project-assignees"><span class="project-meta-label">Asignado a</span><div class="project-avatar-stack" aria-label="1 integrante asignado"><img src="assets/img/projects/cards/member-3.png" alt="Integrante asignado" /></div></div>
+                                <div class="project-due-date"><span class="project-meta-label">Fecha límite</span><time datetime="2026-12-22"><img src="assets/img/projects/cards/calendar.svg" alt="" aria-hidden="true" />Diciembre 22, 2026</time></div>
+                            </div>
+                            <footer class="project-card-tags"><span class="project-tag project-tag--frontend">Front-end</span><span class="project-tag project-tag--backend">Back-end</span><span class="project-status project-status--progress">En progreso</span></footer>
+                        </article>
+
+                        <article class="project-card" data-project-id="nova-booking-portal" data-status="in-progress" data-pinned="false" data-priority="high" tabindex="0" role="button" aria-selected="false" aria-controls="project-details-panel">
+                            <header class="project-card-header">
+                                <div class="project-card-title"><img src="assets/img/projects/cards/hotel.png" alt="" aria-hidden="true" /><h3>Portal de Reservas Nova</h3></div>
+                                <button class="project-card-menu" type="button" aria-label="Más opciones de Portal de Reservas Nova"><img src="assets/img/projects/cards/more.svg" alt="" aria-hidden="true" /></button>
+                            </header>
+                            <div class="project-card-progress">
+                                <div class="project-progress-labels"><span><img src="assets/img/projects/cards/tasks.svg" alt="" aria-hidden="true" />12/20</span><span>60% completado</span></div>
+                                <div class="project-progress-track" role="progressbar" aria-label="Progreso de Portal de Reservas Nova" aria-valuemin="0" aria-valuemax="100" aria-valuenow="60"><span style="--project-progress: 60%"></span></div>
+                            </div>
+                            <div class="project-card-meta">
+                                <div class="project-assignees"><span class="project-meta-label">Asignado a</span><div class="project-avatar-stack" aria-label="5 integrantes asignados"><img src="assets/img/projects/cards/member-1.jpg" alt="Josue Admin" /><img src="assets/img/projects/cards/member-4.jpg" alt="Sofía Torres" /><img src="assets/img/projects/cards/member-6.png" alt="Diego Luna" /><span aria-label="2 integrantes adicionales">+2</span></div></div>
+                                <div class="project-due-date"><span class="project-meta-label">Fecha límite</span><time datetime="2027-02-18"><img src="assets/img/projects/cards/calendar.svg" alt="" aria-hidden="true" />Febrero 18, 2027</time></div>
+                            </div>
+                            <footer class="project-card-tags"><span class="project-tag project-tag--frontend">Front-end</span><span class="project-tag project-tag--backend">Back-end</span><span class="project-status project-status--progress">En progreso</span></footer>
+                        </article>
+
+                        <article class="project-card" data-project-id="taskflow-app" data-status="paused" data-pinned="false" data-priority="medium" tabindex="0" role="button" aria-selected="false" aria-controls="project-details-panel">
+                            <header class="project-card-header">
+                                <div class="project-card-title"><img src="assets/img/projects/cards/worklist.png" alt="" aria-hidden="true" /><h3>App TaskFlow</h3></div>
+                                <button class="project-card-menu" type="button" aria-label="Más opciones de App TaskFlow"><img src="assets/img/projects/cards/more.svg" alt="" aria-hidden="true" /></button>
+                            </header>
+                            <div class="project-card-progress">
+                                <div class="project-progress-labels"><span><img src="assets/img/projects/cards/tasks.svg" alt="" aria-hidden="true" />9/24</span><span>38% completado</span></div>
+                                <div class="project-progress-track" role="progressbar" aria-label="Progreso de App TaskFlow" aria-valuemin="0" aria-valuemax="100" aria-valuenow="38"><span style="--project-progress: 38%"></span></div>
+                            </div>
+                            <div class="project-card-meta">
+                                <div class="project-assignees"><span class="project-meta-label">Asignado a</span><div class="project-avatar-stack" aria-label="5 integrantes asignados"><img src="assets/img/projects/cards/member-2.jpg" alt="Mariana Ruiz" /><img src="assets/img/projects/cards/member-5.jpg" alt="Carlos Vega" /><img src="assets/img/projects/cards/member-3.png" alt="Andrea Silva" /><span aria-label="2 integrantes adicionales">+2</span></div></div>
+                                <div class="project-due-date"><span class="project-meta-label">Fecha límite</span><time datetime="2027-04-30"><img src="assets/img/projects/cards/calendar.svg" alt="" aria-hidden="true" />Abril 30, 2027</time></div>
+                            </div>
+                            <footer class="project-card-tags"><span class="project-tag project-tag--frontend">Front-end</span><span class="project-tag project-tag--backend">Back-end</span><span class="project-status project-status--paused">Pausado</span></footer>
+                        </article>
+                    </div>
+
+                    <p class="project-empty-state" data-project-empty hidden>No hay proyectos para este filtro.</p>
+                </section>
+
+                <section class="projects-analytics" data-projects-analytics aria-labelledby="projects-analytics-title">
+                    <header class="projects-analytics-heading">
+                        <div>
+                            <span class="projects-analytics-eyebrow">Analítica general</span>
+                            <h2 id="projects-analytics-title">Rendimiento de proyectos</h2>
+                        </div>
+                        <div class="financial-period-wrapper projects-analytics-period-selector">
+                            <div class="row-10 financial-period-button" id="financialPeriodButton" role="button" tabindex="0" aria-expanded="false" aria-haspopup="listbox">
+                                <div class="text-wrapper-12" id="financialPeriodText">Últimos 6 meses</div>
+                                <img class="row-11 financial-period-arrow" src="assets/img/text-input-1.svg" alt="" aria-hidden="true" />
+                            </div>
+                            <div class="financial-period-menu" id="financialPeriodMenu" role="listbox" aria-label="Periodo de la gráfica">
+                                <button type="button" class="financial-period-option" data-period="year">Este año</button>
+                                <button type="button" class="financial-period-option" data-period="month">Este mes</button>
+                                <button type="button" class="financial-period-option" data-period="3months">Últimos 3 meses</button>
+                                <button type="button" class="financial-period-option active" data-period="6months">Últimos 6 meses</button>
+                                <div class="financial-period-divider"></div>
+                                <button type="button" class="financial-period-option" data-period="2026">2026</button>
+                                <button type="button" class="financial-period-option" data-period="2025">2025</button>
+                                <button type="button" class="financial-period-option" data-period="2024">2024</button>
+                            </div>
+                        </div>
+                    </header>
+
+                    <article class="projects-chart-card projects-chart-card--value">
+                        <header class="projects-chart-header">
+                            <div><span class="projects-chart-kicker">Valor acumulado</span><h3>Valor de proyectos</h3></div>
+                            <strong data-project-value-total>$3,390,000 MXN</strong>
+                        </header>
+                        <div class="projects-chart-legend" aria-hidden="true"><span class="is-project-value">Valor del proyecto</span></div>
+                        <div class="projects-chart-canvas projects-chart-canvas--line">
+                            <canvas id="projectsValueChart" aria-label="Evolución mensual del valor de los proyectos en pesos mexicanos" role="img"></canvas>
+                            <div class="financial-hover-line" data-project-value-hover-line aria-hidden="true"></div>
+                            <div class="financial-tooltip" data-project-value-tooltip aria-hidden="true">
+                                <div class="financial-tooltip-month" data-project-value-tooltip-month>Mes</div>
+                                <div class="financial-tooltip-row"><span class="financial-dot income"></span><span>Valor del proyecto</span><strong data-project-value-tooltip-amount>$0 MXN</strong></div>
+                            </div>
+                            <div class="financial-chart-shine" data-project-value-shine aria-hidden="true"></div>
+                        </div>
+                    </article>
+
+                    <div class="projects-analytics-grid">
+                        <article class="projects-chart-card projects-chart-card--summary">
+                            <header class="projects-chart-header"><div><span class="projects-chart-kicker">Distribución actual</span><h3>Resumen de proyectos</h3></div></header>
+                            <div class="projects-summary-layout">
+                                <div class="projects-chart-canvas projects-chart-canvas--doughnut">
+                                    <canvas id="projectsSummaryChart" aria-label="Resumen circular de proyectos por estado" role="img"></canvas>
+                                    <div class="projects-doughnut-total"><strong data-project-summary-total>6</strong><span>Proyectos</span></div>
+                                </div>
+                                <div class="projects-summary-legend" data-project-summary-legend></div>
+                                <div class="financial-chart-shine" data-project-summary-shine aria-hidden="true"></div>
+                            </div>
+                        </article>
+
+                        <article class="projects-chart-card projects-chart-card--clients">
+                            <header class="projects-chart-header"><div><span class="projects-chart-kicker">Cartera activa</span><h3>Estado por cliente</h3></div></header>
+                            <div class="projects-chart-canvas projects-chart-canvas--bars"><canvas id="projectsClientChart" aria-label="Cantidad de proyectos por estado y cliente" role="img"></canvas><div class="financial-chart-shine" data-project-clients-shine aria-hidden="true"></div></div>
+                        </article>
+                    </div>
+                    <p class="projects-analytics-status" data-projects-analytics-status role="status" aria-live="polite"></p>
+                </section>
+
+                <aside class="project-details-panel" id="project-details-panel" data-project-details aria-labelledby="project-details-title">
+                    <header class="project-details-header"><h2 id="project-details-title">Detalles del proyecto</h2><button class="project-details-close" type="button" data-project-details-close aria-label="Cerrar detalles del proyecto">×</button></header>
+                    <div class="project-details-identity">
+                        <img data-detail-icon src="assets/img/projects/cards/app-mobile.png" alt="" aria-hidden="true" />
+                        <div class="project-details-identity-copy">
+                            <h3 data-detail-name>App Movil VioMp3</h3>
+                            <div class="project-detail-heading-meta">
+                                <span class="project-status project-status--progress" data-detail-status>En progreso</span>
+                            </div>
+                            <span class="project-detail-due project-detail-due--overdue" data-detail-due>
+                                <span data-detail-due-copy>Vencido</span>
+                                <span class="project-detail-due-separator" aria-hidden="true">/</span>
+                                <span class="project-detail-priority project-detail-priority--high" data-detail-priority>Alta</span>
+                            </span>
+                        </div>
+                    </div>
+                    <dl class="project-details-facts">
+                        <div><dt>Cliente</dt><dd data-detail-client>TechNova Solutions</dd></div><div><dt>Manager</dt><dd class="project-detail-person"><img src="assets/img/projects/cards/member-1.jpg" alt="" /><span data-detail-manager>Josue Admin</span></dd></div>
+                        <div><dt>Inicio</dt><dd data-detail-start>10 mayo 2026</dd></div><div><dt>Final</dt><dd data-detail-end>10 junio 2027</dd></div><div><dt>Presupuesto</dt><dd data-detail-budget>$8,000</dd></div><div><dt>Gastado</dt><dd data-detail-spent>$1,200</dd></div>
+                    </dl>
+                    <section class="project-detail-progress" aria-labelledby="detail-progress-label">
+                        <div><h3 id="detail-progress-label">Progreso</h3><strong data-detail-progress-label>50%</strong></div>
+                        <p class="project-detail-task-count" data-detail-task-count>8 de 16 tareas completadas</p>
+                        <div class="project-detail-progress-track" role="progressbar" aria-label="Progreso del proyecto seleccionado" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" data-detail-progressbar><span data-detail-progress style="--detail-progress: 50%"></span></div>
+                    </section>
+                    <section class="project-detail-budget" aria-labelledby="detail-budget-label">
+                        <div><h3 id="detail-budget-label">Presupuesto</h3><strong data-detail-budget-percent>15%</strong></div>
+                        <p><span data-detail-budget-spent>$1,200</span> de <span data-detail-budget-total>$8,000</span></p>
+                        <div class="project-detail-budget-track" role="progressbar" aria-label="Presupuesto utilizado" aria-valuemin="0" aria-valuemax="100" aria-valuenow="15" data-detail-budgetbar><span data-detail-budget-progress style="--detail-budget-progress: 15%"></span></div>
+                    </section>
+                    <section class="project-detail-section"><h3>Descripción</h3><p data-detail-description>Desarrollo de app móvil para música online y offline con herramientas avanzadas y comandos de voz inteligentes.</p></section>
+                    <div class="project-detail-compact-tools">
+                        <div class="project-detail-compact-meta">
+                            <section class="project-detail-section project-detail-team"><h3>Equipo</h3><div class="project-detail-avatar-stack" aria-label="5 integrantes del equipo"><img src="assets/img/projects/cards/member-1.jpg" alt="Integrante 1" /><img src="assets/img/projects/cards/member-2.jpg" alt="Integrante 2" /><img src="assets/img/projects/cards/member-3.png" alt="Integrante 3" /><span>+2</span></div></section>
+                            <section class="project-detail-section"><h3>Etiquetas</h3><div class="project-detail-tags" data-detail-tags><span class="project-tag project-tag--frontend">Front-end</span><span class="project-tag project-tag--backend">Back-end</span></div></section>
+                        </div>
+                        <section class="project-detail-section project-quick-actions">
+                            <h3>Acciones rápidas</h3>
+                            <div class="project-quick-actions-row">
+                                <button class="project-quick-action-primary" type="button" data-project-quick-action="tasks"><img src="assets/img/projects/details/asset-12.png" alt="" /><span>Ver tareas</span></button>
+                                <button class="project-quick-actions-trigger" type="button" aria-expanded="false" aria-controls="projectQuickActionsMenu" data-project-quick-actions-trigger><span>Más acciones</span><i aria-hidden="true"></i></button>
+                            </div>
+                            <button class="project-quick-actions-backdrop" type="button" tabindex="-1" aria-label="Cerrar acciones rápidas" data-project-quick-actions-close hidden></button>
+                            <div class="project-quick-actions-menu" id="projectQuickActionsMenu" role="menu" aria-label="Más acciones del proyecto" data-project-quick-actions-menu hidden>
+                                <header><strong>Más acciones</strong><button type="button" aria-label="Cerrar acciones rápidas" data-project-quick-actions-close>×</button></header>
+                                <button type="button" role="menuitem" data-project-quick-action="time"><img src="assets/img/projects/details/asset-8.png" alt="" /><span>Registrar tiempo</span></button>
+                                <button type="button" role="menuitem" data-project-quick-action="budget"><img src="assets/img/projects/details/asset-9.png" alt="" /><span>Ver presupuesto</span></button>
+                                <button type="button" role="menuitem" data-project-quick-action="documents"><img src="assets/img/projects/details/asset-5.png" alt="" /><span>Documentos</span></button>
+                            </div>
+                        </section>
+                    </div>
+                </aside>
+                <button class="project-details-backdrop" type="button" data-project-details-close tabindex="-1" aria-label="Cerrar detalles del proyecto"></button>
+            </section>
+        </main>
+    </div>
+
+    <script src="assets/vendor/chart.umd.js"></script>
+    <script src="assets/vendor/gsap-3.12.5.min.js"></script>
+    <script src="js/components/technova-navbar.js"></script>
+    <script src="js/navbar.js"></script>
+    <script>
+        window.updateRecurringExpensesUI = window.updateRecurringExpensesUI || function () {};
+    </script>
+    <script src="js/notifications.js"></script>
+    <script src="js/api/projects-api.js"></script>
+    <script src="js/periods.js"></script>
+    <script src="js/pages/projects-charts.js"></script>
+    <script src="js/pages/projects.js"></script>
+</body>
+</html>

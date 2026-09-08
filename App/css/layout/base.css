@@ -1,0 +1,13 @@
+/* Modulo: Lienzo principal. Orden preservado desde el CSS original. */
+/* GUÍA: define viewport y fondo raíz .dashboard; no colocar aquí tamaños internos de tarjetas o gráficas. */
+
+.dashboard {
+  background-color: #020120;
+  width:100%;
+    min-height:100vh;
+    height:auto;
+    overflow-x:hidden;
+    overflow-y:auto;
+    position:relative;
+}
+

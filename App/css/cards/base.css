@@ -1,0 +1,152 @@
+/* Modulo: Tarjetas KPI base. Orden preservado desde el CSS original. */
+/* GUÍA: estructura común de las KPI; dashboard-ui.js cambia valores mediante data-kpi-* sin reconstruir estas tarjetas. */
+
+.dashboard .card {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  grid-template-rows: minmax(0, 4fr) minmax(0, 2fr) minmax(0, 1fr);
+  height: 206px;
+  gap: 10px 0px;
+  padding: 7px 10px;
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: blur(2px) brightness(100%) saturate(105%);
+  -webkit-backdrop-filter: blur(2px) brightness(100%) saturate(105%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 1px 0 0 rgba(255, 255, 255, 0.32),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.13),
+    inset -1px 0 1px rgba(0, 0, 0, 0.11);
+  background: linear-gradient(
+    157deg,
+    rgba(13, 4, 255, 0.2) 0%,
+    rgba(2, 116, 222, 0) 100%
+  );
+}
+
+.dashboard .image-wrapper {
+  position: relative;
+  grid-row: 1 / 2;
+  grid-column: 1 / 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+.dashboard .image-3 {
+  position: relative;
+  width: 85px;
+  height: 85px;
+  margin-top: -3.36px;
+  margin-bottom: -3.36px;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.dashboard .text-input {
+  position: relative;
+  grid-row: 3 / 4;
+  grid-column: 1 / 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+.dashboard .element-este-mes {
+  position: relative;
+  flex: 1;
+  margin-top: -4.21px;
+  margin-bottom: -2.21px;
+  font-family: "Arial-Regular", Helvetica;
+  font-weight: 400;
+  color: transparent;
+  font-size: 10px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.dashboard .span {
+  color: #73c1b9;
+}
+
+.dashboard .text-wrapper-9 {
+  color: #ffffff;
+}
+
+.dashboard .paragraph-container {
+  position: relative;
+  grid-row: 2 / 3;
+  grid-column: 1 / 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 0px 3px;
+}
+
+.dashboard .text-wrapper-10 {
+  align-self: stretch;
+  font-family: "Arial-Regular", Helvetica;
+  font-size: 14px;
+  position: relative;
+  font-weight: 400;
+  color: #ffffff;
+  letter-spacing: 0;
+  line-height: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.dashboard .card-2 {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  grid-template-rows: minmax(0, 4fr) minmax(0, 2fr) minmax(0, 1fr);
+  height: 206px;
+  gap: 10px 0px;
+  padding: 7px 10px;
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: blur(2px) brightness(100%) saturate(105%);
+  -webkit-backdrop-filter: blur(2px) brightness(100%) saturate(105%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 1px 0 0 rgba(255, 255, 255, 0.32),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.13),
+    inset -1px 0 1px rgba(0, 0, 0, 0.11);
+  background: linear-gradient(
+    158deg,
+    rgba(13, 4, 255, 0.2) 0%,
+    rgba(7, 37, 65, 0) 100%
+  );
+}
+
+.dashboard .image-4 {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin-top: -0.86px;
+  margin-bottom: -0.86px;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+

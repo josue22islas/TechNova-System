@@ -1,0 +1,302 @@
+/* Modulo: Gastos recurrentes. Orden preservado desde dashboard.css original. */
+/* GUÍA: apariencia abierta/cerrada sincronizada por expenses.js; no usar display fijo que impida la animación. */
+
+/* =========================================================
+   GASTOS RECURRENTES
+   VER TODO / VER MENOS
+   SCROLL VERTICAL PREMIUM
+   ========================================================= */
+
+
+/* =========================================================
+   BOTÓN VER TODO
+   ========================================================= */
+
+.dashboard .recurring-expenses-toggle {
+
+    cursor: pointer;
+
+    position: relative;
+
+    padding: 5px 7px;
+
+    border-radius: 8px;
+
+    user-select: none;
+
+    transition:
+        transform .25s cubic-bezier(.22,.61,.36,1),
+        background .25s ease,
+        box-shadow .25s ease;
+
+}
+
+
+.dashboard .recurring-expenses-toggle:hover {
+
+    transform:
+        translateY(-2px);
+
+    background:
+        rgba(255,255,255,.035);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.07),
+        0 8px 18px rgba(0,0,0,.15);
+
+}
+
+
+/* =========================================================
+   FLECHA
+   ========================================================= */
+
+.dashboard .recurring-expenses-arrow {
+
+    transition:
+        transform .28s
+        cubic-bezier(.22,.61,.36,1);
+
+}
+
+
+.dashboard
+.recurring-expenses-toggle.is-expanded
+.recurring-expenses-arrow {
+
+    transform:
+        rotate(180deg);
+
+}
+
+
+/* =========================================================
+   CONTENEDOR DE GASTOS
+   ========================================================= */
+
+.dashboard .recurring-expenses-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    width: 100%;
+
+    gap: 12px;
+
+    /*
+       Modo compacto:
+       no genera scroll.
+    */
+
+    overflow: hidden;
+
+    position: relative;
+
+    transition:
+        max-height .38s cubic-bezier(.22,.61,.36,1);
+
+}
+
+
+/* =========================================================
+   ELEMENTOS
+   ========================================================= */
+
+.dashboard .recurring-expense-item {
+
+    flex:
+        0
+        0
+        auto;
+
+    width: 100%;
+
+    transition:
+        opacity .28s ease,
+        transform .28s cubic-bezier(.22,.61,.36,1);
+
+}
+
+
+/* Por default ocultamos desde el cuarto */
+
+.dashboard
+.recurring-expenses-list:not(.is-expanded)
+.recurring-expense-item:nth-child(n+4) {
+
+    display: none;
+
+}
+
+
+/* =========================================================
+   MODO VER TODO
+   ========================================================= */
+
+.dashboard
+.recurring-expenses-list.is-expanded {
+
+    /*
+       Altura máxima controlada.
+
+       Así card-4 NO crece aunque
+       existan 20 registros.
+    */
+
+    max-height: 117px;
+
+    overflow-y: auto;
+
+    overflow-x: hidden;
+
+    padding-right: 5px;
+
+    overscroll-behavior: contain;
+
+    scroll-behavior: smooth;
+
+}
+
+
+/* =========================================================
+   SCROLLBAR LIQUID GLASS
+   ========================================================= */
+
+.dashboard
+.recurring-expenses-list.is-expanded {
+
+    scrollbar-width:
+        thin;
+
+    scrollbar-color:
+        rgba(80,120,255,.38)
+        rgba(255,255,255,.025);
+
+}
+
+
+.dashboard
+.recurring-expenses-list.is-expanded::-webkit-scrollbar {
+
+    width:
+        5px;
+
+}
+
+
+.dashboard
+.recurring-expenses-list.is-expanded::-webkit-scrollbar-track {
+
+    background:
+        rgba(255,255,255,.025);
+
+    border-radius:
+        999px;
+
+}
+
+
+.dashboard
+.recurring-expenses-list.is-expanded::-webkit-scrollbar-thumb {
+
+    border-radius:
+        999px;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(90,130,255,.55),
+            rgba(40,80,220,.30)
+        );
+
+    box-shadow:
+        0 0 8px
+        rgba(70,110,255,.15);
+
+}
+
+
+.dashboard
+.recurring-expenses-list.is-expanded::-webkit-scrollbar-thumb:hover {
+
+    background:
+
+        linear-gradient(
+            180deg,
+            rgba(110,150,255,.70),
+            rgba(50,90,230,.42)
+        );
+
+}
+
+
+/* =========================================================
+   EFECTO AL PASAR POR CADA GASTO
+   ========================================================= */
+
+.dashboard
+.recurring-expense-item:hover {
+
+    transform:
+        translateX(3px);
+
+}
+
+
+/* =========================================================
+   SOMBRA SUAVE ABAJO CUANDO HAY SCROLL
+   ========================================================= */
+
+.dashboard
+.recurring-expenses-list.is-expanded {
+
+    mask-image:
+
+        linear-gradient(
+            to bottom,
+
+            transparent 0,
+
+            black 6px,
+
+            black calc(100% - 10px),
+
+            transparent 100%
+        );
+
+    -webkit-mask-image:
+
+        linear-gradient(
+            to bottom,
+
+            transparent 0,
+
+            black 6px,
+
+            black calc(100% - 10px),
+
+            transparent 100%
+        );
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+    .dashboard
+    .recurring-expenses-list.is-expanded {
+
+        max-height:
+            115px;
+
+    }
+
+}
+
+

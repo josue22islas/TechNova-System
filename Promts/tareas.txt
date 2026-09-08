@@ -1,0 +1,32 @@
+Tareas hacia un gestor similar a Asana: el panel lateral de detalle.
+Incluye:
+- Información de proyecto, responsable, prioridad, estado y vencimiento.
+- Descripción completa.
+- Barra de progreso sincronizada con la tarea.
+- Subtareas interactivas y contador dinámico.
+- Opción para agregar subtareas.
+- Estado de dependencias y bloqueos.
+- Comentarios con fallback local.
+- Actividad reciente preparada para backend.
+- Acción para completar la tarea.
+- Conexión con el formulario de edición existente.
+- Apertura mediante doble clic o desde “Ver detalles”.
+- Cierre con botón, backdrop o Escape.
+- Animación GSAP de entrada y salida.
+- Drawer completo en móvil.
+
+
+
+
+Validaciones:
+- Datos de la tarea sincronizados correctamente.
+- Progreso probado con 72%.
+- Subtareas: actualización de 2 de 3 a 3 de 3.
+- Comentarios: creación y renderizado comprobados.
+- Editor conectado correctamente.
+- Escritorio y móvil revisados.
+- Sin errores de consola.
+- JavaScript válido.
+- CSS balanceado: 577/577.
+- HTML balanceado: 15/15 secciones y 3/3 paneles.
+- Documentación sin modificaciones.

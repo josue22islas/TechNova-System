@@ -1,0 +1,268 @@
+/* Modulo: Distribucion de costos base. Orden preservado desde el CSS original. */
+/* GUÍA: layout del doughnut, total y leyenda; cost-chart.css añade interacción, tooltip y glow. */
+
+.dashboard .switch-container-3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 20px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+  margin-bottom: -0.09px;
+  border-radius: 35px;
+  backdrop-filter: blur(2px) brightness(100%) saturate(100%);
+  -webkit-backdrop-filter: blur(2px) brightness(100%) saturate(100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 1px 0 0 rgba(255, 255, 255, 0.32),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.13),
+    inset -1px 0 1px rgba(0, 0, 0, 0.11);
+  background: linear-gradient(
+    280deg,
+    rgba(7, 37, 65, 0) 0%,
+    rgba(13, 4, 255, 0.42) 99%
+  );
+}
+
+.dashboard .text-wrapper-28 {
+  position: relative;
+  align-self: stretch;
+  margin-top: -1px;
+  font-family: "Arial-Regular", Helvetica;
+  font-weight: 400;
+  color: #ffffff;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.dashboard .switch-container-4 {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.dashboard .switch-container-5 {
+  position: relative;
+  width: 90.18px;
+  height: 90.18px;
+}
+
+.dashboard .switch {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 90px;
+  height: 90px;
+  border-radius: 45px;
+  border: 15px solid;
+  border-color: #3a9ecf;
+  transform: rotate(0.11deg);
+  aspect-ratio: 1;
+}
+
+.dashboard .switch-2 {
+  position: absolute;
+  top: 1px;
+  left: 46px;
+  width: 44px;
+  height: 65px;
+  aspect-ratio: 1;
+}
+
+.dashboard .switch-3 {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 46px;
+  height: 85px;
+  aspect-ratio: 1;
+}
+
+.dashboard .paragraph-container-5 {
+  flex-direction: column;
+  width: 47px;
+  align-items: center;
+  gap: 2px;
+  top: calc(50% - 10px);
+  left: calc(50% - 23px);
+  position: absolute;
+  display: flex;
+}
+
+.dashboard .text-wrapper-29 {
+  position: relative;
+  align-self: stretch;
+  margin-top: -1px;
+  font-family: "Arial-Regular", Helvetica;
+  font-size: 8px;
+  text-align: center;
+  font-weight: 400;
+  color: #ffffff;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.dashboard .text-wrapper-30 {
+  position: relative;
+  align-self: stretch;
+  font-family: "Arial-Regular", Helvetica;
+  font-weight: 400;
+  color: #ffffff;
+  font-size: 8px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.dashboard .container-5 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 16px;
+  position: relative;
+  flex: 1;
+  flex-grow: 1;
+}
+
+.dashboard .vertical-container-2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+  margin-top: -1px;
+  margin-left: -1px;
+  margin-right: -1px;
+  border-bottom-width: 0.5px;
+  border-bottom-style: solid;
+  border-color: #d09f53;
+}
+
+.dashboard .div-4 {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.dashboard .vertical-container-3 {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  background-color: #d09f53;
+  border-radius: 5px;
+  aspect-ratio: 1;
+}
+
+.dashboard .text-wrapper-31 {
+  margin-top: -1px;
+  font-size: 14px;
+  position: relative;
+  width: fit-content;
+  font-family: "Arial-Regular", Helvetica;
+  font-weight: 400;
+  color: #ffffff;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.dashboard .text-wrapper-32 {
+  position: relative;
+  flex: 1;
+  margin-top: -0.25px;
+  font-family: "Arial-Regular", Helvetica;
+  font-weight: 400;
+  color: #ffffff;
+  font-size: 14px;
+  text-align: right;
+  letter-spacing: 0;
+  line-height: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.dashboard .vertical-container-4 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+  border-bottom-width: 0.5px;
+  border-bottom-style: solid;
+  border-color: #c4745d;
+}
+
+.dashboard .vertical-container-5 {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  background-color: #c4745d;
+  border-radius: 5px;
+  aspect-ratio: 1;
+}
+
+.dashboard .text-wrapper-33 {
+  position: relative;
+  flex: 1;
+  margin-top: -0.5px;
+  font-family: "Arial-Regular", Helvetica;
+  font-weight: 400;
+  color: #ffffff;
+  font-size: 14px;
+  text-align: right;
+  letter-spacing: 0;
+  line-height: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.dashboard .container-6 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+  border-bottom-width: 0.5px;
+  border-bottom-style: solid;
+  border-color: #3a9ecf;
+}
+
+.dashboard .vertical-container-6 {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  background-color: #3a9ecf;
+  border-radius: 5px;
+  aspect-ratio: 1;
+}
+

@@ -1,0 +1,4 @@
+al termino de desarrolllo de cada etapa:
+------------------------------------------------------------------------
+
+La siguiente etapa recomendada es una revisión visual integral de la vista Tareas contra el frame completo de Figma.

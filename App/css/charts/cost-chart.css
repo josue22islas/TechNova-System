@@ -1,0 +1,326 @@
+/* Modulo: Grafica de distribucion de costos. Orden preservado desde dashboard.css original. */
+/* GUÍA: tooltip HTML interno, leyenda conectada y halo por segmento. --cost-tooltip-color llega desde charts.js. */
+
+/* =========================================================
+   GRÁFICA CIRCULAR PREMIUM - TECHNOVA
+   Solo afecta Distribución de costos.
+   ========================================================= */
+.dashboard .switch-container-5{
+  position:relative;
+  width:116px;
+  height:116px;
+  min-width:116px;
+  flex:0 0 116px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  aspect-ratio:1/1;
+  overflow:visible;
+}
+.dashboard .switch-container-5 canvas{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:100%;
+  max-height:100%;
+  position:relative;
+  z-index:1;
+  filter:drop-shadow(0 8px 18px rgba(0,0,0,.30));
+}
+.dashboard .chart-total{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:62%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  z-index:3;
+  pointer-events:none;
+}
+.dashboard .chart-total-value{
+  width:100%;
+  font-family:"Arial-Regular",Helvetica;
+  font-size:10px;
+  font-weight:700;
+  line-height:1.1;
+  text-align:center;
+  color:#fff;
+  white-space:nowrap;
+  text-shadow:0 1px 8px rgba(0,0,0,.45);
+}
+.dashboard .chart-total-label{
+  width:100%;
+  font-family:"Arial-Regular",Helvetica;
+  font-size:8px;
+  text-align:center;
+  color:rgba(255,255,255,.68);
+  white-space:nowrap;
+}
+.dashboard .cost-chart-tooltip{
+  --cost-tooltip-color:#6f9fff;
+  position:absolute;z-index:12;left:50%;top:50%;bottom:auto;
+  width:104px;min-width:0;max-width:calc(100% - 6px);
+  display:flex;align-items:center;gap:6px;padding:7px 8px;box-sizing:border-box;
+  border:1px solid rgba(111,159,255,.48);
+  border-color:color-mix(in srgb,var(--cost-tooltip-color) 58%,rgba(255,255,255,.22));
+  border-radius:11px;
+  background:linear-gradient(145deg,rgba(14,18,52,.98),rgba(4,7,30,.98));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 8px 18px rgba(0,0,20,.34),0 0 9px color-mix(in srgb,var(--cost-tooltip-color) 20%,transparent);
+  backdrop-filter:blur(16px) saturate(115%);-webkit-backdrop-filter:blur(16px) saturate(115%);
+  opacity:0;transform:translate(-50%,-50%) scale(.94);transform-origin:center;
+  pointer-events:none;transition:opacity .18s ease,transform .18s ease;
+}
+.dashboard .cost-chart-tooltip.visible{opacity:1;transform:translate(-50%,-50%) scale(1);}
+.dashboard .cost-chart-tooltip-dot{width:7px;height:7px;flex:0 0 7px;border-radius:50%;background:var(--cost-tooltip-color);box-shadow:0 0 5px color-mix(in srgb,var(--cost-tooltip-color) 65%,transparent);}
+.dashboard .cost-chart-tooltip div{min-width:0;display:grid;gap:3px;}
+.dashboard .cost-chart-tooltip div span{color:rgba(226,233,250,.82);font:500 8px/1 Arial,sans-serif;text-shadow:0 1px 2px rgba(0,0,0,.8);}
+.dashboard .cost-chart-tooltip strong{color:#fff;font:700 10px/1 Arial,sans-serif;white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.9);}
+.dashboard .chart-legend-item{
+  cursor:pointer;
+  transition:opacity .18s ease,transform .18s ease,background-color .18s ease,box-shadow .18s ease;
+  border-radius:7px;
+  padding:3px 4px;
+}
+.dashboard .chart-legend-item:hover,
+.dashboard .chart-legend-item.is-active{
+  opacity:1;
+  transform:translateX(3px);
+  background:rgba(255,255,255,.035);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);
+}
+.dashboard .chart-legend-item.is-muted{opacity:.38;}
+.dashboard .switch-container-4{align-items:center;gap:26px;min-width:0;}
+.dashboard .container-5{flex:1;min-width:0;}
+@media(max-width:640px){
+  .dashboard .switch-container-5{width:104px;height:104px;min-width:104px;flex-basis:104px;}
+  .dashboard .switch-container-4{gap:20px;}
+}
+@media(max-width:390px){
+  .dashboard .switch-container-5{width:94px;height:94px;min-width:94px;flex-basis:94px;}
+  .dashboard .cost-chart-tooltip{width:88px;padding:6px 7px;}
+}
+
+
+
+
+/* =========================================
+   LIQUID GLASS REACTIVO AL CURSOR
+   ========================================= */
+
+.dashboard .glass-reactive {
+    position: relative;
+
+    --mouse-x: 50%;
+    --mouse-y: 50%;
+
+    --glass-light-opacity: 0;
+
+    isolation: isolate;
+}
+
+
+/* Capa de reflejo */
+
+.dashboard .glass-reactive::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 1px;
+
+    border-radius: inherit;
+
+    pointer-events: none;
+
+    z-index: 2;
+
+
+    background:
+
+        radial-gradient(
+            220px circle
+            at var(--mouse-x) var(--mouse-y),
+
+            rgba(255,255,255,0.12) 0%,
+
+            rgba(130,170,255,0.055) 22%,
+
+            rgba(40,80,220,0.025) 38%,
+
+            transparent 65%
+        );
+
+
+    opacity: var(--glass-light-opacity);
+
+    transition:
+        opacity 0.25s ease;
+
+    mix-blend-mode: screen;
+}
+
+
+/* Mostrar reflejo */
+
+.dashboard .glass-reactive:hover {
+
+    --glass-light-opacity: 1;
+
+}
+
+
+/* =========================================
+   CONTADORES ANIMADOS
+   ========================================= */
+
+.dashboard .animated-counter {
+    font-variant-numeric: tabular-nums;
+}
+
+
+/* =========================================
+   LEYENDA CONECTADA - DOUGHNUT
+   ========================================= */
+
+.dashboard .chart-legend-item {
+    position: relative;
+    cursor: pointer;
+
+    transition:
+        opacity .28s ease,
+        transform .28s cubic-bezier(.22,.61,.36,1),
+        filter .28s ease,
+        background-color .28s ease,
+        box-shadow .28s ease;
+
+    border-radius: 8px;
+}
+
+
+/* Activo */
+
+.dashboard .chart-legend-item.is-active {
+
+    opacity: 1;
+
+    transform:
+        translateX(4px)
+        scale(1.01);
+
+    background:
+        rgba(255,255,255,.025);
+
+}
+
+
+/* Los demás bajan de intensidad */
+
+.dashboard .chart-legend-item.is-muted {
+
+    opacity: .40;
+
+    filter:
+        saturate(.65)
+        brightness(.85);
+
+}
+
+
+/* NOWA - dorado */
+
+.dashboard
+.chart-legend-item[data-index="0"]
+.vertical-container-3 {
+
+    transition:
+        box-shadow .28s ease,
+        transform .28s ease,
+        filter .28s ease;
+
+}
+
+
+.dashboard
+.chart-legend-item[data-index="0"].is-active
+.vertical-container-3 {
+
+    transform: scale(1.18);
+
+    filter: brightness(1.25);
+
+    box-shadow:
+
+        0 0 6px rgba(208,159,83,.55),
+
+        0 0 14px rgba(208,159,83,.28);
+
+}
+
+
+/* API CLAUDE - naranja */
+
+.dashboard
+.chart-legend-item[data-index="1"]
+.vertical-container-5 {
+
+    transition:
+        box-shadow .28s ease,
+        transform .28s ease,
+        filter .28s ease;
+
+}
+
+
+.dashboard
+.chart-legend-item[data-index="1"].is-active
+.vertical-container-5 {
+
+    transform: scale(1.18);
+
+    filter: brightness(1.25);
+
+    box-shadow:
+
+        0 0 6px rgba(196,116,93,.55),
+
+        0 0 14px rgba(196,116,93,.28);
+
+}
+
+
+/* FIGMA - azul */
+
+.dashboard
+.chart-legend-item[data-index="2"]
+.vertical-container-6 {
+
+    transition:
+        box-shadow .28s ease,
+        transform .28s ease,
+        filter .28s ease;
+
+}
+
+
+.dashboard
+.chart-legend-item[data-index="2"].is-active
+.vertical-container-6 {
+
+    transform: scale(1.18);
+
+    filter: brightness(1.28);
+
+    box-shadow:
+
+        0 0 6px rgba(58,158,207,.65),
+
+        0 0 16px rgba(58,158,207,.32);
+
+}
+
+

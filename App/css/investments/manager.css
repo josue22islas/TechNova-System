@@ -1,0 +1,2293 @@
+/* Modulo: Fondos, tarjetas y modal de inversiones. Orden preservado desde dashboard.css original. */
+/* GUÍA: estados y temas visuales controlados por investments.js. Mantener modal, backdrop y foco como una unidad. */
+
+/* =========================================================
+   FONDOS DE INVERSIÓN
+   GESTOR DINÁMICO
+   ========================================================= */
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.dashboard .investment-header {
+
+    position: relative;
+
+    z-index: 20;
+
+    overflow: visible;
+
+}
+
+
+.dashboard .investment-title-wrap {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    flex: 1;
+
+    min-width: 0;
+
+}
+
+
+.dashboard .investment-count {
+
+    flex: 0 0 auto;
+
+    color:
+        rgba(160,190,255,.70);
+
+    font-size: 11px;
+
+    font-weight: 500;
+
+}
+
+
+/* =========================================================
+   VER TODO
+   ========================================================= */
+
+.dashboard .investment-view-all {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    flex: 0 0 auto;
+
+    padding: 6px 7px;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    color: #ffffff;
+
+    background:
+        transparent;
+
+    cursor: pointer;
+
+    font-family:
+        "Arial-Regular",
+        Helvetica;
+
+    font-size: 13px;
+
+    transition:
+        transform .25s ease,
+        background .25s ease,
+        box-shadow .25s ease;
+
+}
+
+
+.dashboard .investment-view-all:hover {
+
+    transform:
+        translateY(-2px);
+
+    background:
+        rgba(255,255,255,.035);
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.07);
+
+}
+
+
+.dashboard .investment-view-arrow {
+
+    width: 18px;
+
+    height: 18px;
+
+    transition:
+        transform .28s
+        cubic-bezier(.22,.61,.36,1);
+
+}
+
+
+.dashboard
+.investment-section.list-open
+.investment-view-arrow {
+
+    transform:
+        rotate(180deg);
+
+}
+
+
+/* =========================================================
+   BOTÓN +
+   CONSERVA POSICIÓN ORIGINAL
+   ========================================================= */
+
+.dashboard .investment-add-button {
+
+    border: 0;
+
+    cursor: pointer;
+
+    z-index: 20;
+
+    transition:
+        transform .28s cubic-bezier(.22,.61,.36,1),
+        filter .28s ease,
+        box-shadow .28s ease;
+
+}
+
+
+.dashboard .investment-add-button:hover {
+
+    transform:
+        translateY(-3px)
+        scale(1.08);
+
+    filter:
+        brightness(1.15);
+
+    box-shadow:
+        0 10px 25px
+        rgba(0,0,0,.25);
+
+}
+
+
+/* pequeño halo alrededor del + */
+
+.dashboard .investment-add-button::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 7px;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    box-shadow:
+        0 0 20px
+        rgba(130,220,175,.30);
+
+    transition:
+        opacity .25s ease;
+
+}
+
+
+.dashboard
+.investment-add-button:hover::before {
+
+    opacity: 1;
+
+}
+
+
+/* =========================================================
+   TARJETA PRINCIPAL
+   ========================================================= */
+
+.dashboard .investment-main-card {
+
+    transition:
+        transform .32s cubic-bezier(.22,.61,.36,1),
+        opacity .25s ease,
+        filter .32s ease;
+
+}
+
+
+.dashboard
+.investment-main-card.is-changing {
+
+    opacity: .35;
+
+    transform:
+        translateY(4px)
+        scale(.98);
+
+    filter:
+        blur(1px);
+
+}
+
+
+/* =========================================================
+   PANEL VER TODOS
+   ========================================================= */
+
+.dashboard .investment-list-panel {
+
+    position: absolute;
+
+    top: 75px;
+
+    left: 24px;
+
+    right: 24px;
+
+    z-index: 80;
+
+    max-height: 280px;
+
+    padding: 12px;
+
+    border-radius: 16px;
+
+    box-sizing: border-box;
+
+
+    background:
+
+        linear-gradient(
+            155deg,
+            rgba(24,32,82,.97),
+            rgba(10,15,50,.98) 60%,
+            rgba(5,8,28,.99)
+        );
+
+
+    border:
+        1px solid
+        rgba(165,195,255,.16);
+
+
+    -webkit-backdrop-filter:
+        blur(28px)
+        saturate(135%);
+
+    backdrop-filter:
+        blur(28px)
+        saturate(135%);
+
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.10),
+
+        0 24px 55px
+        rgba(0,0,0,.55);
+
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transform:
+        translateY(-7px)
+        scale(.98);
+
+    transform-origin:
+        top center;
+
+    transition:
+        opacity .22s ease,
+        transform .25s cubic-bezier(.22,.61,.36,1),
+        visibility .22s;
+
+}
+
+
+.dashboard
+.investment-section.list-open
+.investment-list-panel {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+    transform:
+        translateY(0)
+        scale(1);
+
+}
+
+
+/* =========================================================
+   HEADER LISTA
+   ========================================================= */
+
+.dashboard .investment-list-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    padding:
+        3px
+        4px
+        10px;
+
+    color: #ffffff;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.07);
+
+}
+
+
+.dashboard
+.investment-list-header span {
+
+    color:
+        rgba(155,185,255,.65);
+
+    font-size: 9px;
+
+    font-weight: 400;
+
+}
+
+
+/* =========================================================
+   LISTA
+   ========================================================= */
+
+.dashboard .investment-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+    max-height: 215px;
+
+    padding:
+        8px
+        2px
+        2px;
+
+    overflow-y: auto;
+
+    overflow-x: hidden;
+
+    overscroll-behavior: contain;
+
+    scrollbar-width: thin;
+
+    scrollbar-color:
+        rgba(100,140,255,.40)
+        transparent;
+
+}
+
+
+.dashboard
+.investment-list::-webkit-scrollbar {
+
+    width: 5px;
+
+}
+
+
+.dashboard
+.investment-list::-webkit-scrollbar-thumb {
+
+    border-radius: 999px;
+
+    background:
+        rgba(100,140,255,.42);
+
+}
+
+
+/* =========================================================
+   ITEM
+   ========================================================= */
+
+.dashboard .investment-list-item {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        auto;
+
+    align-items: center;
+
+    gap: 12px;
+
+    width: 100%;
+
+    padding: 9px 10px;
+
+    border:
+        1px solid transparent;
+
+    border-radius: 10px;
+
+    color: #ffffff;
+
+    background:
+        rgba(255,255,255,.018);
+
+    cursor: pointer;
+
+    box-sizing: border-box;
+
+    transition:
+        background .22s ease,
+        border-color .22s ease,
+        transform .22s ease;
+
+}
+
+
+.dashboard
+.investment-list-item:hover {
+
+    transform:
+        translateX(3px);
+
+    background:
+        rgba(50,90,220,.10);
+
+    border-color:
+        rgba(120,160,255,.10);
+
+}
+
+
+.dashboard
+.investment-list-item.active {
+
+    background:
+        rgba(55,95,230,.14);
+
+    border-color:
+        rgba(120,165,255,.15);
+
+}
+
+
+.dashboard .investment-item-name {
+
+    color: #ffffff;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+}
+
+
+.dashboard .investment-item-meta {
+
+    margin-top: 3px;
+
+    color:
+        rgba(255,255,255,.46);
+
+    font-size: 8px;
+
+}
+
+
+.dashboard .investment-item-amount {
+
+    color: #ffffff;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+
+}
+
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.investment-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 20000;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 18px;
+
+    box-sizing: border-box;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity .25s ease,
+        visibility .25s;
+
+}
+
+
+.investment-modal.is-open {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+}
+
+
+/* =========================================================
+   BACKDROP
+   ========================================================= */
+
+.investment-modal-backdrop {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        rgba(1,2,18,.66);
+
+    -webkit-backdrop-filter:
+        blur(9px);
+
+    backdrop-filter:
+        blur(9px);
+
+}
+
+
+/* =========================================================
+   DIALOG
+   ========================================================= */
+
+.investment-modal-dialog {
+
+    position: relative;
+
+    z-index: 1;
+
+    width:
+        min(
+            460px,
+            calc(100vw - 30px)
+        );
+
+    max-height:
+        calc(100dvh - 36px);
+
+    overflow-y: auto;
+
+    padding: 20px;
+
+    border-radius: 20px;
+
+    box-sizing: border-box;
+
+
+    background:
+
+        linear-gradient(
+            155deg,
+            rgba(30,39,88,.97),
+            rgba(13,18,53,.985) 55%,
+            rgba(6,9,28,.995)
+        );
+
+
+    border:
+        1px solid
+        rgba(175,200,255,.18);
+
+
+    box-shadow:
+        inset 0 1px 0
+        rgba(255,255,255,.12),
+
+        0 30px 80px
+        rgba(0,0,0,.60);
+
+
+    transform:
+        translateY(10px)
+        scale(.97);
+
+    transition:
+        transform .28s
+        cubic-bezier(.22,.61,.36,1);
+
+}
+
+
+.investment-modal.is-open
+.investment-modal-dialog {
+
+    transform:
+        translateY(0)
+        scale(1);
+
+}
+
+
+/* =========================================================
+   HEADER MODAL
+   ========================================================= */
+
+.investment-modal-header {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.investment-modal-title {
+
+    color: #ffffff;
+
+    font-size: 17px;
+
+    font-weight: 700;
+
+}
+
+
+.investment-modal-subtitle {
+
+    margin-top: 4px;
+
+    color:
+        rgba(255,255,255,.48);
+
+    font-size: 10px;
+
+}
+
+
+.investment-modal-close {
+
+    width: 32px;
+
+    height: 32px;
+
+    border: 0;
+
+    border-radius: 9px;
+
+    color: #ffffff;
+
+    background:
+        rgba(255,255,255,.045);
+
+    cursor: pointer;
+
+    font-size: 19px;
+
+}
+
+
+/* =========================================================
+   FORMULARIO
+   ========================================================= */
+
+.investment-form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 14px;
+
+}
+
+
+.investment-form-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0,1fr)
+        );
+
+    gap: 12px;
+
+}
+
+
+.investment-field {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+    min-width: 0;
+
+}
+
+
+.investment-field > span {
+
+    color:
+        rgba(220,230,255,.70);
+
+    font-size: 9px;
+
+}
+
+
+.investment-field input,
+.investment-field select,
+.investment-money-input {
+
+    width: 100%;
+
+    min-width: 0;
+
+    height: 40px;
+
+    padding:
+        0
+        11px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.10);
+
+    border-radius: 10px;
+
+    outline: none;
+
+    color: #ffffff;
+
+    background:
+        rgba(255,255,255,.035);
+
+    box-sizing: border-box;
+
+    font-size: 11px;
+
+    transition:
+        border-color .22s ease,
+        box-shadow .22s ease,
+        background .22s ease;
+
+}
+
+
+.investment-field select option {
+
+    background:
+        #0d1235;
+
+    color:
+        #ffffff;
+
+}
+
+
+.investment-field input:focus,
+.investment-field select:focus {
+
+    border-color:
+        rgba(100,150,255,.34);
+
+    background:
+        rgba(70,100,220,.07);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(60,100,220,.08);
+
+}
+
+
+.investment-money-input {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+}
+
+
+.investment-money-input > span {
+
+    color:
+        rgba(150,190,255,.80);
+
+}
+
+
+.investment-money-input input {
+
+    height: auto;
+
+    padding: 0;
+
+    border: 0;
+
+    background:
+        transparent;
+
+    box-shadow: none;
+
+}
+
+
+/* =========================================================
+   BOTONES
+   ========================================================= */
+
+.investment-form-actions {
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 9px;
+
+    padding-top: 5px;
+
+}
+
+
+.investment-cancel-button,
+.investment-save-button {
+
+    min-height: 38px;
+
+    padding:
+        0
+        14px;
+
+    border-radius: 10px;
+
+    cursor: pointer;
+
+    font-size: 10px;
+
+    transition:
+        transform .22s ease,
+        box-shadow .22s ease,
+        background .22s ease;
+
+}
+
+
+.investment-cancel-button {
+
+    border:
+        1px solid
+        rgba(255,255,255,.09);
+
+    color:
+        rgba(255,255,255,.70);
+
+    background:
+        rgba(255,255,255,.025);
+
+}
+
+
+.investment-save-button {
+
+    border:
+        1px solid
+        rgba(170,205,255,.15);
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(43,89,225,.92),
+            rgba(20,85,220,.72)
+        );
+
+    box-shadow:
+        0 9px 20px
+        rgba(20,60,190,.18);
+
+}
+
+
+.investment-cancel-button:hover,
+.investment-save-button:hover {
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+/* =========================================================
+   MÓVIL
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+    .dashboard .investment-list-panel {
+
+        left: 12px;
+
+        right: 12px;
+
+        top: 68px;
+
+        max-height:
+            255px;
+
+    }
+
+
+    .investment-modal {
+
+        align-items:
+            flex-end;
+
+        padding:
+            10px;
+
+    }
+
+
+    .investment-modal-dialog {
+
+        width:
+            100%;
+
+        max-height:
+            calc(100dvh - 20px);
+
+        padding:
+            17px;
+
+        border-radius:
+            19px;
+
+    }
+
+
+    .investment-form-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+}
+
+.investment-main-card.investment-theme-visa {
+
+    background:
+        radial-gradient(
+            circle at 85% 15%,
+            rgba(55,110,255,.22),
+            transparent 35%
+        ),
+        linear-gradient(
+            135deg,
+            #050714,
+            #080b1c 55%,
+            #101944
+        );
+
+    border:
+        1px solid rgba(130,170,255,.18);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.12),
+        0 22px 45px rgba(0,0,0,.48),
+        0 0 25px rgba(50,100,255,.08);
+
+}
+
+.investment-main-card.investment-theme-mastercard {
+
+    background:
+        radial-gradient(
+            circle at 82% 18%,
+            rgba(255,110,55,.20),
+            transparent 34%
+        ),
+        linear-gradient(
+            135deg,
+            #10090a,
+            #1c0d10 50%,
+            #391310
+        );
+
+    border:
+        1px solid rgba(255,140,100,.16);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.10),
+        0 22px 45px rgba(0,0,0,.48),
+        0 0 25px rgba(220,80,45,.08);
+
+}
+
+.investment-main-card.investment-theme-account {
+
+    background:
+        radial-gradient(
+            circle at 20% 10%,
+            rgba(40,210,215,.18),
+            transparent 34%
+        ),
+        linear-gradient(
+            135deg,
+            #041415,
+            #062326 55%,
+            #07363b
+        );
+
+    border:
+        1px solid rgba(100,220,220,.14);
+
+}
+
+.investment-main-card.investment-theme-fund {
+
+    background:
+        radial-gradient(
+            circle at 82% 15%,
+            rgba(210,165,70,.18),
+            transparent 32%
+        ),
+        linear-gradient(
+            135deg,
+            #080719,
+            #12102a 52%,
+            #21163b
+        );
+
+    border:
+        1px solid rgba(220,185,100,.15);
+
+}
+
+
+/* =========================================================
+   NUEVO SISTEMA DE TARJETAS DE INVERSIÓN
+   DISEÑOS FÍSICAMENTE DIFERENTES
+   ========================================================= */
+
+
+/* =========================================================
+   BASE TARJETAS ALTERNATIVAS
+   ========================================================= */
+
+.dashboard .investment-alt-card {
+
+    position: absolute;
+
+    top: 30px;
+    left: 0;
+
+    width: 331px;
+    height: 209px;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+
+    color: #ffffff;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transform:
+        translateY(7px)
+        scale(.975);
+
+    transition:
+
+        opacity .32s ease,
+
+        transform .36s
+        cubic-bezier(.22,.61,.36,1),
+
+        visibility .32s;
+
+}
+
+
+/* Visible */
+
+.dashboard
+.investment-alt-card.is-active {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+    transform:
+        translateY(0)
+        scale(1);
+
+}
+
+
+/* =========================================================
+   VISA ORIGINAL
+   ========================================================= */
+
+.dashboard
+.investment-main-card {
+
+    transition:
+
+        opacity .30s ease,
+
+        transform .34s
+        cubic-bezier(.22,.61,.36,1),
+
+        filter .30s ease;
+
+}
+
+
+.dashboard
+.investment-main-card.is-hidden {
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transform:
+        translateY(7px)
+        scale(.975);
+
+}
+
+
+/* =========================================================
+   MASTERCARD
+   ========================================================= */
+
+.dashboard .investment-mastercard-card {
+
+    padding: 21px;
+
+    background:
+
+        radial-gradient(
+            circle at 100% 0%,
+            rgba(255,125,60,.38),
+            transparent 38%
+        ),
+
+        radial-gradient(
+            circle at 0% 100%,
+            rgba(210,30,55,.24),
+            transparent 48%
+        ),
+
+        linear-gradient(
+            145deg,
+            #16090d,
+            #260b10 47%,
+            #43100e 100%
+        );
+
+    border:
+        1px solid
+        rgba(255,150,110,.24);
+
+    box-shadow:
+
+        inset 0 1px 0
+        rgba(255,255,255,.16),
+
+        inset 0 -1px 0
+        rgba(255,100,65,.07),
+
+        0 24px 48px
+        rgba(0,0,0,.48),
+
+        0 0 28px
+        rgba(220,65,35,.11);
+
+}
+
+
+/* reflejo */
+
+.dashboard
+.investment-mastercard-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    pointer-events: none;
+
+    background:
+
+        linear-gradient(
+            120deg,
+            rgba(255,255,255,.13),
+            transparent 24%,
+            transparent 72%,
+            rgba(255,120,80,.05)
+        );
+
+}
+
+
+/* círculos */
+
+.dashboard .mastercard-orb {
+
+    position: absolute;
+
+    width: 128px;
+    height: 128px;
+
+    border-radius: 50%;
+
+    filter:
+        blur(2px);
+
+}
+
+
+.dashboard .mastercard-orb-red {
+
+    right: -45px;
+    bottom: -42px;
+
+    background:
+        rgba(220,32,52,.23);
+
+}
+
+
+.dashboard .mastercard-orb-orange {
+
+    right: -2px;
+    bottom: -58px;
+
+    background:
+        rgba(247,121,40,.18);
+
+}
+
+
+.dashboard .mastercard-header {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+}
+
+
+.dashboard .mastercard-brand {
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.4px;
+
+    color:
+        rgba(255,255,255,.82);
+
+}
+
+
+.dashboard .mastercard-chip {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 2px;
+
+    width: 31px;
+    height: 23px;
+
+    padding: 4px;
+
+    border-radius: 6px;
+
+    box-sizing: border-box;
+
+    background:
+
+        linear-gradient(
+            145deg,
+            #d9ae65,
+            #8d642b
+        );
+
+    border:
+        1px solid
+        rgba(255,230,170,.38);
+
+}
+
+
+.dashboard .mastercard-chip span {
+
+    border-left:
+        1px solid
+        rgba(70,45,10,.42);
+
+}
+
+
+.dashboard .mastercard-balance-label {
+
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 24px;
+
+    font-size: 8px;
+
+    color:
+        rgba(255,255,255,.48);
+
+}
+
+
+.dashboard .mastercard-balance {
+
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 3px;
+
+    font-size: 24px;
+
+    font-weight: 600;
+
+    letter-spacing: -.5px;
+
+}
+
+
+.dashboard .mastercard-number {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    margin-top: 23px;
+
+    font-size: 13px;
+
+    letter-spacing: 1px;
+
+}
+
+
+.dashboard .mastercard-number strong {
+
+    font-size: 13px;
+
+}
+
+
+.dashboard .mastercard-footer {
+
+    position: absolute;
+
+    z-index: 2;
+
+    left: 21px;
+    right: 21px;
+    bottom: 17px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-end;
+
+}
+
+
+.dashboard .mastercard-footer > div {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+
+}
+
+
+.dashboard .mastercard-footer small {
+
+    font-size: 6px;
+
+    color:
+        rgba(255,255,255,.42);
+
+    letter-spacing: .7px;
+
+}
+
+
+.dashboard .mastercard-footer strong {
+
+    max-width: 170px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    font-size: 9px;
+
+    font-weight: 500;
+
+}
+
+
+/* =========================================================
+   CUENTA EMPRESARIAL
+   ========================================================= */
+
+.dashboard .investment-account-card {
+
+    padding: 21px;
+
+    background:
+
+        radial-gradient(
+            circle at 12% 12%,
+            rgba(55,235,220,.22),
+            transparent 35%
+        ),
+
+        linear-gradient(
+            145deg,
+            #031719,
+            #05292d 52%,
+            #063b40
+        );
+
+    border:
+        1px solid
+        rgba(115,235,225,.22);
+
+    box-shadow:
+
+        inset 0 1px 0
+        rgba(255,255,255,.14),
+
+        0 24px 48px
+        rgba(0,0,0,.47),
+
+        0 0 28px
+        rgba(40,210,205,.09);
+
+}
+
+
+/* Cuadrícula tecnológica */
+
+.dashboard .account-grid-decoration {
+
+    position: absolute;
+
+    inset: 0;
+
+    opacity: .15;
+
+    pointer-events: none;
+
+    background-image:
+
+        linear-gradient(
+            rgba(120,255,245,.18) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(120,255,245,.18) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        23px 23px;
+
+    mask-image:
+
+        linear-gradient(
+            120deg,
+            transparent,
+            black,
+            transparent
+        );
+
+}
+
+
+.dashboard .account-glow {
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    right: -80px;
+    top: -95px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(45,230,215,.17);
+
+    filter:
+        blur(30px);
+
+}
+
+
+.dashboard .account-header {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+}
+
+
+.dashboard .account-icon {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 35px;
+    height: 35px;
+
+    border-radius: 11px;
+
+    background:
+        rgba(100,240,230,.10);
+
+    border:
+        1px solid
+        rgba(140,255,245,.17);
+
+    color:
+        #a8fff5;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    box-shadow:
+        0 0 16px
+        rgba(70,220,215,.08);
+
+}
+
+
+.dashboard .account-header > div:last-child {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+
+}
+
+
+.dashboard .account-header small {
+
+    color:
+        rgba(175,255,245,.50);
+
+    font-size: 6px;
+
+    letter-spacing: 1px;
+
+}
+
+
+.dashboard .account-header strong {
+
+    max-width: 210px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    font-size: 11px;
+
+}
+
+
+.dashboard .account-balance-wrapper {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    flex-direction: column;
+
+    margin-top: 23px;
+
+}
+
+
+.dashboard .account-balance-wrapper span {
+
+    font-size: 8px;
+
+    color:
+        rgba(255,255,255,.45);
+
+}
+
+
+.dashboard .account-balance-wrapper strong {
+
+    margin-top: 4px;
+
+    font-size: 26px;
+
+    font-weight: 600;
+
+}
+
+
+.dashboard .account-divider {
+
+    position: relative;
+
+    z-index: 2;
+
+    height: 1px;
+
+    margin-top: 18px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(100,235,225,.28),
+            rgba(255,255,255,.05),
+            transparent
+        );
+
+}
+
+
+.dashboard .account-footer {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-top: 13px;
+
+}
+
+
+.dashboard .account-footer > div:first-child {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+
+}
+
+
+.dashboard .account-footer span {
+
+    font-size: 7px;
+
+    color:
+        rgba(255,255,255,.40);
+
+}
+
+
+.dashboard .account-footer strong {
+
+    font-size: 9px;
+
+}
+
+
+.dashboard .account-status {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    padding:
+        5px
+        7px;
+
+    border-radius: 999px;
+
+    background:
+        rgba(85,230,200,.08);
+
+    color:
+        rgba(180,255,235,.72);
+
+    font-size: 7px;
+
+}
+
+
+.dashboard .account-status-dot {
+
+    width: 5px;
+
+    height: 5px;
+
+    border-radius: 50%;
+
+    background:
+        #55e6c8;
+
+    box-shadow:
+        0 0 8px
+        rgba(85,230,200,.65);
+
+}
+
+
+.dashboard .account-holder {
+
+    position: absolute;
+
+    left: 21px;
+
+    bottom: 13px;
+
+    z-index: 2;
+
+    color:
+        rgba(255,255,255,.38);
+
+    font-size: 7px;
+
+}
+
+
+.dashboard .account-holder strong {
+
+    color:
+        rgba(255,255,255,.72);
+
+    font-weight: 500;
+
+}
+
+
+/* =========================================================
+   FONDO DE INVERSIÓN
+   ========================================================= */
+
+.dashboard .investment-fund-card {
+
+    padding: 21px;
+
+    background:
+
+        radial-gradient(
+            circle at 88% 5%,
+            rgba(222,180,80,.20),
+            transparent 36%
+        ),
+
+        radial-gradient(
+            circle at 5% 100%,
+            rgba(120,70,220,.20),
+            transparent 44%
+        ),
+
+        linear-gradient(
+            145deg,
+            #09071c,
+            #151029 52%,
+            #28163d
+        );
+
+    border:
+        1px solid
+        rgba(225,190,110,.20);
+
+    box-shadow:
+
+        inset 0 1px 0
+        rgba(255,255,255,.13),
+
+        0 24px 48px
+        rgba(0,0,0,.50),
+
+        0 0 30px
+        rgba(170,110,220,.08);
+
+}
+
+
+/* círculos decorativos */
+
+.dashboard .fund-ring {
+
+    position: absolute;
+
+    border-radius: 50%;
+
+    border:
+        1px solid
+        rgba(225,190,105,.10);
+
+}
+
+
+.dashboard .fund-ring-one {
+
+    width: 170px;
+    height: 170px;
+
+    right: -85px;
+    top: -85px;
+
+}
+
+
+.dashboard .fund-ring-two {
+
+    width: 115px;
+    height: 115px;
+
+    right: -55px;
+    top: -55px;
+
+}
+
+
+.dashboard .fund-header {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+}
+
+
+.dashboard .fund-header > div:first-child {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+}
+
+
+.dashboard .fund-header small {
+
+    font-size: 6px;
+
+    letter-spacing: 1.2px;
+
+    color:
+        rgba(230,200,135,.55);
+
+}
+
+
+.dashboard .fund-header strong {
+
+    max-width: 220px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    font-size: 11px;
+
+}
+
+
+.dashboard .fund-symbol {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 31px;
+    height: 31px;
+
+    border-radius: 50%;
+
+    color:
+        #e1bc72;
+
+    background:
+        rgba(220,175,85,.08);
+
+    border:
+        1px solid
+        rgba(230,190,110,.15);
+
+    box-shadow:
+        0 0 16px
+        rgba(220,175,85,.08);
+
+}
+
+
+.dashboard .fund-main-value {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    flex-direction: column;
+
+    margin-top: 23px;
+
+}
+
+
+.dashboard .fund-main-value span {
+
+    color:
+        rgba(255,255,255,.42);
+
+    font-size: 8px;
+
+}
+
+
+.dashboard .fund-main-value strong {
+
+    margin-top: 3px;
+
+    font-size: 27px;
+
+    font-weight: 600;
+
+}
+
+
+/* MINI CHART */
+
+.dashboard .fund-mini-chart {
+
+    position: absolute;
+
+    right: 20px;
+    bottom: 55px;
+
+    z-index: 2;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    gap: 4px;
+
+    height: 43px;
+
+}
+
+
+.dashboard .fund-mini-chart span {
+
+    width: 5px;
+
+    border-radius:
+        5px 5px 2px 2px;
+
+    background:
+
+        linear-gradient(
+            180deg,
+            #e2ba6c,
+            rgba(180,110,220,.32)
+        );
+
+    box-shadow:
+        0 0 8px
+        rgba(220,180,100,.10);
+
+}
+
+
+.dashboard
+.fund-mini-chart span:nth-child(1) {
+
+    height: 13px;
+
+}
+
+
+.dashboard
+.fund-mini-chart span:nth-child(2) {
+
+    height: 21px;
+
+}
+
+
+.dashboard
+.fund-mini-chart span:nth-child(3) {
+
+    height: 17px;
+
+}
+
+
+.dashboard
+.fund-mini-chart span:nth-child(4) {
+
+    height: 29px;
+
+}
+
+
+.dashboard
+.fund-mini-chart span:nth-child(5) {
+
+    height: 34px;
+
+}
+
+
+.dashboard
+.fund-mini-chart span:nth-child(6) {
+
+    height: 41px;
+
+}
+
+
+.dashboard .fund-footer {
+
+    position: absolute;
+
+    left: 21px;
+    right: 21px;
+    bottom: 17px;
+
+    z-index: 2;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-end;
+
+}
+
+
+.dashboard .fund-footer > div {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+
+}
+
+
+.dashboard .fund-footer small {
+
+    font-size: 6px;
+
+    letter-spacing: .6px;
+
+    color:
+        rgba(255,255,255,.36);
+
+}
+
+
+.dashboard .fund-footer strong {
+
+    max-width: 140px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+
+    color:
+        rgba(255,255,255,.80);
+
+    font-size: 8px;
+
+    font-weight: 500;
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 390px) {
+
+    .dashboard .investment-alt-card {
+
+        /*
+           Tu .tooltip ya se escala a .88,
+           por lo tanto NO escalamos nuevamente
+           estas tarjetas.
+        */
+
+        transform-origin:
+            top left;
+
+    }
+
+}
+
+
+/* =========================================================
+   TECHNOVA
+   EXPERIENCIA DE ENTRADA PREMIUM
+   ========================================================= */
+
+
+/* =========================================================
+   DURANTE LA ENTRADA
+   ========================================================= */
+
+body.technova-entry-running {
+
+    overflow:
+        hidden;
+
+}
+
+

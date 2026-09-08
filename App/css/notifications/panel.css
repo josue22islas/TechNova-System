@@ -1,0 +1,2595 @@
+/* Modulo: Panel, grupos y responsive de notificaciones. Orden preservado desde dashboard.css original. */
+/* GUÍA: panel Liquid Glass, grupos y estado vacío; notifications.js administra visibilidad, foco y contenido. */
+
+/* =========================================================
+   PANEL DE NOTIFICACIONES
+   LIQUID GLASS PREMIUM
+   ========================================================= */
+
+.dashboard .notification-wrapper {
+
+    position: relative;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    z-index: 300;
+
+}
+
+
+/* =========================================================
+   BOTÓN
+   ========================================================= */
+
+.dashboard .notification-button {
+
+    position: relative;
+
+    cursor: pointer;
+
+}
+
+
+/* =========================================================
+   PANEL
+   ========================================================= */
+
+.dashboard .notification-panel {
+
+    position: absolute;
+
+    top: calc(100% + 12px);
+
+    right: 0;
+
+    width: 360px;
+
+    max-height: 430px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 10px;
+
+    border-radius: 18px;
+
+    z-index: 500;
+
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.09),
+            rgba(15,35,140,.16) 38%,
+            rgba(3,5,30,.96) 100%
+        );
+
+
+    border:
+
+        1px solid
+        rgba(180,205,255,.20);
+
+
+    -webkit-backdrop-filter:
+
+        blur(30px)
+        saturate(135%);
+
+
+    backdrop-filter:
+
+        blur(30px)
+        saturate(135%);
+
+
+    box-shadow:
+
+        inset 0 1px 0
+        rgba(255,255,255,.16),
+
+        0 25px 60px
+        rgba(0,0,0,.55),
+
+        0 0 30px
+        rgba(40,80,220,.08);
+
+
+    /*
+       Estado cerrado
+    */
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+
+    transform:
+
+        translateY(-8px)
+        scale(.97);
+
+
+    transform-origin:
+
+        top right;
+
+
+    transition:
+
+        opacity .24s ease,
+
+        transform .24s
+        cubic-bezier(.22,.61,.36,1),
+
+        visibility .24s;
+
+}
+
+
+/* =========================================================
+   PANEL ABIERTO
+   ========================================================= */
+
+.dashboard
+.notification-wrapper.is-open
+.notification-panel {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+
+    transform:
+
+        translateY(0)
+        scale(1);
+
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.dashboard .notification-panel-header {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    padding:
+
+        10px
+        10px
+        13px;
+
+
+    border-bottom:
+
+        1px solid
+        rgba(255,255,255,.08);
+
+}
+
+
+.dashboard .notification-panel-title {
+
+    color: #ffffff;
+
+    font-family:
+        "Arial-Bold",
+        Helvetica;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+}
+
+
+/* =========================================================
+   MARCAR TODAS
+   ========================================================= */
+
+.dashboard .notification-mark-all {
+
+    border: 0;
+
+    padding: 6px 8px;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    color:
+
+        rgba(170,200,255,.90);
+
+    background:
+
+        rgba(60,100,220,.08);
+
+    font-size: 10px;
+
+    transition:
+
+        background .22s ease,
+
+        color .22s ease,
+
+        transform .22s ease;
+
+}
+
+
+.dashboard
+.notification-mark-all:hover {
+
+    color: #ffffff;
+
+    transform:
+
+        translateY(-1px);
+
+    background:
+
+        rgba(60,100,220,.18);
+
+}
+
+
+/* =========================================================
+   LISTA
+   ========================================================= */
+
+.dashboard .notification-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+    width: 100%;
+
+    max-height: 310px;
+
+    padding: 8px 3px;
+
+    overflow-y: auto;
+
+    overflow-x: hidden;
+
+    scroll-behavior: smooth;
+
+    overscroll-behavior: contain;
+
+}
+
+
+/* SCROLLBAR */
+
+.dashboard .notification-list {
+
+    scrollbar-width: thin;
+
+    scrollbar-color:
+
+        rgba(80,120,255,.40)
+
+        rgba(255,255,255,.025);
+
+}
+
+
+.dashboard
+.notification-list::-webkit-scrollbar {
+
+    width: 5px;
+
+}
+
+
+.dashboard
+.notification-list::-webkit-scrollbar-track {
+
+    background:
+
+        rgba(255,255,255,.02);
+
+}
+
+
+.dashboard
+.notification-list::-webkit-scrollbar-thumb {
+
+    border-radius: 999px;
+
+    background:
+
+linear-gradient(
+
+180deg,
+
+rgba(120,160,255,.85),
+
+rgba(60,95,255,.45)
+
+);
+
+}
+
+
+/* =========================================================
+   NOTIFICACIÓN
+   ========================================================= */
+
+.dashboard .notification-item {
+
+    display: grid;
+
+    grid-template-columns:
+
+        34px
+        1fr
+        auto;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 10px;
+
+    border-radius: 11px;
+
+    cursor: pointer;
+
+    position: relative;
+
+
+    background:
+
+        rgba(255,255,255,.018);
+
+
+    border:
+
+        1px solid
+        transparent;
+
+
+    transition:
+
+        transform .24s
+        cubic-bezier(.22,.61,.36,1),
+
+        background .24s ease,
+
+        border-color .24s ease,
+
+        opacity .24s ease;
+
+}
+
+
+/* =========================================================
+   NO LEÍDA
+   ========================================================= */
+
+.dashboard
+.notification-item.unread {
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(45,85,220,.10),
+            rgba(255,255,255,.015)
+        );
+
+
+    border-color:
+
+        rgba(90,130,255,.08);
+
+}
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+.dashboard
+.notification-item:hover {
+
+    transform:
+
+        translateX(3px);
+
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(50,95,235,.14),
+            rgba(255,255,255,.025)
+        );
+
+
+    border-color:
+
+        rgba(120,160,255,.12);
+
+}
+
+
+/* =========================================================
+   ICONO
+   ========================================================= */
+
+.dashboard .notification-icon {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 34px;
+
+    height: 34px;
+
+    border-radius: 10px;
+
+    color: #ffffff;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+}
+
+
+/* Proyecto */
+
+.dashboard
+.notification-icon.project {
+
+    background:
+
+        rgba(64,143,222,.18);
+
+    box-shadow:
+
+        inset 0 0 0 1px
+        rgba(64,143,222,.22),
+
+        0 0 14px
+        rgba(64,143,222,.08);
+
+}
+
+
+/* Dinero */
+
+.dashboard
+.notification-icon.payment {
+
+    background:
+
+        rgba(49,196,119,.16);
+
+    box-shadow:
+
+        inset 0 0 0 1px
+        rgba(49,196,119,.20),
+
+        0 0 14px
+        rgba(49,196,119,.08);
+
+}
+
+
+/* Advertencia */
+
+.dashboard
+.notification-icon.alert {
+
+    background:
+
+        rgba(223,96,77,.16);
+
+    box-shadow:
+
+        inset 0 0 0 1px
+        rgba(223,96,77,.20),
+
+        0 0 14px
+        rgba(223,96,77,.08);
+
+}
+
+
+/* Sistema */
+
+.dashboard
+.notification-icon.system {
+
+    background:
+
+        rgba(255,255,255,.07);
+
+}
+
+
+/* =========================================================
+   CONTENIDO
+   ========================================================= */
+
+.dashboard .notification-content {
+
+    min-width: 0;
+
+}
+
+
+.dashboard .notification-title {
+
+    margin-bottom: 3px;
+
+    color: #ffffff;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+}
+
+
+.dashboard .notification-description {
+
+    color:
+
+        rgba(255,255,255,.58);
+
+    font-size: 9px;
+
+    line-height: 1.35;
+
+}
+
+
+.dashboard .notification-time {
+
+    margin-top: 5px;
+
+    color:
+
+        rgba(150,180,255,.60);
+
+    font-size: 8px;
+
+}
+
+
+/* =========================================================
+   INDICADOR NO LEÍDO
+   ========================================================= */
+
+.dashboard .notification-status {
+
+    width: 7px;
+
+    height: 7px;
+
+    border-radius: 50%;
+
+    background:
+
+        #4d82ff;
+
+    box-shadow:
+
+        0 0 6px
+        rgba(77,130,255,.75),
+
+        0 0 12px
+        rgba(77,130,255,.30);
+
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.dashboard .notification-panel-footer {
+
+    padding: 8px 5px 3px;
+
+    border-top:
+
+        1px solid
+        rgba(255,255,255,.07);
+
+}
+
+
+.dashboard .notification-view-all {
+
+    width: 100%;
+
+    padding: 9px;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    color:
+
+        rgba(190,210,255,.85);
+
+    background:
+
+        rgba(50,90,220,.06);
+
+    font-size: 10px;
+
+    transition:
+
+        background .22s ease,
+
+        color .22s ease;
+
+}
+
+
+.dashboard
+.notification-view-all:hover {
+
+    color: #ffffff;
+
+    background:
+
+        rgba(50,90,220,.15);
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+    .dashboard .notification-panel {
+
+        width:
+
+            min(
+                350px,
+                calc(100vw - 28px)
+            );
+
+        right: -4px;
+
+    }
+
+}
+
+/*==================================================
+PANEL NOTIFICACIONES
+LIQUID GLASS PREMIUM V2
+==================================================*/
+
+.dashboard .notification-panel{
+
+    position:absolute;
+
+    top:calc(100% + 12px);
+
+    right:0;
+
+    width:360px;
+
+    max-height:500px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    padding:10px;
+
+    border-radius:18px;
+
+    z-index:500;
+
+    /* MÁS OPACO */
+
+    background:
+
+        linear-gradient(
+            160deg,
+
+            rgba(28,36,78,.95) 0%,
+
+            rgba(18,24,60,.96) 35%,
+
+            rgba(10,14,42,.97) 70%,
+
+            rgba(7,10,28,.98) 100%
+        );
+
+    /* Glass */
+
+    backdrop-filter:
+        blur(30px)
+        saturate(145%);
+
+    -webkit-backdrop-filter:
+        blur(30px)
+        saturate(145%);
+
+    /* Borde */
+
+    border:
+
+        1px solid
+        rgba(170,195,255,.18);
+
+    /* Sombra */
+
+    box-shadow:
+
+        inset 0 1px 0
+        rgba(255,255,255,.10),
+
+        inset 0 -1px 0
+        rgba(255,255,255,.03),
+
+        0 24px 60px
+        rgba(0,0,0,.55),
+
+        0 0 28px
+        rgba(45,95,255,.08);
+
+    overflow:hidden;
+
+    opacity:0;
+
+    visibility:hidden;
+
+    pointer-events:none;
+
+    transform:
+        translateY(-8px)
+        scale(.97);
+
+    transform-origin:
+        top right;
+
+    transition:
+
+        opacity .25s ease,
+
+        transform .28s cubic-bezier(.22,.61,.36,1),
+
+        visibility .25s;
+
+}
+
+.dashboard .notification-panel::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    border-radius:inherit;
+
+    pointer-events:none;
+
+    background:
+
+        linear-gradient(
+
+            180deg,
+
+            rgba(255,255,255,.14),
+
+            rgba(255,255,255,.03) 22%,
+
+            transparent 55%
+
+        );
+
+}
+
+.dashboard .notification-panel::after{
+
+    content:"";
+
+    position:absolute;
+
+    top:-120%;
+
+    left:-40%;
+
+    width:55%;
+
+    height:280%;
+
+    pointer-events:none;
+
+    transform:
+        rotate(24deg);
+
+    background:
+
+        linear-gradient(
+
+            90deg,
+
+            transparent,
+
+            rgba(255,255,255,.05),
+
+            transparent
+
+        );
+
+    opacity:.55;
+
+}
+
+/*==================================================
+TOTAL DE NOTIFICACIONES
+==================================================*/
+
+.dashboard
+#notificationTotal{
+
+    color:
+        rgba(170,195,255,.82);
+
+    font-size:12px;
+
+    font-weight:500;
+
+    margin-left:4px;
+
+}
+
+/* =========================================================
+   NOTIFICACIONES AGRUPADAS POR FECHA
+   ========================================================= */
+
+
+/* =========================================================
+   ACCIONES DEL HEADER
+   ========================================================= */
+
+.dashboard .notification-panel-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: flex-end;
+
+    gap: 6px;
+
+    flex-wrap: wrap;
+
+}
+
+
+/* =========================================================
+   ELIMINAR TODAS
+   ========================================================= */
+
+.dashboard .notification-delete-all {
+
+    border: 0;
+
+    padding: 6px 8px;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    color:
+        rgba(255,150,150,.88);
+
+    background:
+        rgba(220,60,70,.07);
+
+    font-size: 10px;
+
+    transition:
+
+        color .22s ease,
+
+        background .22s ease,
+
+        transform .22s ease,
+
+        box-shadow .22s ease;
+
+}
+
+
+.dashboard .notification-delete-all:hover {
+
+    color:
+        #ffffff;
+
+    transform:
+        translateY(-1px);
+
+    background:
+        rgba(220,60,70,.17);
+
+    box-shadow:
+        0 5px 14px
+        rgba(220,60,70,.08);
+
+}
+
+
+/* =========================================================
+   GRUPO
+   ========================================================= */
+
+.dashboard .notification-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+    width: 100%;
+
+}
+
+
+/* =========================================================
+   HEADER DEL GRUPO
+   ========================================================= */
+
+.dashboard .notification-group-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding:
+
+        9px
+        7px
+        5px;
+
+}
+
+
+/* TEXTO */
+
+.dashboard .notification-group-title {
+
+    flex: 0 0 auto;
+
+    color:
+        rgba(185,205,255,.68);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing:
+        .8px;
+
+    text-transform:
+        uppercase;
+
+}
+
+
+/* LÍNEA */
+
+.dashboard .notification-group-line {
+
+    flex: 1;
+
+    height: 1px;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(125,155,255,.20),
+            rgba(255,255,255,.035),
+            transparent
+        );
+
+}
+
+
+/* =========================================================
+   META
+   FECHA + ELIMINAR
+   ========================================================= */
+
+.dashboard .notification-meta {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-top: 5px;
+
+}
+
+
+/* =========================================================
+   BOTÓN ELIMINAR INDIVIDUAL
+   ========================================================= */
+
+.dashboard .notification-delete {
+
+    border: 0;
+
+    padding: 3px 6px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    color:
+        rgba(255,145,145,.54);
+
+    background:
+        transparent;
+
+    font-size: 8px;
+
+    opacity: .45;
+
+    transition:
+
+        opacity .22s ease,
+
+        color .22s ease,
+
+        background .22s ease,
+
+        transform .22s ease;
+
+}
+
+
+/*
+   Solo gana presencia cuando pasamos
+   sobre la notificación.
+*/
+
+.dashboard
+.notification-item:hover
+.notification-delete {
+
+    opacity: 1;
+
+}
+
+
+.dashboard
+.notification-delete:hover {
+
+    color:
+        #ff9d9d;
+
+    background:
+        rgba(230,70,80,.10);
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+/* =========================================================
+   ELIMINACIÓN ANIMADA
+   ========================================================= */
+
+.dashboard
+.notification-item.is-removing {
+
+    pointer-events: none;
+
+    animation:
+
+        notificationRemove
+
+        .30s
+
+        cubic-bezier(.22,.61,.36,1)
+
+        forwards;
+
+}
+
+
+@keyframes notificationRemove {
+
+    0% {
+
+        opacity: 1;
+
+        transform:
+            translateX(0)
+            scale(1);
+
+        max-height: 100px;
+
+    }
+
+
+    70% {
+
+        opacity: 0;
+
+        transform:
+            translateX(15px)
+            scale(.97);
+
+    }
+
+
+    100% {
+
+        opacity: 0;
+
+        transform:
+            translateX(18px)
+            scale(.96);
+
+        max-height: 0;
+
+        padding-top: 0;
+
+        padding-bottom: 0;
+
+        margin: 0;
+
+    }
+
+}
+
+
+/* =========================================================
+   ESTADO SIN NOTIFICACIONES
+   ========================================================= */
+
+.dashboard .notification-empty {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 165px;
+
+    padding: 25px;
+
+    color:
+        rgba(255,255,255,.48);
+
+    text-align: center;
+
+}
+
+
+.dashboard .notification-empty-icon {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 42px;
+
+    height: 42px;
+
+    margin-bottom: 10px;
+
+    border-radius: 13px;
+
+    color:
+        rgba(175,200,255,.75);
+
+    background:
+        rgba(80,110,220,.08);
+
+    border:
+        1px solid
+        rgba(150,180,255,.09);
+
+    font-size: 18px;
+
+}
+
+
+.dashboard .notification-empty-title {
+
+    margin-bottom: 4px;
+
+    color:
+        rgba(255,255,255,.78);
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+}
+
+
+.dashboard .notification-empty-text {
+
+    color:
+        rgba(255,255,255,.38);
+
+    font-size: 9px;
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width:640px) {
+
+    .dashboard .notification-panel-header {
+
+        align-items: flex-start;
+
+    }
+
+
+    .dashboard .notification-panel-actions {
+
+        gap: 4px;
+
+    }
+
+
+    .dashboard .notification-mark-all,
+    .dashboard .notification-delete-all {
+
+        padding:
+            5px
+            6px;
+
+        font-size:
+            9px;
+
+    }
+
+}
+
+/* =========================================================
+   FIX FINAL
+   PANEL DE NOTIFICACIONES RESPONSIVE
+   IMPORTANTE: DEBE ESTAR AL FINAL DEL CSS
+   ========================================================= */
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1024px) {
+
+    .dashboard .notification-wrapper {
+
+        position: relative;
+
+        z-index: 500;
+
+    }
+
+
+    .dashboard .notification-panel {
+
+        /*
+           Nunca superar el viewport.
+        */
+
+        width:
+            min(
+                360px,
+                calc(100vw - 32px)
+            );
+
+        max-width:
+            calc(100vw - 32px);
+
+        /*
+           Se mantiene relacionado
+           con la campana.
+        */
+
+        right: 0;
+
+        left: auto;
+
+
+        /*
+           Evita crecer demasiado
+           verticalmente.
+        */
+
+        max-height:
+            min(
+                500px,
+                calc(100dvh - 170px)
+            );
+
+        box-sizing:
+            border-box;
+
+    }
+
+
+    .dashboard .notification-list {
+
+        /*
+           El scroll sigue siendo
+           exclusivamente interno.
+        */
+
+        max-height:
+            min(
+                380px,
+                calc(100dvh - 285px)
+            );
+
+        overflow-y:
+            auto;
+
+        overflow-x:
+            hidden;
+
+    }
+
+}
+
+
+
+/* =========================================================
+   MÓVIL
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+    /* =====================================================
+       WRAPPER
+       ===================================================== */
+
+    .dashboard .notification-wrapper {
+
+        position:
+            relative;
+
+        z-index:
+            500;
+
+        /*
+           No permitimos que el wrapper
+           altere la cuadrícula del header.
+        */
+
+        width:
+            auto;
+
+        min-width:
+            0;
+
+    }
+
+
+    /* =====================================================
+       PANEL
+       ===================================================== */
+
+    .dashboard .notification-panel {
+
+        /*
+           ESTA ES LA CORRECCIÓN PRINCIPAL.
+
+           Ya no son 360px fijos.
+        */
+
+        width:
+            min(
+                340px,
+                calc(100vw - 24px)
+            ) !important;
+
+        max-width:
+            calc(100vw - 24px) !important;
+
+
+        /*
+           Sigue saliendo debajo
+           de la campana.
+        */
+
+        top:
+            calc(100% + 10px);
+
+        right:
+            0;
+
+        left:
+            auto;
+
+
+        /*
+           Altura adaptada al teléfono.
+        */
+
+        max-height:
+            calc(100dvh - 190px);
+
+
+        padding:
+            8px;
+
+
+        border-radius:
+            15px;
+
+
+        box-sizing:
+            border-box;
+
+
+        /*
+           Mantenerlo sobre todas
+           las tarjetas.
+        */
+
+        z-index:
+            999;
+
+    }
+
+
+    /* =====================================================
+       HEADER DEL PANEL
+       ===================================================== */
+
+    .dashboard .notification-panel-header {
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        align-items:
+            stretch;
+
+        justify-content:
+            flex-start;
+
+        gap:
+            8px;
+
+        padding:
+            9px 8px 10px;
+
+    }
+
+
+    /* =====================================================
+       TÍTULO
+       ===================================================== */
+
+    .dashboard .notification-panel-title {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        width:
+            100%;
+
+        font-size:
+            14px;
+
+    }
+
+
+    .dashboard #notificationTotal {
+
+        font-size:
+            11px;
+
+    }
+
+
+    /* =====================================================
+       BOTONES DEL HEADER
+       ===================================================== */
+
+    .dashboard .notification-panel-actions {
+
+        display:
+            grid;
+
+        grid-template-columns:
+            1fr 1fr;
+
+        gap:
+            6px;
+
+        width:
+            100%;
+
+    }
+
+
+    .dashboard .notification-mark-all,
+    .dashboard .notification-delete-all {
+
+        width:
+            100%;
+
+        min-width:
+            0;
+
+        padding:
+            7px 6px;
+
+        font-size:
+            9px;
+
+        white-space:
+            nowrap;
+
+        overflow:
+            hidden;
+
+        text-overflow:
+            ellipsis;
+
+    }
+
+
+    /* =====================================================
+       LISTA
+       ===================================================== */
+
+    .dashboard .notification-list {
+
+        width:
+            100%;
+
+        max-height:
+            calc(100dvh - 330px);
+
+        min-height:
+            0;
+
+        padding:
+            6px 2px;
+
+        gap:
+            5px;
+
+        overflow-y:
+            auto;
+
+        overflow-x:
+            hidden;
+
+        box-sizing:
+            border-box;
+
+        overscroll-behavior:
+            contain;
+
+        -webkit-overflow-scrolling:
+            touch;
+
+    }
+
+
+    /* =====================================================
+       GRUPO
+       ===================================================== */
+
+    .dashboard .notification-group {
+
+        min-width:
+            0;
+
+        width:
+            100%;
+
+    }
+
+
+    .dashboard .notification-group-header {
+
+        padding:
+            8px 5px 4px;
+
+        gap:
+            7px;
+
+    }
+
+
+    .dashboard .notification-group-title {
+
+        font-size:
+            8px;
+
+        letter-spacing:
+            .65px;
+
+    }
+
+
+    /* =====================================================
+       NOTIFICACIÓN
+       ===================================================== */
+
+    .dashboard .notification-item {
+
+        /*
+           Icono | información | indicador
+        */
+
+        grid-template-columns:
+            30px
+            minmax(0, 1fr)
+            auto;
+
+        gap:
+            8px;
+
+        width:
+            100%;
+
+        min-width:
+            0;
+
+        padding:
+            9px 8px;
+
+        border-radius:
+            10px;
+
+        box-sizing:
+            border-box;
+
+    }
+
+
+    /* =====================================================
+       ICONO
+       ===================================================== */
+
+    .dashboard .notification-icon {
+
+        width:
+            30px;
+
+        height:
+            30px;
+
+        border-radius:
+            9px;
+
+        font-size:
+            11px;
+
+    }
+
+
+    /* =====================================================
+       CONTENIDO
+       ===================================================== */
+
+    .dashboard .notification-content {
+
+        width:
+            100%;
+
+        min-width:
+            0;
+
+        overflow:
+            hidden;
+
+    }
+
+
+    .dashboard .notification-title {
+
+        width:
+            100%;
+
+        margin-bottom:
+            3px;
+
+        font-size:
+            10px;
+
+        white-space:
+            normal;
+
+        overflow-wrap:
+            anywhere;
+
+    }
+
+
+    .dashboard .notification-description {
+
+        width:
+            100%;
+
+        font-size:
+            8.5px;
+
+        line-height:
+            1.35;
+
+        white-space:
+            normal;
+
+        overflow-wrap:
+            anywhere;
+
+    }
+
+
+    /* =====================================================
+       META
+       FECHA + ELIMINAR
+       ===================================================== */
+
+    .dashboard .notification-meta {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            space-between;
+
+        flex-wrap:
+            wrap;
+
+        gap:
+            4px 8px;
+
+        width:
+            100%;
+
+        margin-top:
+            5px;
+
+    }
+
+
+    .dashboard .notification-time {
+
+        margin-top:
+            0;
+
+        font-size:
+            7.5px;
+
+    }
+
+
+    /*
+       En móvil no dependemos del hover,
+       porque no existe como tal.
+    */
+
+    .dashboard .notification-delete {
+
+        opacity:
+            .85;
+
+        padding:
+            4px 5px;
+
+        font-size:
+            7.5px;
+
+    }
+
+
+    /* =====================================================
+       INDICADOR NO LEÍDA
+       ===================================================== */
+
+    .dashboard .notification-status {
+
+        width:
+            6px;
+
+        height:
+            6px;
+
+        flex:
+            0 0 6px;
+
+    }
+
+
+    /* =====================================================
+       FOOTER
+       ===================================================== */
+
+    .dashboard .notification-panel-footer {
+
+        padding:
+            7px 3px 2px;
+
+    }
+
+
+    .dashboard .notification-view-all {
+
+        padding:
+            8px;
+
+        font-size:
+            9px;
+
+    }
+
+
+    /* =====================================================
+       VACÍO
+       ===================================================== */
+
+    .dashboard .notification-empty {
+
+        min-height:
+            135px;
+
+        padding:
+            18px 10px;
+
+    }
+
+}
+
+
+
+/* =========================================================
+   TELÉFONOS ESTRECHOS
+   ========================================================= */
+
+@media (max-width: 390px) {
+
+    .dashboard .notification-panel {
+
+        /*
+           Deja 10px de aire
+           a cada lado aproximadamente.
+        */
+
+        width:
+            calc(100vw - 20px) !important;
+
+        max-width:
+            calc(100vw - 20px) !important;
+
+        padding:
+            7px;
+
+        border-radius:
+            14px;
+
+    }
+
+
+    .dashboard .notification-panel-actions {
+
+        /*
+           En pantallas muy estrechas
+           los botones se apilan.
+        */
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+
+    .dashboard .notification-mark-all,
+    .dashboard .notification-delete-all {
+
+        padding:
+            6px;
+
+    }
+
+
+    .dashboard .notification-list {
+
+        max-height:
+            calc(100dvh - 350px);
+
+    }
+
+
+    .dashboard .notification-item {
+
+        grid-template-columns:
+            28px
+            minmax(0, 1fr)
+            auto;
+
+        gap:
+            7px;
+
+        padding:
+            8px 7px;
+
+    }
+
+
+    .dashboard .notification-icon {
+
+        width:
+            28px;
+
+        height:
+            28px;
+
+    }
+
+}
+
+/* =========================================================
+   FIX DEFINITIVO PANEL NOTIFICACIONES EN MÓVIL
+
+   Problema real:
+   el panel estaba tomando como referencia
+   .notification-wrapper, que solo mide lo que mide
+   el botón de la campana.
+
+   Ahora el panel toma como referencia TODO .row-4.
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+
+    /* =====================================================
+       CONTENEDOR DE CONTROLES DEL HEADER
+       ===================================================== */
+
+    .dashboard .row-4 {
+
+        display: grid;
+
+        /*
+           Segunda columna reservada para campana.
+        */
+
+        grid-template-columns:
+            minmax(0, 1fr)
+            47px;
+
+        gap: 8px;
+
+        width: 100%;
+        max-width: 100%;
+
+        position: relative;
+
+        overflow: visible !important;
+
+        align-items: center;
+
+    }
+
+
+    /* =====================================================
+       SELECTOR DE FECHA
+
+       Ocupa toda la primera fila.
+       ===================================================== */
+
+    .dashboard .report-period-wrapper {
+
+        grid-column:
+            1 / -1;
+
+        grid-row:
+            1;
+
+        width: 100%;
+
+        max-width: none;
+
+        min-width: 0;
+
+    }
+
+
+    .dashboard .report-period-button {
+
+        width: 100%;
+
+        max-width: none;
+
+        box-sizing: border-box;
+
+    }
+
+
+    /* =====================================================
+       NUEVO PROYECTO
+       ===================================================== */
+
+    .dashboard .row-6 {
+
+        grid-column:
+            1;
+
+        grid-row:
+            2;
+
+        width: 100%;
+
+        max-width: 170px;
+
+        min-width: 0;
+
+        box-sizing: border-box;
+
+    }
+
+
+    /* =====================================================
+       WRAPPER DE NOTIFICACIONES
+       ===================================================== */
+
+    .dashboard .notification-wrapper {
+
+        /*
+           IMPORTANTE:
+
+           position:static hace que el panel absoluto
+           deje de tomar este pequeño wrapper como
+           referencia.
+
+           Su referencia pasa a ser .row-4.
+        */
+
+        position: static !important;
+
+        grid-column:
+            2;
+
+        grid-row:
+            2;
+
+        width: 47px;
+
+        min-width: 47px;
+
+        max-width: 47px;
+
+        justify-self: end;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        z-index: 500;
+
+    }
+
+
+    /* =====================================================
+       BOTÓN CAMPANA
+       ===================================================== */
+
+    .dashboard
+    .notification-wrapper
+    .notification-button {
+
+        width: 47px !important;
+
+        min-width: 47px !important;
+
+        max-width: 47px !important;
+
+        height: 47px;
+
+        flex: 0 0 47px !important;
+
+        box-sizing: border-box;
+
+    }
+
+
+    /* =====================================================
+       PANEL
+
+       AHORA SE POSICIONA RESPECTO A TODO .row-4
+       ===================================================== */
+
+    .dashboard .notification-panel {
+
+        position: absolute !important;
+
+
+        /*
+           Debajo de toda la zona de controles.
+        */
+
+        top:
+            calc(100% + 10px) !important;
+
+
+        /*
+           Ocupa exactamente el ancho disponible
+           dentro del header.
+        */
+
+        left:
+            0 !important;
+
+        right:
+            0 !important;
+
+
+        width:
+            100% !important;
+
+        max-width:
+            100% !important;
+
+        min-width:
+            0 !important;
+
+
+        box-sizing:
+            border-box;
+
+
+        /*
+           Altura controlada.
+        */
+
+        max-height:
+            min(
+                400px,
+                calc(100dvh - 245px)
+            );
+
+
+        padding:
+            9px;
+
+        border-radius:
+            16px;
+
+
+        /*
+           Muy por encima de cards/gráficas.
+        */
+
+        z-index:
+            9999;
+
+    }
+
+
+    /* =====================================================
+       HEADER PANEL
+       ===================================================== */
+
+    .dashboard .notification-panel-header {
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        justify-content: flex-start;
+
+        gap: 8px;
+
+        width: 100%;
+
+        padding:
+            10px
+            8px;
+
+        box-sizing:
+            border-box;
+
+    }
+
+
+    .dashboard .notification-panel-title {
+
+        display: flex;
+
+        align-items: center;
+
+        width: 100%;
+
+        font-size: 14px;
+
+    }
+
+
+    /* =====================================================
+       ACCIONES
+       ===================================================== */
+
+    .dashboard .notification-panel-actions {
+
+        display: grid;
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0, 1fr)
+            );
+
+        gap: 6px;
+
+        width: 100%;
+
+        min-width: 0;
+
+    }
+
+
+    .dashboard .notification-mark-all,
+    .dashboard .notification-delete-all {
+
+        width: 100%;
+
+        min-width: 0;
+
+        max-width: none;
+
+        padding:
+            7px
+            5px;
+
+        box-sizing:
+            border-box;
+
+        white-space: nowrap;
+
+        overflow: hidden;
+
+        text-overflow: ellipsis;
+
+        font-size: 9px;
+
+    }
+
+
+    /* =====================================================
+       LISTA
+       ===================================================== */
+
+    .dashboard .notification-list {
+
+        width: 100%;
+
+        min-width: 0;
+
+        max-width: 100%;
+
+
+        max-height:
+            min(
+                350px,
+                calc(100dvh - 365px)
+            );
+
+
+        overflow-y:
+            auto;
+
+        overflow-x:
+            hidden;
+
+
+        padding:
+            6px
+            2px;
+
+
+        box-sizing:
+            border-box;
+
+
+        overscroll-behavior:
+            contain;
+
+
+        -webkit-overflow-scrolling:
+            touch;
+
+    }
+
+
+    /* =====================================================
+       GRUPOS
+       ===================================================== */
+
+    .dashboard .notification-group {
+
+        width: 100%;
+
+        min-width: 0;
+
+        max-width: 100%;
+
+    }
+
+
+    .dashboard .notification-group-header {
+
+        width: 100%;
+
+        box-sizing: border-box;
+
+    }
+
+
+    /* =====================================================
+       NOTIFICACIÓN
+       ===================================================== */
+
+    .dashboard .notification-item {
+
+        display: grid;
+
+
+        grid-template-columns:
+
+            30px
+
+            minmax(0, 1fr)
+
+            7px;
+
+
+        align-items: center;
+
+
+        width: 100%;
+
+        min-width: 0;
+
+        max-width: 100%;
+
+
+        gap: 8px;
+
+
+        padding:
+            9px
+            8px;
+
+
+        box-sizing:
+            border-box;
+
+    }
+
+
+    /* =====================================================
+       ICONO
+       ===================================================== */
+
+    .dashboard .notification-icon {
+
+        width: 30px;
+
+        height: 30px;
+
+        min-width: 30px;
+
+        border-radius: 9px;
+
+        font-size: 11px;
+
+    }
+
+
+    /* =====================================================
+       CONTENIDO
+
+       Esta parte evita que texto largo
+       expanda horizontalmente la notificación.
+       ===================================================== */
+
+    .dashboard .notification-content {
+
+        width: 100%;
+
+        min-width: 0;
+
+        max-width: 100%;
+
+        overflow: hidden;
+
+    }
+
+
+    .dashboard .notification-title,
+    .dashboard .notification-description {
+
+        width: 100%;
+
+        min-width: 0;
+
+        max-width: 100%;
+
+
+        white-space: normal;
+
+
+        overflow-wrap:
+            anywhere;
+
+        word-break:
+            break-word;
+
+    }
+
+
+    .dashboard .notification-title {
+
+        font-size:
+            10px;
+
+    }
+
+
+    .dashboard .notification-description {
+
+        font-size:
+            8.5px;
+
+        line-height:
+            1.4;
+
+    }
+
+
+    /* =====================================================
+       FECHA + ELIMINAR
+       ===================================================== */
+
+    .dashboard .notification-meta {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        flex-wrap: wrap;
+
+        width: 100%;
+
+        min-width: 0;
+
+        gap:
+            4px
+            8px;
+
+    }
+
+
+    .dashboard .notification-time {
+
+        margin-top: 0;
+
+        font-size: 7.5px;
+
+    }
+
+
+    /*
+       En teléfono no existe hover real,
+       así que "Eliminar" debe ser visible.
+    */
+
+    .dashboard .notification-delete {
+
+        opacity: .85;
+
+        flex: 0 0 auto;
+
+        padding:
+            4px
+            5px;
+
+        font-size:
+            7.5px;
+
+    }
+
+
+    /* =====================================================
+       PUNTO NO LEÍDA
+       ===================================================== */
+
+    .dashboard .notification-status {
+
+        width:
+            6px;
+
+        height:
+            6px;
+
+        min-width:
+            6px;
+
+    }
+
+}
+
+

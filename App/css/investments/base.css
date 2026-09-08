@@ -1,0 +1,307 @@
+/* Modulo: Tarjeta de fondos base. Orden preservado desde el CSS original. */
+/* GUÍA: estructura compacta de fondos; manager.css amplía lista, modal y variantes de inversión. */
+
+.dashboard .group-cards {
+  flex: 1 1 360px;
+  width: 100%;
+  max-width: none;
+  height: 732px;
+  position: relative;
+}
+
+.dashboard .card-3 {
+  display: flex;
+  flex-direction: column;
+  width: 444px;
+  height: 399px;
+  align-items: center;
+  justify-content: center;
+  gap: 45px;
+  padding: 10px 40px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #07254133;
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: blur(2px) brightness(100%) saturate(105%);
+  -webkit-backdrop-filter: blur(2px) brightness(100%) saturate(105%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    inset 1px 0 0 rgba(255, 255, 255, 0.32),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.13),
+    inset -1px 0 1px rgba(0, 0, 0, 0.11);
+}
+
+.dashboard .text-input-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0px 0px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+}
+
+.dashboard .text-wrapper-17 {
+  position: relative;
+  flex: 1;
+  margin-top: -1px;
+  font-family: "Arial-Bold", Helvetica;
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 18px;
+  letter-spacing: 0;
+  line-height: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.dashboard .text-wrapper-18 {
+  position: relative;
+  width: fit-content;
+  font-family: "Arial-Regular", Helvetica;
+  font-weight: 400;
+  color: #ffffff;
+  font-size: 16px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.dashboard .tooltip {
+  position: relative;
+  width: 335.75px;
+  height: 238.75px;
+  aspect-ratio: 1.41;
+}
+
+.dashboard .container {
+  position: absolute;
+  top: 1px;
+  left: 19px;
+  width: 298px;
+  height: 187px;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0px 20px 20px #0000001f;
+  aspect-ratio: 1.58;
+  background-image: url(../../assets/img/input-form.svg);
+  background-size: 100% 100%;
+}
+
+.dashboard .text-input-container-2 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 286px;
+  height: 181px;
+  display: flex;
+}
+
+.dashboard .text-wrapper-19 {
+  margin-top: 33px;
+  width: 123px;
+  height: 29px;
+  margin-left: 20px;
+  font-family: "Inter", Helvetica;
+  font-size: 24px;
+  font-weight: 400;
+  color: #ffffff;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.dashboard .switch-container {
+  position: absolute;
+  top: 33px;
+  left: 225px;
+  width: 56px;
+  height: 32px;
+}
+
+.dashboard .cardbank {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  width: 331px;
+  height: 209px;
+  background-color: #000000;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0px 20px 20px #0000001f;
+}
+
+.dashboard .switch-container-2 {
+  position: absolute;
+  top: 0;
+  left: 100px;
+  width: 231px;
+  height: 209px;
+}
+
+.dashboard .text-input-container-3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 331px;
+  height: 209px;
+}
+
+.dashboard .text-wrapper-20 {
+  position: absolute;
+  top: 33px;
+  left: 20px;
+  font-family: "Inter", Helvetica;
+  font-size: 24px;
+  font-weight: 400;
+  color: #ffffff;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.dashboard .paragraph-container-2 {
+  top: 98px;
+  left: 20px;
+  width: 217px;
+  height: 22px;
+  gap: 20px;
+  position: absolute;
+  display: flex;
+}
+
+.dashboard .text-wrapper-21 {
+  width: 38px;
+  height: 22px;
+  font-family: "Inter", Helvetica;
+  font-weight: 500;
+  color: #ffffff;
+  font-size: 18px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.dashboard .element {
+  width: 35px;
+  height: 17px;
+  font-family: "Inter", Helvetica;
+  font-weight: 500;
+  color: #ffffff;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.dashboard .paragraph-container-3 {
+  top: 144px;
+  left: 235px;
+  width: 45px;
+  height: 31px;
+  flex-direction: column;
+  gap: 2px;
+  position: absolute;
+  display: flex;
+}
+
+.dashboard .text-wrapper-22 {
+  margin-left: 3px;
+  width: 35px;
+  height: 12px;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: #ffffff80;
+  font-size: 10px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.dashboard .text-wrapper-23 {
+  width: 41px;
+  height: 17px;
+  font-family: "Inter", Helvetica;
+  font-weight: 500;
+  color: #ffffff;
+  font-size: 14px;
+  text-align: center;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.dashboard .paragraph-container-4 {
+  top: 144px;
+  left: 20px;
+  width: 132px;
+  height: 31px;
+  flex-direction: column;
+  gap: 2px;
+  position: absolute;
+  display: flex;
+}
+
+.dashboard .text-wrapper-24 {
+  width: 57px;
+  height: 12px;
+  font-family: "Inter", Helvetica;
+  font-weight: 400;
+  color: #ffffff80;
+  font-size: 10px;
+  letter-spacing: 0;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.dashboard .text-wrapper-25 {
+  width: 128px;
+  height: 17px;
+  font-weight: 500;
+  font-size: 14px;
+  font-family: "Inter", Helvetica;
+  color: #ffffff;
+  letter-spacing: 0;
+  line-height: normal;
+}
+
+.dashboard .text-input-container-4 {
+  position: absolute;
+  top: 40px;
+  left: 260px;
+  width: 51px;
+  height: 16px;
+}
+
+.dashboard .img-wrapper {
+  display: flex;
+  width: 60px;
+  height: 60px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+  position: absolute;
+  top: 0;
+  left: 276px;
+  border-radius: 30px;
+  aspect-ratio: 1;
+}
+
+.dashboard .image-5 {
+  position: relative;
+  width: 35px;
+  height: 35px;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+

@@ -1,0 +1,1612 @@
+======================================================================
+TECHNOVA SISTEMA - MAPA MAESTRO DEL PROYECTO
+======================================================================
+
+Última actualización: 16 de agosto de 2026
+Carpeta principal:
+C:\xampp\htdocs\xampp\TechNova Sistema
+
+Ubicación de este documento:
+C:\xampp\htdocs\xampp\TechNova Sistema\App\MAPEO_Y_ESTRUCTURA_DEL_PROYECTO.txt
+
+Alcance:
+
+Este archivo documenta TODO TechNova Sistema, no solamente el dashboard.
+Debe actualizarse cada vez que se agregue una vista, módulo JavaScript,
+componente CSS, endpoint PHP, tabla de base de datos o conexión importante.
+
+
+======================================================================
+0. LEYENDA DE ESTADOS
+======================================================================
+
+[ACTIVO]
+El archivo existe, está cargado y forma parte del funcionamiento actual.
+
+[PREPARADO]
+La carpeta, interfaz o contrato existe, pero todavía no tiene backend real.
+
+[PLANIFICADO]
+Es la ubicación acordada para trabajo futuro; aún no está implementado.
+
+[RESPALDO]
+Copia histórica que no forma parte de la aplicación activa.
+
+
+======================================================================
+1. ARQUITECTURA GENERAL
+======================================================================
+
+La arquitectura acordada separa completamente presentación y servidor:
+
+NAVEGADOR
+   |
+   v
+App/*.html
+   |-- estructura visual, sin código PHP
+   |
+   +--> App/css/
+   |       estilos globales, componentes y estilos por página
+   |
+   +--> App/js/components/
+   |       comportamientos reutilizables
+   |
+   +--> App/js/pages/
+   |       coordinación exclusiva de cada vista
+   |
+   +--> App/js/api/
+           solicitudes Fetch y manejo de respuestas JSON
+                  |
+                  v
+             ../api/*.php
+                  |
+                  +--> sesión y permisos
+                  +--> validación
+                  +--> lógica del servidor
+                  +--> consultas preparadas
+                  |
+                  v
+                MySQL
+
+Respuesta de regreso:
+
+MySQL -> PHP -> JSON -> JavaScript -> HTML visible
+
+Estado actual de las capas:
+
+- Frontend App/: [ACTIVO]
+- Dashboard visual: [ACTIVO]
+- Proyectos, Tareas y Tablero de tareas: [ACTIVO]
+- Navbar centralizado entre vistas: [ACTIVO]
+- Carpetas para nuevas vistas: [ACTIVO]
+- Clientes JavaScript de API: [ACTIVO CON FALLBACK], endpoints vacíos
+- Contrato de KPI: [PREPARADO]
+- Backend api/: [PREPARADO], sin archivos PHP
+- Base de datos MySQL: [PLANIFICADO], sin conexión
+- Autenticación real: [PLANIFICADO]
+
+
+======================================================================
+2. ESTRUCTURA REAL DEL PROYECTO
+======================================================================
+
+TechNova Sistema/
+|
++-- App/                                      [ACTIVO]
+|   |
+|   +-- index.html                            Dashboard actual
+|   +-- proyectos.html                       Gestión de proyectos
+|   +-- tareas.html                          Lista y gestión de tareas
+|   +-- tareas-tablero.html                  Tablero Kanban de tareas
+|   +-- README.md                             Guía breve del frontend
+|   +-- MAPEO_Y_ESTRUCTURA_DEL_PROYECTO.txt  Este mapa maestro
+|   |
+|   +-- css/
+|   |   +-- globals.css
+|   |   +-- responsive.css
+|   |   +-- effects.css
+|   |   +-- intro.css
+|   |   +-- layout/
+|   |   +-- navbar/
+|   |   +-- header/
+|   |   +-- cards/
+|   |   +-- charts/
+|   |   +-- notifications/
+|   |   +-- investments/
+|   |   +-- expenses/
+|   |   +-- pages/                            [ACTIVO]
+|   |
+|   +-- js/
+|   |   +-- navbar.js
+|   |   +-- intro.js
+|   |   +-- dashboard-ui.js
+|   |   +-- dashboard-data.js
+|   |   +-- periods.js
+|   |   +-- expenses.js
+|   |   +-- notifications.js
+|   |   +-- investments.js
+|   |   +-- charts.js
+|   |   +-- app.js
+|   |   +-- api/                              [ACTIVO]
+|   |   +-- pages/                            [ACTIVO]
+|   |   +-- components/                       [ACTIVO]
+|   |
+|   +-- assets/
+|   |   +-- img/
+|   |   +-- icons/
+|   |   +-- fonts/
+|   |   +-- vendor/
+|   |
+|   +-- videos/
+|   |   +-- technova-intro-desktop.mp4
+|   |   +-- technova-intro-tablet.mp4
+|   |   +-- technova-intro-mobile.mp4
+|   |
+|   +-- _backups/                             [RESPALDO]
+|
++-- api/                                      [PREPARADO]
+|   +-- README.md
+|   +-- config/
+|   +-- core/
+|   +-- middleware/
+|   +-- health/
+|   +-- auth/
+|   +-- dashboard/
+|   +-- projects/
+|   +-- tasks/
+|   +-- time/
+|   +-- clients/
+|   +-- team/
+|   +-- assistant/
+|   +-- finance/
+|   +-- billing/
+|   +-- reports/
+|   +-- notifications/
+|   +-- investments/
+|   +-- expenses/
+|   +-- settings/
+|
++-- respaldo/                                 [RESPALDO]
+
+Importante:
+
+- En api/ existen 19 carpetas y 0 archivos PHP.
+- No existe todavía una conexión a MySQL.
+- Las carpetas README de App/js/api, App/js/pages, App/js/components y
+  App/css/pages explican su uso futuro.
+- Ningún archivo dentro de _backups/ o respaldo/ debe cargarse en producción.
+
+
+======================================================================
+3. FRONTEND ACTIVO: APP/INDEX.HTML
+======================================================================
+
+Estado: [ACTIVO]
+
+index.html es actualmente el punto de entrada del dashboard y contiene:
+
+- Navbar lateral.
+- Encabezado y selector de periodo general.
+- Botón Nuevo proyecto.
+- Panel de notificaciones.
+- Cinco tarjetas KPI.
+- Gráfica de resumen financiero.
+- Fondos de inversión y modal.
+- Gastos recurrentes.
+- Gráfica de distribución de costos.
+- Carga ordenada de CSS y JavaScript.
+
+El HTML no contiene PHP.
+
+Vistas futuras acordadas:
+
+- dashboard.html
+- proyectos.html
+- tareas.html
+- tiempo.html
+- clientes.html
+- equipo.html
+- asistente.html
+- finanzas.html
+- facturacion.html
+- reportes.html
+- configuracion.html
+
+Estas vistas todavía no existen. Los enlaces correspondientes permanecen con
+href="#" para evitar redirecciones rotas.
+
+Cuando se cree el nuevo index.html de entrada, el dashboard actual podrá pasar
+a dashboard.html. Ese cambio debe probar todas las rutas relativas.
+
+
+======================================================================
+4. MAPA DE CSS
+======================================================================
+
+Archivos globales:
+
+css/globals.css
+- Reset, box-sizing, fuentes y configuración global.
+- Importa el reset local y fuentes locales.
+
+css/responsive.css
+- Reglas responsive estructurales generales.
+
+css/effects.css
+- Efectos Liquid Glass y efectos visuales compartidos.
+
+css/intro.css
+- Conserva reglas de entrada del dashboard y estilos históricos de video.
+- La nueva presentación usa intros/intro-technova/styles.css dentro de su iframe.
+
+Carpetas por componente:
+
+css/layout/
+- base.css: lienzo y dimensiones generales.
+- content.css: distribución del contenido principal.
+
+css/navbar/
+- structure.css: estructura, logo, enlaces y perfil.
+- toggle.css: botón responsive.
+- base.css: estilos complementarios y responsive.
+- items.css: estados, indicador y efectos de opciones.
+
+css/header/
+- base.css: encabezado base.
+- controls.css: selectores, botones y controles.
+
+css/cards/
+- base.css: tarjetas base.
+- kpi.css: tarjetas KPI y contadores.
+- responsive.css: carrusel y comportamiento responsive.
+
+css/charts/
+- base.css: base visual de gráficas.
+- financial-chart.css: resumen financiero, selector y tooltip.
+- cost-base.css: estructura del gráfico de costos.
+- cost-chart.css: interacción, leyendas y efectos del gráfico de costos.
+
+css/notifications/
+- button.css: campana y contador.
+- panel.css: panel, grupos y estados.
+
+css/investments/
+- base.css: tarjeta original.
+- manager.css: lista, tarjetas alternativas y modal.
+
+css/expenses/
+- base.css: estructura base.
+- recurring.css: elementos, animaciones y Ver todo/Ver menos.
+
+css/pages/                                           [PREPARADO]
+- Aquí irán únicamente estilos exclusivos de una vista.
+- Ejemplos: dashboard.css, projects.css, tasks.css, clients.css.
+
+Regla:
+Si un estilo se usa en varias vistas, no debe duplicarse en css/pages/; debe
+vivir en una carpeta de componente compartido.
+
+
+======================================================================
+5. ORDEN ACTIVO DE CARGA DE CSS
+======================================================================
+
+1.  css/globals.css
+2.  css/layout/base.css
+3.  css/navbar/structure.css
+4.  css/header/base.css
+5.  css/layout/content.css
+6.  css/cards/base.css
+7.  css/charts/base.css
+8.  css/investments/base.css
+9.  css/expenses/base.css
+10. css/charts/cost-base.css
+11. css/navbar/toggle.css
+12. css/responsive.css
+13. css/effects.css
+14. css/charts/cost-chart.css
+15. css/navbar/base.css
+16. css/notifications/button.css
+17. css/header/controls.css
+18. css/cards/kpi.css
+19. css/navbar/items.css
+20. css/cards/responsive.css
+21. css/charts/financial-chart.css
+22. css/expenses/recurring.css
+23. css/notifications/panel.css
+24. css/investments/manager.css
+25. css/intro.css
+
+No reordenar esta lista sin probar la cascada completa en escritorio, tablet y
+móvil.
+
+
+======================================================================
+6. MAPA DE JAVASCRIPT ACTIVO
+======================================================================
+
+js/navbar.js                                             [ACTIVO]
+- Abre y cierra el navbar responsive.
+- Cierra con Escape.
+- Cierra al seleccionar una opción en móvil/tablet.
+- Evita el salto de enlaces href="#".
+- Cuando href tenga una ruta real, permite la navegación normal.
+
+js/intro.js                                              [ACTIVO]
+- Abre intros/intro-technova/index.html?embedded=1 en un iframe de pantalla completa.
+- Crea y retira la intro Horizonte SVG responsive, sustituyendo los videos anteriores.
+- Valida mensajes de la intro; al finalizar o saltar inicia el dashboard.
+- Espera confirmación de carga hasta 15 s; una pausa voluntaria no se interrumpe.
+- Ejecuta la entrada animada del dashboard.
+- Emite eventos para sincronizar KPI y gráficas.
+
+intros/intro-technova/                                   [ACTIVO]
+- index.html: escena del horizonte y logo SVG integrado; controles accesibles.
+- styles.css: composición para escritorio/tablet/móvil, aislada dentro del iframe.
+- intro.js: secuencia de 9.8 s, pausa, salto y comunicación postMessage con js/intro.js.
+- assets/: logo de referencia y horizonte vectorial.
+- LEEME.md: instrucciones de edición, demo independiente e integración.
+- Conexión: index.html -> js/intro.js -> iframe de Horizonte -> mensaje de fin -> entrada GSAP.
+- videos/: los MP4 anteriores se conservan, pero ya no se reproducen al entrar.
+
+js/dashboard-ui.js                                       [ACTIVO]
+- Aplica efectos reactivos.
+- Inicializa y anima los cinco contadores KPI.
+- Lee prefijos como $ y sufijos como h.
+- Expone window.TechNovaDashboard.updateDashboardKpis(data).
+- Conserva valor actual y valor objetivo de cada KPI.
+
+js/dashboard-data.js                                     [PREPARADO]
+- Lee data-dashboard-api del elemento .dashboard.
+- Si la ruta está vacía, no hace ninguna solicitud.
+- Si existe una ruta, consulta JSON mediante Fetch.
+- Entrega la respuesta a updateDashboardKpis(data).
+- Mantiene los valores HTML cuando la API falla.
+- Expone window.TechNovaDashboard.loadDashboardSummary(endpoint).
+
+js/periods.js                                            [ACTIVO]
+- Controla el selector de periodo general.
+- Controla el selector del resumen financiero.
+- Calcula periodos y rangos de fechas del frontend demo.
+- Emite eventos para que las gráficas respondan.
+
+js/expenses.js                                           [ACTIVO]
+- Controla gastos recurrentes de demostración.
+- Implementa Ver todo/Ver menos.
+- Maneja entrada visual de los elementos.
+
+js/notifications.js                                      [ACTIVO DEMO]
+- Abre y cierra el panel.
+- Agrupa notificaciones por fecha.
+- Marca como leídas y elimina en el frontend.
+- Actualiza el contador visual.
+- Contiene bloques comentados para futuro backend.
+- Los endpoints PHP todavía no existen.
+
+js/investments.js                                        [ACTIVO DEMO]
+- Controla tarjeta, lista y modal de inversión.
+- Agrega inversiones al estado temporal del frontend.
+- Actualiza el diseño inmediatamente.
+- Contiene un bloque comentado de Fetch para futuro backend.
+- El endpoint PHP todavía no existe.
+
+js/charts.js                                             [ACTIVO DEMO]
+- Crea la gráfica financiera con Chart.js.
+- Crea la distribución de costos.
+- Responde al cambio de periodo.
+- Usa datos de demostración.
+- Contiene un Fetch comentado para futuro resumen financiero.
+
+js/app.js                                                [ACTIVO]
+- Crea el namespace window.TechNovaDashboard si hace falta.
+- Marca modulesLoaded.
+- Evita el salto de enlaces placeholder fuera del navbar.
+- Será el punto común de inicialización general.
+
+
+======================================================================
+7. CARPETAS JAVASCRIPT PREPARADAS
+======================================================================
+
+App/js/api/                                              [PREPARADO]
+
+Responsabilidad:
+- Único lugar para solicitudes Fetch reutilizables.
+- Manejo común de JSON, errores HTTP, sesión y CSRF.
+
+Archivos previstos:
+- http.js
+- auth-api.js
+- dashboard-api.js
+- projects-api.js
+- notifications-api.js
+
+App/js/pages/                                            [PREPARADO]
+
+Responsabilidad:
+- Coordinar una vista específica.
+- Solicitar datos mediante js/api/.
+- Entregar datos a componentes y actualizar la página.
+
+Archivos previstos:
+- dashboard.js
+- projects.js
+- tasks.js
+- clients.js
+
+App/js/components/                                       [PREPARADO]
+
+Responsabilidad:
+- Comportamientos compartidos entre vistas.
+
+Ejemplos:
+- navbar.js
+- notifications.js
+- modal.js
+- table.js
+- pagination.js
+
+Migración futura:
+Los archivos JavaScript activos permanecen actualmente en App/js/. Se moverán
+gradualmente después de crear las demás vistas y probar todas las rutas.
+
+
+======================================================================
+8. ORDEN ACTIVO DE CARGA DE JAVASCRIPT
+======================================================================
+
+1.  js/navbar.js
+2.  assets/vendor/chart.umd.js
+3.  assets/vendor/gsap-3.12.5.min.js
+4.  js/intro.js
+5.  js/dashboard-ui.js
+6.  js/dashboard-data.js
+7.  js/periods.js
+8.  js/expenses.js
+9.  js/notifications.js
+10. js/investments.js
+11. js/charts.js
+12. js/app.js
+
+Dependencias:
+
+- Chart.js debe cargarse antes de charts.js.
+- GSAP debe cargarse antes de intro.js, dashboard-ui.js y charts.js.
+- dashboard-ui.js debe cargarse antes de dashboard-data.js.
+- periods.js debe cargarse antes de que charts.js responda a sus eventos.
+- app.js conserva el namespace común al final.
+
+
+======================================================================
+9. EVENTOS Y CONEXIONES INTERNAS DEL FRONTEND
+======================================================================
+
+INTRO -> KPI
+
+intro.js
+   -> emite technova:kpi-reveal
+   -> dashboard-ui.js inicia los contadores
+
+INTRO -> GRÁFICA FINANCIERA
+
+intro.js
+   -> emite technova:financial-reveal
+   -> charts.js muestra la gráfica
+
+FIN DE ENTRADA
+
+intro.js
+   -> emite technova:entry-complete
+   -> módulos visuales pueden terminar su entrada
+
+PERIODO FINANCIERO
+
+periods.js
+   -> emite financialPeriodChange
+   -> charts.js aplica datos demo del periodo
+   -> futuro: js/api/dashboard-api.js consulta PHP
+
+PERIODO GENERAL
+
+periods.js
+   -> emite reportPeriodChange
+   -> futuro: dashboard, proyectos y reportes vuelven a consultar datos
+
+DATOS KPI
+
+dashboard-data.js
+   -> Fetch opcional
+   -> updateDashboardKpis(data)
+   -> emite technova:dashboard-data-loaded
+
+Si falla:
+
+dashboard-data.js
+   -> conserva últimos datos válidos
+   -> emite technova:dashboard-data-error
+
+
+======================================================================
+10. FLUJO ACTUAL Y FUTURO DE LAS TARJETAS KPI
+======================================================================
+
+Estado actual:
+
+index.html
+   -> contiene valores de respaldo
+   -> dashboard-ui.js los analiza
+   -> intro.js dispara la animación
+   -> se muestran los datos demo
+
+Claves existentes:
+
+- projectsActive
+- totalRevenue
+- profits
+- hoursWorked
+- activeClients
+
+Estado futuro:
+
+App/index.html o App/dashboard.html
+   -> data-dashboard-api="../api/dashboard/summary.php"
+   -> dashboard-data.js
+   -> GET ../api/dashboard/summary.php
+   -> PHP valida sesión y permisos
+   -> PHP consulta MySQL
+   -> PHP responde JSON
+   -> updateDashboardKpis(data)
+   -> tarjetas se animan al nuevo valor
+
+Contrato JSON acordado:
+
+{
+  "kpis": {
+    "projectsActive": 6,
+    "totalRevenue": 899000,
+    "profits": 156456,
+    "hoursWorked": 1345,
+    "activeClients": 2
+  },
+  "changes": {
+    "projectsActive": 2,
+    "totalRevenue": 18.2,
+    "profits": 56.2,
+    "hoursWorked": 8.7,
+    "activeClients": 5
+  },
+  "periodLabel": "este mes"
+}
+
+Mientras data-dashboard-api esté vacío no se realiza Fetch y se conservan los
+valores del HTML.
+
+
+======================================================================
+11. MAPA DEL BACKEND API/
+======================================================================
+
+Estado general: [PREPARADO]
+Archivos PHP actuales: 0
+
+Carpetas compartidas:
+
+api/config/
+- database.php: futura conexión PDO a MySQL.
+- environment.php: futura lectura de configuración del entorno.
+- Nunca debe enlazarse desde HTML ni JavaScript.
+
+api/core/
+- response.php: respuestas JSON consistentes.
+- request.php: lectura segura de JSON, query string y método HTTP.
+- validation.php: reglas de validación compartidas.
+
+api/middleware/
+- auth.php: comprobar sesión.
+- permissions.php: comprobar rol y permisos.
+- csrf.php: proteger operaciones que modifican datos.
+
+api/health/
+- Estado controlado de la API y base de datos.
+- No debe exponer credenciales ni información sensible.
+
+Carpetas por dominio:
+
+api/auth/
+- login.php
+- logout.php
+- session.php
+
+api/dashboard/
+- summary.php
+
+api/projects/
+- list.php
+- detail.php
+- create.php
+- update.php
+- delete.php
+
+api/tasks/
+- Tareas, estados, asignaciones y fechas.
+
+api/time/
+- Registros de horas y control de tiempo.
+
+api/clients/
+- Clientes y relaciones con proyectos.
+
+api/team/
+- Usuarios, colaboradores, roles y permisos.
+
+api/assistant/
+- Operaciones autorizadas del asistente IA.
+
+api/finance/
+- Ingresos, costos, ganancias y resúmenes.
+
+api/billing/
+- Facturación, pagos y documentos fiscales.
+
+api/reports/
+- Consultas y generación de reportes.
+
+api/notifications/
+- Listado, lectura y eliminación de notificaciones.
+
+api/investments/
+- Fondos y movimientos de inversión.
+
+api/expenses/
+- Gastos recurrentes, categorías y totales.
+
+api/settings/
+- Configuración de cuenta y sistema.
+
+
+======================================================================
+12. REGLA DE SEPARACIÓN HTML / JAVASCRIPT / PHP
+======================================================================
+
+HTML:
+- Solo estructura y atributos de conexión.
+- No debe contener código PHP.
+- No debe contener credenciales.
+
+CSS:
+- Solo presentación visual.
+- No debe contener lógica ni datos del negocio.
+
+JavaScript:
+- Interacción del usuario.
+- Solicitudes Fetch.
+- Renderizado y estados visuales.
+- Nunca contiene credenciales de MySQL.
+- Sus validaciones mejoran la experiencia, pero no reemplazan PHP.
+
+PHP:
+- Autenticación y autorización.
+- Validación definitiva.
+- Lógica del negocio.
+- Acceso a MySQL mediante consultas preparadas.
+- Respuestas JSON; no genera las vistas HTML.
+
+MySQL:
+- Fuente persistente de datos.
+- No es accesible directamente desde JavaScript.
+
+
+======================================================================
+13. CONVENCIÓN PARA RESPUESTAS JSON
+======================================================================
+
+Propuesta para endpoints nuevos:
+
+Respuesta exitosa:
+
+{
+  "success": true,
+  "data": {},
+  "meta": {}
+}
+
+Respuesta con error:
+
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Los datos enviados no son válidos.",
+    "fields": {}
+  }
+}
+
+Códigos HTTP previstos:
+
+- 200: consulta o actualización correcta.
+- 201: recurso creado.
+- 204: operación correcta sin contenido.
+- 400: solicitud incorrecta.
+- 401: sesión inexistente o expirada.
+- 403: usuario sin permiso.
+- 404: recurso no encontrado.
+- 409: conflicto de datos.
+- 422: validación fallida.
+- 500: error interno controlado.
+
+Esta envoltura general todavía es [PLANIFICADA]. El contrato KPI existente se
+mantiene como está hasta que se implemente el primer endpoint PHP.
+
+
+======================================================================
+14. UBICACIÓN DE CADA TIPO DE ARCHIVO
+======================================================================
+
+Nueva vista HTML:
+App/nombre-vista.html
+
+Estilos exclusivos de una vista:
+App/css/pages/nombre-vista.css
+
+Estilos reutilizables:
+App/css/<componente>/archivo.css
+
+Lógica exclusiva de una vista:
+App/js/pages/nombre-vista.js
+
+Componente JavaScript compartido:
+App/js/components/nombre-componente.js
+
+Cliente Fetch de un dominio:
+App/js/api/nombre-api.js
+
+Endpoint PHP:
+api/<dominio>/<operacion>.php
+
+Conexión y configuración privada PHP:
+api/config/
+
+Funciones PHP compartidas:
+api/core/
+
+Validación previa de sesión/permisos:
+api/middleware/
+
+Imágenes e iconos:
+App/assets/img/ o App/assets/icons/
+
+Bibliotecas de terceros:
+App/assets/vendor/
+
+Videos:
+App/videos/
+
+Respaldos:
+App/_backups/ o respaldo/
+
+
+======================================================================
+15. CÓMO AGREGAR UNA NUEVA VISTA
+======================================================================
+
+Ejemplo: Proyectos
+
+1. Crear App/proyectos.html.
+2. Reutilizar globals, layout, navbar y componentes existentes.
+3. Crear App/css/pages/proyectos.css para estilos exclusivos.
+4. Crear App/js/pages/projects.js para coordinar la vista.
+5. Crear App/js/api/projects-api.js para llamadas Fetch.
+6. Implementar después api/projects/*.php.
+7. Cambiar href="#" del navbar por proyectos.html.
+8. Marcar aria-current="page" solo en la vista activa.
+9. Probar escritorio, tablet y móvil.
+10. Probar estados: carga, vacío, error, sin sesión y éxito.
+11. Actualizar este mapa maestro.
+
+No copiar todo el CSS y JavaScript del dashboard dentro de Proyectos. Se deben
+reutilizar los módulos compartidos y añadir solamente lo exclusivo.
+
+
+======================================================================
+16. SEGURIDAD DEL BACKEND
+======================================================================
+
+1. Las credenciales solo viven en PHP/configuración del servidor.
+2. Cada endpoint protegido valida sesión.
+3. Cada operación valida permisos del usuario.
+4. SQL utiliza PDO y sentencias preparadas.
+5. POST, PUT, PATCH y DELETE validan CSRF.
+6. PHP valida todos los valores recibidos.
+7. Las respuestas no revelan SQL, rutas privadas ni credenciales.
+8. Las cookies de sesión deberán ser HttpOnly, SameSite y Secure cuando exista
+   HTTPS.
+9. JavaScript debe usar credentials: "same-origin" para sesiones del mismo
+   origen.
+10. Si frontend y API cambian a dominios distintos, CORS deberá configurarse
+    explícitamente; actualmente no es necesario porque compartirán origen.
+
+
+======================================================================
+17. DATOS DE DEMOSTRACIÓN Y DATOS REALES
+======================================================================
+
+Actualmente son datos de demostración:
+
+- KPI escritos en index.html.
+- Series de la gráfica financiera.
+- Distribución de costos.
+- Notificaciones visibles.
+- Fondos e inversiones del frontend.
+- Gastos recurrentes.
+- Perfil y rol visibles.
+
+No deben considerarse datos persistentes.
+
+Cuando llegue el backend, cada módulo debe pasar por esta secuencia:
+
+1. Definir contrato JSON.
+2. Crear endpoint PHP.
+3. Crear cliente en App/js/api/.
+4. Conectar el módulo visual.
+5. Mantener fallback, carga, vacío y error.
+6. Retirar datos demo únicamente después de validar datos reales.
+
+
+======================================================================
+18. RECURSOS Y DEPENDENCIAS
+======================================================================
+
+App/assets/vendor/chart.umd.js
+- Chart.js local para las gráficas.
+
+App/assets/vendor/gsap-3.12.5.min.js
+- GSAP local para animaciones y contadores.
+
+App/assets/vendor/meyer-reset-2.0.min.css
+- Normalización local de estilos.
+
+App/assets/fonts/
+- Fuentes locales.
+
+App/assets/img/
+- Imágenes y SVG utilizados por la interfaz.
+
+App/videos/
+- Tres videos históricos conservados; la apertura activa usa intros/intro-technova/.
+
+Las bibliotecas principales no dependen de CDN durante el funcionamiento.
+
+
+======================================================================
+19. RESPALDOS
+======================================================================
+
+App/_backups/
+- Respaldos de modularización CSS y JavaScript.
+- Respaldo de enlaces del navbar.
+- Respaldo de integración del video tablet.
+- Respaldo previo a preparar los KPI para backend.
+
+respaldo/
+- Respaldo general anterior conservado por el usuario.
+
+Reglas:
+
+- No editar respaldos salvo para restaurar.
+- No enlazar respaldos desde index.html.
+- No ejecutar JavaScript desde respaldos.
+- Crear respaldo antes de una migración estructural importante.
+
+
+======================================================================
+20. ESTADO RESUMIDO POR MÓDULO
+======================================================================
+
+Módulo                  Frontend       API PHP        MySQL
+---------------------------------------------------------------------
+Dashboard visual        ACTIVO         PREPARADO      PLANIFICADO
+KPI                     ACTIVO/DEMO    PREPARADO      PLANIFICADO
+Gráficas                ACTIVO/DEMO    PLANIFICADO    PLANIFICADO
+Notificaciones          ACTIVO/DEMO    PREPARADO      PLANIFICADO
+Inversiones             ACTIVO/DEMO    PREPARADO      PLANIFICADO
+Gastos                  ACTIVO/DEMO    PREPARADO      PLANIFICADO
+Proyectos               ACTIVO/DEMO    PREPARADO      PLANIFICADO
+Tareas                  PLANIFICADO    PREPARADO      PLANIFICADO
+Tiempo                  PLANIFICADO    PREPARADO      PLANIFICADO
+Clientes                PLANIFICADO    PREPARADO      PLANIFICADO
+Equipo                  PLANIFICADO    PREPARADO      PLANIFICADO
+Asistente IA            PLANIFICADO    PREPARADO      PLANIFICADO
+Finanzas                PARCIAL/DEMO   PREPARADO      PLANIFICADO
+Facturación             PLANIFICADO    PREPARADO      PLANIFICADO
+Reportes                 PLANIFICADO    PREPARADO      PLANIFICADO
+Configuración           PLANIFICADO    PREPARADO      PLANIFICADO
+Autenticación           VISUAL PARCIAL PREPARADO      PLANIFICADO
+
+
+======================================================================
+21. REGLAS DE MANTENIMIENTO
+======================================================================
+
+1. Trabajar únicamente dentro de TechNova Sistema/App y TechNova Sistema/api.
+2. No modificar respaldos durante desarrollo normal.
+3. No duplicar componentes compartidos entre vistas.
+4. No mezclar PHP dentro de los HTML.
+5. No poner Fetch específicos de un dominio en app.js.
+6. Mantener rutas relativas compatibles con App/ y ../api/.
+7. Conservar IDs y data-* utilizados por JavaScript.
+8. Cambiar href="#" únicamente cuando la vista destino exista.
+9. Probar escritorio, tablet y móvil después de cambios visuales.
+10. Probar éxito, error, vacío, carga y sesión expirada después de cambios API.
+11. Actualizar este documento después de cada módulo importante.
+12. Registrar claramente si algo está ACTIVO, PREPARADO o PLANIFICADO.
+
+
+======================================================================
+22. PRÓXIMOS PASOS RECOMENDADOS
+======================================================================
+
+1. Crear la vista Proyectos sin duplicar componentes.
+2. Convertir el dashboard actual de index.html a dashboard.html cuando exista
+   una página de entrada definitiva.
+3. Mover gradualmente JavaScript a components/, pages/ y api/.
+4. Crear el cliente HTTP común App/js/api/http.js.
+5. Diseñar autenticación y sesión antes de exponer datos reales.
+6. Crear api/config, api/core y middleware reales.
+7. Implementar primero api/dashboard/summary.php como prueba de integración.
+8. Conectar KPI con MySQL y validar el contrato existente.
+9. Implementar CRUD de proyectos.
+10. Mantener este mapa como fuente de verdad del sistema.
+
+
+======================================================================
+23. CONTRATO DE MÉTRICAS DE PROYECTOS
+======================================================================
+
+Vista:
+- App/proyectos.html
+- Configuración: data-projects-summary-api=""
+- Endpoint futuro sugerido: ../api/projects/summary.php
+- Un endpoint vacío evita la petición y conserva los datos demo del HTML.
+
+Cliente visual:
+- App/js/pages/projects.js
+- window.TechNovaProjects.updateProjectMetrics(payload)
+- window.TechNovaProjects.loadProjectsSummary(endpoint)
+- Eventos: technova:projects-data-loaded y technova:projects-data-error
+
+Contrato JSON esperado:
+
+{
+  "metrics": {
+    "totalValue": { "value": "$237,345", "change": "33.3%", "context": "del total" },
+    "pending": { "value": 4, "change": "33.3%", "context": "del total" },
+    "total": { "value": 18, "change": "+2", "context": "este mes" },
+    "completed": { "value": 6, "change": "33.3%", "context": "del total" },
+    "inProgress": { "value": 6, "change": "33.3%", "context": "del total" }
+  },
+  "projects": [
+    {
+      "id": "app-mobile-viomp3",
+      "priority": "high",
+      "client": "TechNova Solutions",
+      "manager": "Josue Admin",
+      "start": "10 mayo 2026",
+      "end": "10 junio 2027",
+      "description": "Descripción del proyecto",
+      "progress": {
+        "completedTasks": 8,
+        "totalTasks": 16,
+        "percentage": 50
+      },
+      "budget": {
+        "total": 8000,
+        "spent": 1200,
+        "formattedTotal": "$8,000",
+        "formattedSpent": "$1,200"
+      },
+      "tags": [
+        { "label": "Front-end", "type": "frontend" },
+        { "label": "Back-end", "type": "backend" }
+      ],
+      "team": {
+        "total": 5,
+        "members": [
+          { "id": 1, "name": "Josue Admin", "role": "Manager", "avatar": "assets/img/projects/cards/member-1.jpg" },
+          { "id": 2, "name": "Integrante 2", "role": "Front-end", "avatar": "assets/img/projects/cards/member-2.jpg" },
+          { "id": 3, "name": "Integrante 3", "role": "Back-end", "avatar": "assets/img/projects/cards/member-3.png" }
+        ]
+      }
+    }
+  ]
+}
+
+Reglas:
+- El backend devuelve JSON; nunca genera HTML para esta vista.
+- Los campos ausentes conservan su último valor visible.
+- value y change aceptan texto o número; el formato monetario puede venir listo
+  desde la API hasta definir un formateador común por moneda y configuración regional.
+- La vista usa textContent y no inserta HTML recibido desde la API.
+- updateProjectTeams(payload) actualiza los avatares por id de proyecto.
+- Cada equipo puede contener cualquier cantidad de members; la tarjeta muestra
+  hasta tres avatares y calcula +N usando team.total.
+- name se usa como texto alternativo y role como tooltip; avatar contiene la
+  ruta de la imagen servida por la aplicación o por su almacenamiento autorizado.
+- Al actualizar el proyecto seleccionado también se sincroniza la sección Equipo.
+- progress sincroniza tareas, porcentaje, barra de la tarjeta y barra del panel.
+- budget calcula el porcentaje gastado y activa alertas al 80% y al superar 100%.
+- tags acepta una lista dinámica; la tarjeta resume las adicionales con +N y el
+  panel de detalles muestra hasta tres antes de resumir las restantes.
+- priority acepta high, medium o low y se refleja en tarjeta y encabezado del panel.
+- updateProjectCardData(payload) actualiza progreso, etiquetas y datos del panel.
+- No retirar el fallback demo hasta probar éxito, error, vacío y sesión expirada.
+
+
+======================================================================
+24. FILTROS AVANZADOS DE PROYECTOS
+======================================================================
+
+Componente:
+- Botón: [data-advanced-filter-open]
+- Panel: [data-advanced-filter-panel]
+- Formulario: [data-advanced-filter-form]
+- Evento: projects:advanced-filter-change
+
+Filtros disponibles:
+- status: all, pinned, in-progress, completed, paused, cancelled.
+- priority: all, high, medium, low.
+- due: all, overdue, soon, upcoming.
+- progress: all, 0-25, 26-50, 51-75, 76-100.
+- budget: all, defined, undefined, within, over.
+- tag: all o slug de la etiqueta.
+- person: texto normalizado para responsable, rol o cliente.
+- sort: default, due-asc, priority, progress-desc, name-asc.
+
+Comportamiento actual:
+- Los criterios se combinan en el navegador sobre las tarjetas cargadas.
+- status permanece sincronizado con los filtros rápidos.
+- El botón muestra la cantidad de criterios no predeterminados.
+- En escritorio se presenta como popover Liquid Glass.
+- En tablet y móvil se presenta como bottom sheet con backdrop.
+- Limpiar restaura orden, filtros rápidos y todas las tarjetas.
+
+Integración con backend preparada:
+- Configuración HTML: data-projects-list-api="" en .projects-page.
+- Endpoint sugerido cuando exista: ../api/projects/list.php
+- Cliente Fetch: App/js/api/projects-api.js, expuesto como window.TechNovaProjectsApi.
+- Si data-projects-list-api permanece vacío no se hace ninguna petición y se conserva
+  el filtrado local actual como fallback visual.
+- Al configurar el endpoint, los filtros se envían mediante GET y query string:
+  ../api/projects/list.php?status=in-progress&priority=high&due=overdue&sort=due-asc&page=1&limit=20
+- Parámetros admitidos: status, priority, due, progress, budget, tag, q, person, sort,
+  page y limit. Los valores all/default se omiten de la URL.
+- Una petición anterior se cancela con AbortController cuando el usuario cambia
+  los filtros rápidamente, evitando que una respuesta antigua reemplace la nueva.
+- Durante la consulta .projects-page recibe data-projects-filter-loading="true".
+- Los ids devueltos se reconcilian con las tarjetas actualmente cargadas y los
+  datos recibidos reutilizan updateProjectTeams y updateProjectCardData.
+- Si la petición falla, la interfaz sigue operando con los datos locales.
+
+Contrato JSON esperado:
+{
+  "projects": [
+    {
+      "id": "app-mobile-viomp3",
+      "priority": "high",
+      "progress": { "completedTasks": 8, "totalTasks": 16, "percentage": 50 },
+      "budget": { "total": 8000, "spent": 1200 },
+      "tags": [],
+      "team": { "total": 0, "members": [] }
+    }
+  ],
+  "pagination": { "page": 1, "limit": 20, "total": 18, "pages": 1 },
+  "appliedFilters": {}
+}
+
+Eventos públicos:
+- technova:projects-filter-loading: inicia la consulta y entrega filters.
+- technova:projects-filter-loaded: entrega filters y la respuesta validada.
+- technova:projects-filter-error: entrega filters y el error recuperable.
+
+API pública de frontend:
+- TechNovaProjects.loadFilteredProjects(filters)
+- TechNovaProjects.buildProjectFilterQuery(filters)
+- TechNovaProjects.projectsListEndpoint
+
+Responsabilidades del servidor:
+- Responder Content-Type: application/json y un objeto projects en forma de arreglo.
+- Validar sesión, permisos por proyecto, listas permitidas, page y limit máximo.
+- Aplicar el filtrado y orden antes de la paginación.
+- No construir SQL directamente con los valores recibidos; usar parámetros preparados.
+- La creación completa de tarjetas que no estén en el DOM y los controles de
+  paginación se incorporarán al integrar el listado/CRUD definitivo.
+
+
+======================================================================
+25. TARJETAS DEMO ADICIONALES DE PROYECTOS
+======================================================================
+
+Registros agregados para validar crecimiento del listado:
+- nova-booking-portal: Portal de Reservas Nova, prioridad alta, en progreso.
+- taskflow-app: App TaskFlow, prioridad media, pausado.
+
+Ambas tarjetas:
+- Reutilizan la estructura accesible y Liquid Glass existente.
+- Tienen data-project-id único para selección, filtros y futura reconciliación API.
+- Incluyen datos demo de progreso, responsables, fecha, cliente y presupuesto.
+- Están registradas en projectDetails para alimentar el panel lateral.
+- Sus valores son estáticos y podrán ser reemplazados por el endpoint de proyectos.
+- El contador de equipo representa integrantes adicionales: tres avatares visibles
+  más +N, mientras aria-label conserva el total completo del equipo.
+- Los progresos demo son distintos por proyecto y mantienen sincronizados tareas,
+  porcentaje textual, aria-valuenow, ancho visual y panel lateral.
+
+
+======================================================================
+26. VISIBILIDAD DEL PANEL DE DETALLES
+======================================================================
+
+- En escritorio el panel conserva position: sticky y top: 20px.
+- Su altura máxima es calc(100vh - 40px), evitando que salga del viewport.
+- Si el contenido supera la altura disponible, utiliza scroll vertical interno.
+- La barra de scroll es delgada y visible, con pista transparente, pulgar azul
+  translúcido, borde redondeado, reflejo interior y glow Liquid Glass en hover.
+- En tablet y móvil se conserva el drawer fixed de altura completa ya existente.
+
+
+======================================================================
+27. PRESENTACION DE ENTRADA DEL MODULO PROYECTOS
+======================================================================
+
+Implementación:
+- Función animateProjectsEntrance() en App/js/pages/projects.js.
+- Una sola timeline GSAP presenta encabezado, acciones, métricas, controles,
+  tarjetas y panel de detalles en una secuencia de aproximadamente 1.4 segundos.
+- El navbar compartido no forma parte de esta timeline y conserva su comportamiento.
+- Las tarjetas usan stagger corto por orden del DOM; filtros y selección mantienen
+  sus animaciones independientes y no reinician la presentación completa.
+- En móvil no se anima inicialmente el panel de detalles porque funciona como drawer.
+- prefers-reduced-motion omite la animación y muestra inmediatamente el contenido.
+- data-projects-entry expone los estados running y complete en .projects-page.
+- technova:projects-entry-complete se emite al finalizar para integraciones futuras.
+- El encabezado replica la entrada del Dashboard: y 16, scale .992, blur 10px y
+  duración .58; título y controles conservan sus tiempos relativos y stagger .07.
+- Las barras de cada tarjeta se animan desde 0 hasta el aria-valuenow asignado.
+- La barra del panel también se anima al entrar y al seleccionar otro proyecto.
+- La barra de presupuesto utiliza el mismo patrón desde 0 hasta su aria-valuenow.
+- Los valores reales permanecen en el HTML/JSON; GSAP solo anima la propiedad width.
+
+
+======================================================================
+28. BUSCADOR DINAMICO DE PROYECTOS
+======================================================================
+
+Elementos:
+- Campo: [data-project-search]
+- Listado relacionado: #projects-list / [data-project-results]
+- API pública: TechNovaProjects.search(query)
+- Evento: projects:search-change con query y visibleCount.
+
+Comportamiento local:
+- Busca inmediatamente mientras el usuario escribe.
+- Combina la consulta con filtros rápidos y filtros avanzados.
+- Compara nombre, id, estado, prioridad, cliente, manager, descripción,
+  etiquetas, integrantes y demás texto visible de la tarjeta.
+- Normaliza mayúsculas, espacios y acentos para mejorar coincidencias.
+- El botón nativo de limpiar del input type=search restaura el listado.
+- Si no hay coincidencias muestra un mensaje específico con la consulta.
+
+Integración backend:
+- Debounce de 350 ms antes de solicitar datos al endpoint configurado.
+- q contiene la búsqueda global, limitado a 120 caracteres.
+- person permanece como parámetro independiente del filtro responsable/cliente.
+- Una consulta activa se cancela mediante AbortController al continuar escribiendo.
+- aria-busy se aplica al campo durante la solicitud.
+- Con data-projects-list-api="" no se ejecuta Fetch y continúa el fallback local.
+- En caso de error del endpoint se eliminan los ids remotos y se conservan los
+  resultados calculados con las tarjetas disponibles en el navegador.
+
+
+======================================================================
+29. MICROINTERACCIONES PROFESIONALES DEL CARRUSEL KPI
+======================================================================
+
+Comportamiento:
+- El arrastre modifica --metric-drag-x con resistencia y límite de 92px.
+- El cambio considera distancia de 38px o velocidad mínima de 0.42px/ms.
+- El bloqueo crítico se libera a los 180ms para permitir navegación continua.
+- La tarjeta activa usa snap de 480ms con back.out(1.28).
+- El valor principal realiza un conteo breve al activar la métrica.
+- Icono, texto secundario, punto activo y flechas ofrecen feedback coordinado.
+- is-activating ejecuta un reflejo Liquid Glass una sola vez y glow temporal.
+- Las tarjetas cercanas usan escala .94, opacidad .68 y blur 1px.
+- Las tarjetas lejanas usan escala .86, opacidad .28 y blur 2px.
+- Los tamaños originales de central, cercanas y lejanas no fueron modificados.
+- prefers-reduced-motion desactiva sweep, conteos y transformaciones GSAP.
+- No existe autoplay; la navegación permanece controlada por el usuario.
+
+
+======================================================================
+30. PRESENTACION INICIAL DEL CARRUSEL KPI
+======================================================================
+
+Secuencia inicial:
+- El viewport entra con y 14px, blur 5px y duración 450ms.
+- La tarjeta central aparece primero con scale .94 a 1, back.out(1.25) y 480ms.
+- Las tarjetas laterales entran después desde 28px según su lado real.
+- Los laterales se ordenan por cercanía al centro y usan stagger de 65ms.
+- Al estabilizarse la central se activan conteo, icono, texto, glow y reflejo.
+- Flechas, paginación y contador aparecen al final con scale .96 a 1.
+- --metric-entry-x mantiene independiente esta entrada del arrastre normal.
+
+Reglas:
+- La presentación solo se ejecuta al cargar la vista, no en cada desplazamiento.
+- Las microinteracciones manuales de la sección 29 permanecen intactas.
+- Se restauró la presentación previa de las tarjetas grandes del listado.
+- No se modificaron encabezado, filtros, listado ni panel de detalles.
+- prefers-reduced-motion omite la secuencia GSAP adicional.
+
+
+======================================================================
+31. ANALITICA DE PROYECTOS
+======================================================================
+
+Archivos:
+- proyectos.html: estructura accesible de las tres gráficas y endpoint.
+- css/pages/projects-charts.css: layout, Liquid Glass y responsive.
+- js/pages/projects-charts.js: configuración Chart.js, fallback y actualización.
+- js/api/projects-api.js: método getProjectAnalytics(endpoint, options).
+
+Contrato esperado de data-projects-analytics-api:
+- value: { labels[], projectValue[], total, currency }.
+- summary: [{ key, label, value, color }].
+- clients: { labels[], datasets: [{ key, label, data[], color }] }.
+
+Integración:
+- data-projects-analytics-api="" evita Fetch y mantiene datos locales demo.
+- TechNovaProjectsCharts.update(data) actualiza las tres gráficas sin recargar.
+- TechNovaProjectsCharts.reload() vuelve a consultar el endpoint configurado.
+- TechNovaProjectsCharts.setValuePeriod(period, detail) cambia el periodo local.
+- Evento projects:analytics-rendered entrega los datos normalizados renderizados.
+- El selector reutiliza css/charts/financial-chart.css y js/periods.js.
+- financialPeriodChange actualiza mes, 3 meses, 6 meses, año o año específico.
+- La línea verde usa los valores de ingreso del Dashboard como valor del proyecto.
+- La moneda visible es MXN y los rangos de 3/6 meses terminan en el mes actual.
+- Ejemplo en agosto: 3 meses = Jun-Ago y 6 meses = Mar-Ago.
+- El cálculo usa el reloj del navegador y conserva el orden al cruzar de año.
+- Cada cambio repite el reveal horizontal GSAP de 2.8s y el reflejo final.
+- El eje Y permanece entre $0 y $1,000,000 MXN con saltos de $200,000.
+- El hover usa línea vertical y tooltip Liquid Glass compartidos con Dashboard.
+- El tooltip muestra el mes y el valor del proyecto en MXN dentro de la gráfica.
+- projects:analytics-entry-start inicia el trazado cuando aparece la tarjeta.
+- La línea permanece en progreso 0 hasta ese punto del timeline general.
+- La gráfica circular parte de cero y dibuja sus segmentos al entrar su tarjeta.
+- Las barras por cliente parten de cero y crecen horizontalmente al presentarse.
+- Circular y barras usan un stagger corto de 0.14s y 0.24s respecto al evento.
+- Si el endpoint responde tarde, el reveal pendiente inicia al crear las gráficas.
+- Resumen y Estado por cliente ejecutan el barrido Glass al terminar su dibujo.
+- Sus reflejos reutilizan financial-chart-shine y no se repiten en updates normales.
+- El tooltip de Estado por cliente usa borde Glass y glow según el color del estado.
+- El tooltip muestra cliente, estado y cantidad con singular/plural de proyecto.
+- Resumen reutiliza el mismo plugin y toma el glow del segmento activo.
+- Valor de proyectos añade borde y halo verde a su tooltip HTML Liquid Glass.
+- Los cambios manuales de periodo conservan su reveal inmediato de 2.8s.
+- Chart.js se carga desde assets/vendor/chart.umd.js antes del módulo.
+- La sección participa en la presentación GSAP de Proyectos y respeta
+  prefers-reduced-motion.
+
+Dashboard - gráfica circular de distribución de costos:
+- intro.js emite technova:cost-chart-reveal al comenzar la entrada de costChart.
+- charts.js mantiene inicialmente sus segmentos en cero y los dibuja al recibirlo.
+- Las actualizaciones previas del backend se conservan y se revelan al presentarse.
+- prefers-reduced-motion muestra los valores directamente, sin animación adicional.
+
+Dashboard - tooltip de la gráfica financiera:
+- Ingresos, Costos y Ganancias muestran explícitamente el sufijo MXN.
+- financialMoney conserva Intl.NumberFormat es-MX y agrega MXN solo al tooltip.
+- El tooltip financiero combina halos verde, azul y coral de sus tres series.
+- La gráfica circular aplica glow dorado, coral o azul según el segmento activo.
+- Distribución de costos usa un tooltip HTML externo para evitar recortes del canvas.
+- El tooltip se posiciona sobre el círculo y conserva glow, caret y diseño responsive.
+
+Proyectos - halo Liquid Glass reactivo al cursor:
+- projects.js delega pointermove desde projects-page y actualiza la luz por frame.
+- proyectos.css replica el halo radial de 220px y la transición del Dashboard.
+- Se aplica a encabezado, métricas, controles, tarjetas, detalles y analítica.
+- La delegación admite tarjetas agregadas posteriormente por el backend.
+- El navbar queda excluido y el efecto se desactiva en punteros táctiles.
+
+Proyectos - acciones rápidas compactas:
+- Ver tareas permanece visible como acción principal del panel de detalles.
+- Más acciones abre un popover Liquid Glass en escritorio y hoja inferior en móvil.
+- El menú agrupa Registrar tiempo, Ver presupuesto y Documentos.
+- projects:quick-action emite { action, projectId } para la integración backend.
+- Escape, clic exterior, backdrop y botón cerrar restauran el estado accesible.
+- Equipo y Etiquetas comparten columna; Acciones rápidas ocupa la columna lateral.
+- El bloque compacto evita tres secciones verticales consecutivas en detalles.
+
+Navbar - estado activo compartido:
+- index.html conserva nav-indicator y marca Dashboard con aria-current="page".
+- proyectos.html marca únicamente Proyectos con aria-current="page".
+- css/navbar/items.css presenta el estado Liquid Glass activo en ambas vistas.
+
+Documentación técnica por vista:
+- App/doc/DOCUMENTACION_TECNICA_DASHBOARD.docx documenta arquitectura, estructura,
+  archivos, funciones, contratos backend, responsive, animaciones y mantenimiento.
+- App/doc/DOCUMENTACION_TECNICA_PROYECTOS.docx documenta la vista Proyectos,
+  filtros, tarjetas, detalles, analítica, eventos y preparación para backend.
+- App/doc/generar_documentacion.js es la fuente reproducible de ambos Word.
+- App/doc/README.md define versionado, actualización y validación obligatoria.
+- Cada modificación futura de una vista debe actualizar su documento y el historial.
+- Versión documental 1.1.0 explica el código operativo de Dashboard y Proyectos:
+  inicialización, funciones, eventos, estado, DOM, Chart.js, GSAP y flujos backend.
+- Google Drive replica App/doc en TechNova Sistema/Documentación técnica.
+- App/doc/README.md conserva los IDs estables; cada sincronización debe reemplazar
+  el archivo existente en Drive para evitar duplicados.
+
+Comentarios guía inline - versión documental 1.2.0:
+- HTML propio incluye mapas de secciones, contratos data-* y orden de dependencias.
+- JavaScript propio documenta responsabilidad, entradas, salidas, eventos,
+  fallback, API pública y puntos de integración backend.
+- CSS propio documenta componente consumidor, cascada, responsive y relación JS.
+- assets/vendor queda excluido porque contiene dependencias de terceros.
+- Los comentarios deben explicar intención y restricciones, no repetir el código.
+- Cambios futuros de comportamiento deben actualizar comentario y Word asociados.
+
+
+======================================================================
+32. MODULO TAREAS Y NAVBAR COMPARTIDO
+======================================================================
+
+Fecha de actualización: 30 de agosto de 2026
+Versión documental Tareas: 2.0.0
+Versión documental Tablero de tareas: 1.0.0
+Versión documental Dashboard y Proyectos: 1.3.0
+Frame base: Admin-Technova / Tecnova-Sistema / Tareas / nodo 2280:47
+
+Alcance implementado:
+- Vista Lista completa con encabezado, buscadores, filtros rápidos y avanzados.
+- Carrusel infinito de seis métricas con navegación, gesto y reduced-motion.
+- Listado seleccionable con prioridades, estados, progreso, vencimiento y acciones.
+- Paginación dinámica sin límite fijo de 16 registros.
+- Panel contextual con calendario, progreso y próximas tareas sincronizadas.
+- Drawer de detalle con subtareas, dependencias, comentarios y actividad.
+- Formularios de creación y edición; confirmación y reversión para acciones.
+- Estados loading, error y retry preparados para consumo HTTP.
+- Vista Kanban independiente con Pendientes, En progreso, En revisión y Completadas.
+- Drag and drop, filtros, detalle y Nueva tarea dentro del tablero.
+- Navbar centralizado para Dashboard, Proyectos, Tareas y Tablero de tareas.
+
+Archivos funcionales creados o modificados:
+
+1. App/tareas.html
+   Responsabilidad:
+   - Estructura semántica de la vista Lista.
+   - Fallback estático y contratos data-*.
+   - Métricas, filtros, listado, paginación, panel contextual, drawer y editor.
+   - Carga: GSAP -> technova-navbar.js -> navbar.js -> notifications.js ->
+     tasks-api.js -> tasks.js -> tasks-entry.js.
+
+2. App/tareas-tablero.html
+   Responsabilidad:
+   - Vista Kanban independiente del módulo Tareas.
+   - Encabezado, filtros, resumen, cuatro columnas, drawer y editor.
+   - Reutiliza navbar, notificaciones, API y animación de entrada.
+
+3. App/css/pages/tareas.css
+   Responsabilidad:
+   - Layout, Liquid Glass, métricas, filtros, filas, calendario y paneles.
+   - Colores/glow de prioridad y estados bloqueada/completada.
+   - Drawer, formularios, menús, loading/error y breakpoints.
+   - Responsive del panel contextual: tablet con calendario lateral y paneles
+     Progreso/Próximas apilados; móvil completamente apilado.
+
+4. App/css/pages/tareas-tablero.css
+   Responsabilidad:
+   - Layout Kanban, tarjetas y columnas por estado.
+   - Degradado y respiración semántica de Pendientes, En progreso,
+     En revisión y Completadas.
+   - Estados drag-over/dragging, responsive y reduced-motion.
+
+5. App/js/pages/tasks.js
+   Responsabilidad:
+   - Estado coordinador de la vista Lista.
+   - Métricas, filtros, scopes, selección, orden, vistas y URL.
+   - Render dinámico de filas, paginación, calendario, progreso y próximas tareas.
+   - Menú contextual, permisos, drawer, subtareas, comentarios y editor.
+   - Actualización optimista y restauración del snapshot ante fallo.
+
+6. App/js/pages/tasks-api.js
+   Responsabilidad:
+   - Cliente Fetch JSON compartido por Lista y Kanban.
+   - Normalización de Task y paginación.
+   - credentials="same-origin", X-CSRF-Token y errores HTTP tipados.
+   - list(), action() y save() conservan fallback si las URLs están vacías.
+
+7. App/js/pages/tasks-board.js
+   Responsabilidad:
+   - Render de tarjetas en las cuatro columnas.
+   - Búsqueda, prioridad, conteos y detalle.
+   - Creación local/remota y movimiento entre estados.
+   - Drag and drop y eventos tasks:board-*.
+
+8. App/js/pages/tasks-entry.js
+   Responsabilidad:
+   - Timeline GSAP premium de Lista y Kanban.
+   - Reflejo final del navbar, escalonado de secciones y reduced-motion.
+   - Emite technova:tasks-entry-complete.
+
+9. App/js/components/technova-navbar.js
+   Responsabilidad:
+   - Fuente única del markup del navbar.
+   - Genera el DOM histórico sin Shadow DOM ni Fetch.
+   - Conserva nav-indicator, rutas, iconos, perfil y clases existentes.
+   - Recibe active, base-path, user-name, user-role y user-avatar.
+   - Asigna un solo aria-current="page" y emite technova:navbar-ready.
+
+10. App/js/navbar.js
+    Responsabilidad:
+    - Apertura/cierre responsive del navbar ya generado.
+    - Sincronización de menu-open y aria-expanded.
+    - El comentario guía fue actualizado; no cambió su lógica.
+
+11. App/index.html, App/proyectos.html, App/tareas.html y
+    App/tareas-tablero.html
+    Cambio compartido:
+    - Eliminación del markup duplicado del navbar.
+    - Uso de <technova-navbar active="...">.
+    - technova-navbar.js se carga inmediatamente antes de navbar.js.
+    - Fallback <noscript> con enlaces principales.
+
+Componentes, funciones y eventos principales:
+- TechNovaTasksApi.list(filters): GET paginado y normalizado.
+- TechNovaTasksApi.action(id, action, value, payload): operaciones por tarea.
+- TechNovaTasksApi.save(id, payload): POST o PATCH.
+- loadMetrics()/updateMetrics(): resumen y carrusel.
+- loadTaskList()/renderTaskRows(): carga, validación y DOM.
+- applyTaskFilters()/emitFiltersChange(): filtros y persistencia en URL.
+- updatePagination()/requestTaskPage(): páginas compactas y límite variable.
+- renderCalendar()/syncSelectedTaskContext(): calendario y panel derecho.
+- openTaskContextMenu(): acciones según permisos.
+- openTaskDetail()/openTaskEditor(): detalle, creación y edición.
+- renderBoard()/createCard()/moveTask(): ciclo Kanban.
+- Eventos: tasks:metrics-*, tasks:filters-change, tasks:list-*,
+  tasks:page-change, tasks:calendar-*, tasks:focus-change,
+  tasks:detail-open, tasks:selection-change, tasks:action-request,
+  tasks:subtasks-change, tasks:comment-create, tasks:board-*,
+  technova:navbar-ready y technova:tasks-entry-complete.
+
+Atributos data-* y contratos:
+- Backend:
+  data-tasks-summary-api, data-tasks-list-api, data-tasks-action-api,
+  data-tasks-board-api y data-tasks-csrf.
+- Métricas:
+  data-task-metric, data-task-metric-value, data-task-metrics-direction,
+  data-task-metrics-pagination y data-task-metrics-viewport.
+- Filtros:
+  data-task-scope, data-task-filter-status, data-task-filter-project,
+  data-task-filter-priority, data-task-active-filters y data-task-sort.
+- Listado:
+  data-task-row, data-task-id, data-task-status, data-task-priority,
+  data-task-project, data-task-progress-value y data-task-owner.
+- Paginación:
+  data-task-page, data-task-page-size, data-task-pagination-pages,
+  data-task-pagination-summary y data-task-pagination-mobile-status.
+- Panel:
+  data-calendar-*, data-task-progress-* y data-task-upcoming-*.
+- Drawer/editor:
+  data-task-detail-*, data-task-editor-* y data-task-action-*.
+- Kanban:
+  data-tasks-board, data-board-status, data-board-dropzone,
+  data-board-detail-* y data-board-editor-*.
+
+Endpoints y JSON previstos:
+- GET ../api/tasks/summary.php
+  { "metrics": {}, "calendar": {}, "progress": {}, "upcoming": [] }
+
+- GET ../api/tasks/list.php?q=&scope=&status=&project=&priority=&sort=&page=&limit=
+  {
+    "items": [Task],
+    "pagination": {
+      "page": 1,
+      "pageSize": 8,
+      "totalItems": 124,
+      "totalPages": 16
+    }
+  }
+
+- GET ../api/tasks/board.php
+  { "items": [Task] }
+
+- POST ../api/tasks/list.php
+  Task o { "item": Task }
+
+- PATCH/DELETE ../api/tasks/{id}.php
+  Task o { "item": Task, "message": "..." }
+
+Modelo Task previsto:
+- id, title, description, project, projectIcon.
+- assignee, assigneeAvatar, priority, status.
+- progress, dueDate, dueLabel.
+- subtasks, dependencies, comments y activity.
+
+Reglas de backend pendientes:
+- Autenticación y permisos por usuario/proyecto.
+- Consultas preparadas y sanitización de salida.
+- CSRF obligatorio en POST/PATCH/DELETE.
+- Cálculo servidor de vencidas y días restantes.
+- Control de concurrencia y respuesta 409.
+- Auditoría de crear, editar, completar, reasignar, archivar y eliminar.
+- Respuestas consistentes para 401, 403, 404, 409 y 500.
+
+Fallback estático:
+- Los endpoints vacíos impiden Fetch.
+- Lista, métricas, filtros, paginación, calendario y panel siguen operativos.
+- Drawer, subtareas, comentarios, creación y edición funcionan localmente.
+- Kanban conserva arreglo local, creación y cambios de estado en memoria.
+- Loading, error y retry se activarán al configurar los endpoints.
+
+Responsive y visual:
+- Encabezados de Dashboard, Proyectos, Tareas y Kanban conservan separación.
+- El título usa tipografía adaptable y controles con padding vertical seguro.
+- Navbar cerrado oculta wrapper/reflejos y mantiene solo botón 44 x 44 px.
+- Escritorio: lista y panel contextual en dos columnas.
+- Tablet: calendario lateral; Progreso y Próximas tareas se apilan.
+- Móvil: paneles, controles y formularios se apilan a ancho completo.
+- Scopes se desplazan horizontalmente para conservar todos los indicadores.
+- Calendario y contenedores padres crecen en altura sin recorte.
+- Prioridades y estados usan color, glow y respiración semántica.
+
+Animaciones y gráficas:
+- GSAP: entrada premium de Tareas y Kanban, drawer y reflejo del navbar.
+- CSS: hover/slide, respiración, glow, carrusel y estados drag.
+- prefers-reduced-motion entrega el estado final sin animaciones decorativas.
+- Chart.js no se carga en Tareas ni Kanban.
+
+Pruebas realizadas:
+- node --check en technova-navbar.js, navbar.js, tasks-api.js, tasks.js,
+  tasks-board.js y tasks-entry.js.
+- Orden de CSS y scripts validado en las cuatro vistas.
+- Llaves CSS balanceadas y estructura HTML comprobada.
+- Recursos de navbar y Tareas existentes.
+- Un solo navbar generado, nav-indicator conservado y active correcto.
+- Filtros, selección, paginación, calendario, progreso y próximas tareas.
+- Drawer, subtareas, comentarios, editor y acciones fallback.
+- Kanban: búsqueda, prioridad, creación, detalle y movimiento entre estados.
+- Responsive revisado en escritorio, tablet y móvil.
+- La automatización visual file:// puede depender de las políticas del navegador;
+  la validación local manual continúa siendo requisito antes de producción.
+
+Riesgos y mantenimiento:
+- No volver a copiar el markup del navbar en nuevas vistas.
+- Cargar technova-navbar.js antes de navbar.js.
+- Mantener tareas.css y tareas-tablero.css al final de su cascada.
+- El fallback no sustituye persistencia, autorización ni transacciones.
+- Comentarios y subtareas locales se pierden al recargar.
+- Para grandes volúmenes conservar paginación y delegación de eventos.
+- Drag and drop necesita alternativa táctil explícita antes de producción.
+- No modificar assets/vendor.
+
+Documentación:
+- App/doc/DOCUMENTACION_TECNICA_DASHBOARD.docx        versión 1.3.0
+- App/doc/DOCUMENTACION_TECNICA_PROYECTOS.docx        versión 1.3.0
+- App/doc/DOCUMENTACION_TECNICA_TAREAS.docx           versión 2.0.0
+- App/doc/DOCUMENTACION_TECNICA_TABLERO_TAREAS.docx   versión 1.0.0
+- App/doc/generar_documentacion.js es la fuente reproducible.
+- App/doc/README.md registra comandos, versiones e IDs de Google Drive.
+
+Historial:
+- 27 de agosto de 2026 | Tareas 1.0.0
+  Primera estructura, navbar integrado y encabezado responsive.
+- 30 de agosto de 2026 | Tareas 2.0.0
+  Gestor completo, preparación backend, panel contextual, detalle y editor.
+  Motivo: consolidar la vista funcional antes de integrar PHP/MySQL.
+- 30 de agosto de 2026 | Tablero de tareas 1.0.0
+  Vista Kanban, filtros, creación, detalle y drag and drop.
+  Motivo: ofrecer una segunda representación operativa tipo Asana.
+- 30 de agosto de 2026 | Dashboard y Proyectos 1.3.0
+  Navbar centralizado con estado activo declarativo.
+  Motivo: evitar duplicados y garantizar consistencia entre futuras vistas.
+
+
+FIN DEL MAPA MAESTRO
+======================================================================

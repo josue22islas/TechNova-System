@@ -1,0 +1,130 @@
+Quiero continuar desarrollando el sistema interno de mi empresa, TechNova Solutions.
+
+La carpeta local del proyecto está ubicada en:
+
+C:\xampp\htdocs\xampp\TechNova Sistema\App
+
+Primero verifica que realmente puedas leer esa carpeta y muéstrame brevemente su estructura. No modifiques ningún archivo hasta confirmar el acceso y revisar cómo está organizado el proyecto.
+
+Objetivo actual:
+
+Quiero codificar la vista completa del módulo “Tareas” basándonos en este frame de Figma:
+
+https://www.figma.com/design/fquaQBqfdIWDPg6trurpLx/Admin-Technova?node-id=2280-47&m=dev
+
+El archivo se llama “Admin-Technova”, la página es “Tecnova-Sistema” y el frame es `Tareas`.
+
+Consideraciones importantes:
+
+- El Dashboard y Proyectos ya están codificados.
+- El navbar también está codificado dentro del proyecto y ya tiene sus estilos, comportamiento responsive, efectos Liquid Glass y animaciones de entrada ect.
+- No debes crear un segundo navbar ni reemplazar el existente.
+- Reutiliza el navbar actual como componente compartido para la vista de Tareas.
+- En esta nueva vista únicamente debe aparecer activa la opción “Tareas”.
+- Conserva el `<span class="nav-indicator"></span>` hasta revisar su función, porque anteriormente quitarlo provocó problemas de alineación.
+- Debemos conservar la paleta azul idéntica con su degradado, transparencias, reflejos, sombras, bordes luminosos y estilo Liquid Glass del Dashboard y proyectos para seguir la jerarquía de diseño.
+- No alteres ni rompas las gráficas, estilos, animaciones o comportamiento responsive que ya funcionan en el Dashboard y Proyectos.
+- No sobrescribas archivos completos sin analizar primero el código existente.
+- Identifica duplicados o problemas de organización antes de eliminarlos.
+- Separa correctamente estructura, estilos, comportamiento y animaciones.
+- Por ahora trabajaremos únicamente en front-end; el backend se integrará después.
+- Los valores pueden permanecer estáticos, pero la estructura debe quedar preparada para recibir datos dinámicos posteriormente.
+- Prefiero usar GSAP para animaciones que realmente necesiten JavaScript o usar css si es necesario de acuerdo al tipo de animación requerida analizando cual es el mas conveniente y fluido.
+- Trabajaremos paso a paso y verificaremos visualmente cada sección antes de continuar.
+
+La vista de Tareas incluye:
+
+1. Navbar lateral existente.
+2. Encabezado con título “Tareas” y descripción.
+3. Buscador.
+4. Botón de filtros.
+5. Botón “Nueva tarea”.
+6. Botón de notificaciones.
+7. Tarjetas con métricas de tareas.
+8. Filtros por estado.
+9. Botton de mas filtros.
+10. Panel lateral “Calendario”, "Progreso", "Próximas tareas".
+11. Existen mas módulos pero serán analizados mediante tengas contexto de lo  que se realice.
+
+Orden de trabajo:
+
+1. Confirma el acceso a la carpeta.
+2. Inspecciona la estructura y localiza los archivos actuales del navbar, estilos Liquid Glass, responsive y animaciones.
+3. Explica qué archivos debemos reutilizar y cuáles necesitaremos crear.
+4. Propón una estructura limpia sin mover ni renombrar nada todavía.
+5. Comienza implementando solamente la estructura general de la página Tareas y la integración del navbar existente.
+6. Verifica el resultado antes de pasar a métricas, contenedores y animaciones ect…
+
+Actualiza la documentación técnica del sistema TechNova correspondiente a los cambios que acabamos de realizar al inicio una sola vez después espera a que te pida la actualización.
+
+Proyecto local:
+C:\xampp\htdocs\xampp\TechNova Sistema\App
+
+Realiza lo siguiente:
+
+1. Revisa todos los archivos modificados durante este módulo.
+2. Actualiza MAPEO_Y_ESTRUCTURA_DEL_PROYECTO.txt con:
+   - Archivos creados o modificados.
+   - Responsabilidad de cada archivo.
+   - Componentes, funciones y eventos nuevos.
+   - Dependencias y puntos preparados para backend.
+   - Cambios responsive, visuales o de animación.
+
+3. Actualiza el documento Word correspondiente:
+   - Dashboard:
+     doc\DOCUMENTACION_TECNICA_DASHBOARD.docx
+   - Proyectos:
+     doc\DOCUMENTACION_TECNICA_PROYECTOS.docx
+   - Si se trata de una vista nueva, crea un Word independiente siguiendo la misma plantilla.
+
+4. Actualiza doc\generar_documentacion.js para que el Word pueda regenerarse sin perder formato.
+
+5. Incrementa la versión documental y agrega una entrada al historial indicando:
+   - Fecha.
+   - Módulo afectado.
+   - Archivos modificados.
+   - Cambio realizado.
+   - Motivo del cambio.
+
+6. Explica en el documento:
+   - Estructura HTML.
+   - Estilos CSS y responsive.
+   - Funciones JavaScript.
+   - Eventos y flujo de ejecución.
+   - Animaciones GSAP o gráficas Chart.js.
+   - Atributos data-* utilizados.
+   - Contratos JSON y endpoints previstos.
+   - Fallback estático.
+   - Pruebas realizadas.
+   - Riesgos o consideraciones de mantenimiento.
+
+7. Revisa los comentarios guía dentro del código:
+   - Actualiza comentarios que hayan quedado obsoletos.
+   - Agrega comentarios solo donde expliquen intención, flujo, dependencias o restricciones.
+   - No comentes instrucciones obvias.
+   - No modifiques assets/vendor.
+
+8. Valida antes de terminar:
+   - Sintaxis de todos los JavaScript modificados.
+   - Balance de llaves CSS.
+   - Estructura HTML.
+   - Integridad Open XML de los Word.
+   - Responsive y comportamiento relacionado con el cambio.
+   - Que no se haya roto el orden de carga de CSS y scripts.
+
+9. Sincroniza Google Drive:
+   - Carpeta: TechNova Sistema/Documentación técnica.
+   - Reemplaza los archivos existentes utilizando sus IDs guardados en doc\README.md.
+   - No crees archivos duplicados.
+   - Verifica tamaños, fecha de modificación y conservación de los mismos IDs.
+
+10. Al finalizar, entrégame un resumen indicando:
+    - Archivos actualizados.
+    - Nueva versión documental.
+    - Validaciones realizadas.
+    - Estado de sincronización local y Google Drive.
+    - Cualquier validación pendiente.
+
+No modifiques el código funcional durante esta tarea, salvo que sea necesario corregir un comentario desactualizado. Antes de editar, indica exactamente qué archivos documentales vas a actualizar.
+
+Antes de cada modificación, dime exactamente qué archivo vas a editar y qué parte cambiarás. Guarda todos los cambios dentro de la carpeta local autorizada. ya habias creado una parte ya que no tenias permiso sobre escritura pero checa&#x20;

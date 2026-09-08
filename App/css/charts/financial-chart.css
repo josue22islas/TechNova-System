@@ -1,0 +1,1188 @@
+/* Modulo: Selector y grafica de resumen financiero. Orden preservado desde dashboard.css original. */
+/* GUÍA: estilos del selector, canvas, leyenda y tooltip financiero; periods.js y charts.js controlan su estado. */
+
+/* =========================================================
+   SELECTOR RESUMEN FINANCIERO
+   ========================================================= */
+
+.dashboard .financial-period-wrapper {
+
+    position: relative;
+
+    z-index: 50;
+
+}
+
+
+/* Botón */
+
+.dashboard .financial-period-button {
+
+    cursor: pointer;
+
+    position: relative;
+
+    overflow: hidden;
+
+    isolation: isolate;
+
+    transition:
+        transform .28s cubic-bezier(.22,.61,.36,1),
+        border-color .28s ease,
+        box-shadow .28s ease,
+        background .28s ease;
+
+}
+
+
+/* Elevación */
+
+.dashboard .financial-period-button:hover {
+
+    transform:
+        translateY(-3px);
+
+    border-color:
+        rgba(130,170,255,.20);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.16),
+        0 10px 24px rgba(0,0,0,.25),
+        0 0 18px rgba(60,120,255,.08);
+
+}
+
+
+/* =========================================
+   REFLEJO LIQUID GLASS
+   ========================================= */
+
+.dashboard .financial-period-button::before {
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    pointer-events:none;
+
+    border-radius:inherit;
+
+    z-index:1;
+
+    opacity:0;
+
+    background:
+
+        linear-gradient(
+            115deg,
+
+            transparent 0%,
+            transparent 42%,
+
+            rgba(255,255,255,.08) 46%,
+
+            rgba(185,215,255,.48) 50%,
+
+            rgba(255,255,255,.08) 54%,
+
+            transparent 58%,
+            transparent 100%
+        );
+
+    background-repeat:no-repeat;
+
+    background-size:
+        300% 100%;
+
+    background-position:
+        150% center;
+
+}
+
+
+/* Reflejo */
+
+.dashboard
+.financial-period-button:hover::before {
+
+    opacity:1;
+
+    animation:
+
+        financialPeriodShine
+
+        1.5s
+
+        cubic-bezier(.22,.61,.36,1)
+
+        forwards;
+
+}
+
+
+@keyframes financialPeriodShine {
+
+    from {
+
+        background-position:
+            150% center;
+
+    }
+
+    to {
+
+        background-position:
+            -150% center;
+
+    }
+
+}
+
+
+/* contenido sobre reflejo */
+
+.dashboard
+.financial-period-button > * {
+
+    position:relative;
+
+    z-index:2;
+
+}
+
+
+/* Flecha */
+
+.dashboard .financial-period-arrow {
+
+    transition:
+        transform .25s ease;
+
+}
+
+
+.dashboard
+.financial-period-wrapper.is-open
+.financial-period-arrow {
+
+    transform:
+        rotate(180deg);
+
+}
+
+
+/* =========================================================
+   DROPDOWN
+   ========================================================= */
+
+.dashboard .financial-period-menu {
+
+    position:absolute;
+
+    top:calc(100% + 8px);
+
+    right:0;
+
+    width:165px;
+
+    padding:7px;
+
+    border-radius:12px;
+
+    z-index:100;
+
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.07),
+            rgba(15,35,140,.12),
+            rgba(3,5,30,.96)
+        );
+
+
+    border:
+        1px solid
+        rgba(180,205,255,.17);
+
+
+    -webkit-backdrop-filter:
+        blur(26px)
+        saturate(130%);
+
+    backdrop-filter:
+        blur(26px)
+        saturate(130%);
+
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.14),
+        0 20px 45px rgba(0,0,0,.48);
+
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transform:
+        translateY(-6px)
+        scale(.98);
+
+    transition:
+        opacity .20s ease,
+        transform .20s ease,
+        visibility .20s;
+
+}
+
+
+.dashboard
+.financial-period-wrapper.is-open
+.financial-period-menu {
+
+    opacity:1;
+
+    visibility:visible;
+
+    transform:
+        translateY(0)
+        scale(1);
+
+}
+
+
+/* Opciones */
+
+.dashboard .financial-period-option {
+
+    display:block;
+
+    width:100%;
+
+    padding:9px 10px;
+
+    border:0;
+
+    border-radius:7px;
+
+    text-align:left;
+
+    color:
+        rgba(255,255,255,.72);
+
+    background:
+        transparent;
+
+    font-size:12px;
+
+    cursor:pointer;
+
+    transition:
+        color .20s ease,
+        background .20s ease,
+        transform .20s ease;
+
+}
+
+
+.dashboard
+.financial-period-option:hover {
+
+    color:#ffffff;
+
+    background:
+        rgba(50,90,220,.13);
+
+    transform:
+        translateX(2px);
+
+}
+
+
+.dashboard
+.financial-period-option.active {
+
+    color:#ffffff;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            rgba(43,89,225,.32),
+            rgba(13,110,253,.10)
+        );
+
+}
+
+
+/* separador */
+
+.dashboard .financial-period-divider {
+
+    height:1px;
+
+    margin:5px 6px;
+
+    background:
+        rgba(255,255,255,.08);
+
+}
+
+.dashboard .row-8 {
+
+    position: relative;
+
+    z-index: 50;
+
+    overflow: visible;
+
+}
+
+.dashboard .column-5,
+.dashboard .column-wrapper,
+.dashboard .grafica {
+
+    overflow: visible;
+
+}
+
+
+/* =========================================================
+   AJUSTE RESPONSIVE DEL BOTÓN DE PERIODO FINANCIERO
+   ========================================================= */
+
+.dashboard .financial-period-button {
+
+    /* elimina la limitación original de 93px */
+    width: auto;
+
+    min-width: 93px;
+
+    max-width: 180px;
+
+    padding-left: 10px;
+    padding-right: 8px;
+
+    gap: 6px;
+
+    flex-shrink: 0;
+
+}
+
+
+/* Texto */
+
+.dashboard .financial-period-button
+.text-wrapper-12 {
+
+    width: auto;
+
+    flex: 0 1 auto;
+
+    white-space: nowrap;
+
+    overflow: visible;
+
+    text-overflow: clip;
+
+    display: block;
+
+    font-size: 12px;
+
+}
+
+
+/* Flecha */
+
+.dashboard .financial-period-button
+.financial-period-arrow {
+
+    flex: 0 0 18px;
+
+    width: 18px;
+    height: 18px;
+
+}
+
+.dashboard .row-8 {
+
+    gap: 12px;
+
+}
+
+.dashboard .row-9 {
+
+    min-width: 0;
+
+}
+
+.dashboard .financial-period-wrapper {
+
+    flex: 0 0 auto;
+
+}
+
+@media (max-width: 640px) {
+
+    .dashboard .financial-period-button {
+
+        max-width: 155px;
+
+        padding-left: 8px;
+        padding-right: 7px;
+
+    }
+
+    .dashboard .financial-period-button
+    .text-wrapper-12 {
+
+        font-size: 11px;
+
+    }
+
+}
+
+/* =========================================================
+   RESUMEN FINANCIERO - CHART.JS PREMIUM
+   ========================================================= */
+
+.dashboard .financial-chart-container {
+
+    position: relative;
+
+    width: 100%;
+    height: 330px;
+
+    min-width: 0;
+
+    overflow: hidden;
+
+    border-radius: 14px;
+
+}
+
+
+/* Canvas */
+
+.dashboard .financial-chart-container canvas {
+
+    position: relative;
+
+    display: block;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    z-index: 2;
+
+}
+
+
+/* =========================================================
+   LÍNEA VERTICAL HOVER
+   ========================================================= */
+
+.dashboard .financial-hover-line {
+
+    position: absolute;
+
+    top: 18px;
+    bottom: 42px;
+
+    width: 1px;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    z-index: 3;
+
+    transform: translateX(-50%);
+
+    background:
+
+        linear-gradient(
+            180deg,
+            transparent,
+            rgba(170,210,255,.08),
+            rgba(170,210,255,.38),
+            rgba(170,210,255,.08),
+            transparent
+        );
+
+    box-shadow:
+        0 0 12px rgba(90,150,255,.12);
+
+    transition:
+        opacity .18s ease;
+
+}
+
+
+/* =========================================================
+   TOOLTIP LIQUID GLASS
+   ========================================================= */
+
+.dashboard .financial-tooltip {
+
+    position: absolute;
+
+    top: 20px;
+    left: 20px;
+
+    width: 175px;
+
+    padding: 12px;
+
+    border-radius: 12px;
+
+    pointer-events: none;
+
+    z-index: 20;
+
+    opacity: 0;
+
+    transform:
+        translateY(5px)
+        scale(.97);
+
+
+    background:
+
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.09),
+            rgba(20,45,150,.12),
+            rgba(3,5,30,.90)
+        );
+
+
+    border:
+        1px solid rgba(180,210,255,.18);
+
+
+    -webkit-backdrop-filter:
+        blur(22px)
+        saturate(135%);
+
+    backdrop-filter:
+        blur(22px)
+        saturate(135%);
+
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.15),
+        0 18px 40px rgba(0,0,0,.38),
+        0 0 20px rgba(49,196,119,.18),
+        0 0 26px rgba(64,143,222,.16),
+        0 0 12px rgba(214,122,95,.14);
+
+
+    transition:
+        opacity .18s ease,
+        transform .18s ease;
+
+}
+
+
+.dashboard .financial-tooltip.visible {
+
+    opacity: 1;
+
+    transform:
+        translateY(0)
+        scale(1);
+
+    filter:
+        drop-shadow(0 0 6px rgba(49,196,119,.16))
+        drop-shadow(0 0 8px rgba(64,143,222,.14));
+
+}
+
+
+.dashboard .financial-tooltip-month {
+
+    color: #ffffff;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    margin-bottom: 9px;
+
+}
+
+
+.dashboard .financial-tooltip-row {
+
+    display: grid;
+
+    grid-template-columns:
+        8px 1fr auto;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-top: 6px;
+
+    color:
+        rgba(255,255,255,.70);
+
+    font-size: 10px;
+
+}
+
+
+.dashboard .financial-tooltip-row strong {
+
+    color: #ffffff;
+
+    font-size: 10px;
+
+}
+
+
+.dashboard .financial-dot {
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+}
+
+
+.dashboard .financial-dot.income {
+
+    background: #3a9ecf;
+
+    box-shadow:
+        0 0 7px rgba(58,158,207,.55);
+
+}
+
+
+.dashboard .financial-dot.costs {
+
+    background: #c4745d;
+
+    box-shadow:
+        0 0 7px rgba(196,116,93,.45);
+
+}
+
+
+.dashboard .financial-dot.profits {
+
+    background: #73c1b9;
+
+    box-shadow:
+        0 0 7px rgba(115,193,185,.45);
+
+}
+
+
+/* =========================================================
+   REFLEJO QUE RECORRE LA GRÁFICA
+   ========================================================= */
+
+.dashboard .financial-chart-shine {
+
+    position: absolute;
+
+    top: 0;
+    bottom: 0;
+
+    left: -20%;
+
+    width: 12%;
+
+    pointer-events: none;
+
+    z-index: 5;
+
+    opacity: 0;
+
+    transform:
+        skewX(-18deg);
+
+    background:
+
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.02),
+            rgba(170,210,255,.12),
+            rgba(255,255,255,.03),
+            transparent
+        );
+
+    filter:
+        blur(5px);
+
+}
+
+
+.dashboard
+.financial-chart-shine.animate {
+
+    animation:
+        financialChartShine
+        1.4s
+        ease-out
+        forwards;
+
+}
+
+
+@keyframes financialChartShine {
+
+    0% {
+
+        left: -20%;
+
+        opacity: 0;
+
+    }
+
+    15% {
+
+        opacity: .85;
+
+    }
+
+    85% {
+
+        opacity: .55;
+
+    }
+
+    100% {
+
+        left: 115%;
+
+        opacity: 0;
+
+    }
+
+}
+
+@media (max-width:640px) {
+
+    .dashboard .financial-chart-container {
+
+        height: 300px;
+
+    }
+
+    .dashboard .financial-tooltip {
+
+        width: 155px;
+
+        padding: 10px;
+
+    }
+
+}
+
+
+/* =========================================================
+   TOOLTIP FINANCIERO
+   COLORES CONECTADOS + GLOW PREMIUM
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   FILAS DEL TOOLTIP
+   --------------------------------------------------------- */
+
+.dashboard .financial-tooltip-row {
+
+    position: relative;
+
+    padding: 4px 6px;
+
+    margin-left: -6px;
+    margin-right: -6px;
+
+    border-radius: 7px;
+
+    transition:
+        opacity .28s ease,
+        transform .28s cubic-bezier(.22,.61,.36,1),
+        background .28s ease,
+        box-shadow .28s ease;
+
+}
+
+
+/* =========================================================
+   PUNTOS DE COLOR
+   ========================================================= */
+
+.dashboard .financial-dot {
+
+    position: relative;
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    transform: scale(1);
+
+    transition:
+        transform .28s cubic-bezier(.22,.61,.36,1),
+        filter .28s ease,
+        box-shadow .28s ease;
+
+}
+
+
+/* =========================================================
+   INGRESOS
+   MISMO VERDE DE LA GRÁFICA
+   ========================================================= */
+
+.dashboard .financial-dot.income {
+
+    background:
+        #31c477;
+
+    box-shadow:
+
+        0 0 5px
+        rgba(49,196,119,.55),
+
+        0 0 10px
+        rgba(49,196,119,.20);
+
+}
+
+
+/* =========================================================
+   COSTOS
+   MISMO ROJO / NARANJA DE LA GRÁFICA
+   ========================================================= */
+
+.dashboard .financial-dot.costs {
+
+    background:
+        #df604d;
+
+    box-shadow:
+
+        0 0 5px
+        rgba(223,96,77,.55),
+
+        0 0 10px
+        rgba(223,96,77,.20);
+
+}
+
+
+/* =========================================================
+   GANANCIAS
+   MISMO AZUL DE LA GRÁFICA
+   ========================================================= */
+
+.dashboard .financial-dot.profits {
+
+    background:
+        #408fde;
+
+    box-shadow:
+
+        0 0 5px
+        rgba(64,143,222,.60),
+
+        0 0 10px
+        rgba(64,143,222,.22);
+
+}
+
+
+/* =========================================================
+   CUANDO APARECE EL TOOLTIP
+   ========================================================= */
+
+.dashboard
+.financial-tooltip.visible
+.financial-dot {
+
+    transform:
+        scale(1.25);
+
+    filter:
+        brightness(1.22)
+        saturate(1.15);
+
+}
+
+
+/* =========================================================
+   GLOW MÁS MARCADO AL APARECER
+   ========================================================= */
+
+
+/* INGRESOS */
+
+.dashboard
+.financial-tooltip.visible
+.financial-dot.income {
+
+    box-shadow:
+
+        0 0 6px
+        rgba(49,196,119,.85),
+
+        0 0 14px
+        rgba(49,196,119,.45),
+
+        0 0 24px
+        rgba(49,196,119,.16);
+
+}
+
+
+/* COSTOS */
+
+.dashboard
+.financial-tooltip.visible
+.financial-dot.costs {
+
+    box-shadow:
+
+        0 0 6px
+        rgba(223,96,77,.85),
+
+        0 0 14px
+        rgba(223,96,77,.42),
+
+        0 0 24px
+        rgba(223,96,77,.15);
+
+}
+
+
+/* GANANCIAS */
+
+.dashboard
+.financial-tooltip.visible
+.financial-dot.profits {
+
+    box-shadow:
+
+        0 0 6px
+        rgba(64,143,222,.90),
+
+        0 0 14px
+        rgba(64,143,222,.46),
+
+        0 0 24px
+        rgba(64,143,222,.16);
+
+}
+
+
+/* =========================================================
+   COLOR MUY SUAVE DETRÁS DE CADA FILA
+   ========================================================= */
+
+
+/* INGRESOS */
+
+.dashboard
+.financial-tooltip.visible
+.financial-tooltip-row:nth-of-type(1) {
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(49,196,119,.08),
+            rgba(49,196,119,.015),
+            transparent
+        );
+
+}
+
+
+/* COSTOS */
+
+.dashboard
+.financial-tooltip.visible
+.financial-tooltip-row:nth-of-type(2) {
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(223,96,77,.08),
+            rgba(223,96,77,.015),
+            transparent
+        );
+
+}
+
+
+/* GANANCIAS */
+
+.dashboard
+.financial-tooltip.visible
+.financial-tooltip-row:nth-of-type(3) {
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(64,143,222,.08),
+            rgba(64,143,222,.015),
+            transparent
+        );
+
+}
+
+
+/* =========================================================
+   ENTRADA ESCALONADA DE LAS FILAS
+   ========================================================= */
+
+.dashboard
+.financial-tooltip.visible
+.financial-tooltip-row {
+
+    animation:
+        financialTooltipRowIn
+        .38s
+        cubic-bezier(.22,.61,.36,1)
+        both;
+
+}
+
+
+/* Ingresos */
+
+.dashboard
+.financial-tooltip.visible
+.financial-tooltip-row:nth-of-type(1) {
+
+    animation-delay:
+        0ms;
+
+}
+
+
+/* Costos */
+
+.dashboard
+.financial-tooltip.visible
+.financial-tooltip-row:nth-of-type(2) {
+
+    animation-delay:
+        45ms;
+
+}
+
+
+/* Ganancias */
+
+.dashboard
+.financial-tooltip.visible
+.financial-tooltip-row:nth-of-type(3) {
+
+    animation-delay:
+        90ms;
+
+}
+
+
+@keyframes financialTooltipRowIn {
+
+    from {
+
+        opacity: .35;
+
+        transform:
+            translateX(-4px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateX(0);
+
+    }
+
+}
+
+
+/* =========================================================
+   VALORES
+   ========================================================= */
+
+.dashboard
+.financial-tooltip-row strong {
+
+    transition:
+        color .25s ease,
+        text-shadow .25s ease;
+
+}
+
+
+/* Ingresos */
+
+.dashboard
+.financial-tooltip.visible
+.financial-tooltip-row:nth-of-type(1)
+strong {
+
+    color:
+        #ffffff;
+
+    text-shadow:
+        0 0 10px
+        rgba(49,196,119,.22);
+
+}
+
+
+/* Costos */
+
+.dashboard
+.financial-tooltip.visible
+.financial-tooltip-row:nth-of-type(2)
+strong {
+
+    color:
+        #ffffff;
+
+    text-shadow:
+        0 0 10px
+        rgba(223,96,77,.20);
+
+}
+
+
+/* Ganancias */
+
+.dashboard
+.financial-tooltip.visible
+.financial-tooltip-row:nth-of-type(3)
+strong {
+
+    color:
+        #ffffff;
+
+    text-shadow:
+        0 0 10px
+        rgba(64,143,222,.22);
+
+}
+
+
