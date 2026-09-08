@@ -22,3 +22,10 @@ Consultar `App/README.md` y `api/README.md` para más detalles.
 Las credenciales, archivos `.env` y bases de datos locales están excluidos mediante `.gitignore`. La configuración privada del backend deberá crearse localmente cuando se implemente.
 
 Los archivos `.gitkeep` conservan las carpetas vacías previstas para la API.
+
+## Actualizar GitHub con doble clic
+
+Ejecuta `SUBIR_A_GITHUB.bat`. Registra y sube a `main` los archivos nuevos, las modificaciones y las eliminaciones, respetando `.gitignore`. El mensaje del commit incluye fecha y hora.
+
+Necesita Internet, Git y acceso a tu cuenta de GitHub. La ventana muestra el resultado y permanece abierta hasta pulsar una tecla. Si GitHub contiene cambios que faltan en esta copia, se detiene para que puedan integrarse. Si falla la conexión, vuelve a ejecutarlo para subir los commits pendientes.
+
