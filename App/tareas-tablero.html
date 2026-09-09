@@ -36,7 +36,10 @@
             <header class="tasks-board-header glass-reactive">
                 <div><span>Gestión visual</span><h1>Tablero de tareas</h1><p>Organiza el flujo de trabajo por estado y detecta bloqueos rápidamente.</p></div>
                 <div class="tasks-board-header-actions" aria-label="Acciones del tablero de tareas">
-                    <a href="tareas.html">☷ Lista</a>
+                    <a class="tasks-board-list-button" href="tareas.html" aria-label="Abrir vista de lista">
+                        <span class="tasks-board-list-icon" aria-hidden="true">☷</span>
+                        <span class="tasks-board-list-label">Lista</span>
+                    </a>
                     <button class="row-6 tasks-new-button" type="button" data-board-create><img src="assets/img/image-2@2x.png" alt="" aria-hidden="true" /><span class="text-wrapper-7">Nueva tarea</span></button>
                     <div class="notification-wrapper">
                         <div class="row-7 notification-button" id="notificationButton" role="button" tabindex="0" aria-expanded="false" aria-label="Abrir notificaciones">
