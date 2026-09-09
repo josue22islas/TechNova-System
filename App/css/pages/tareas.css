@@ -2680,7 +2680,7 @@ body.tasks-filters-open {
 
 @media (max-width: 390px) {
     .tasks-header-actions {
-        grid-template-columns: minmax(0, 1fr) 47px;
+        grid-template-columns: minmax(0, 1fr) 97px;
     }
 
     .tasks-filter-button,
